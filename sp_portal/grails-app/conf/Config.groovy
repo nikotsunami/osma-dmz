@@ -95,3 +95,8 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+sp_portal.admin.username = "admin"
+sp_portal.admin.password = "password123"
+sp_portal.admin.email = "paul@jserver"
+

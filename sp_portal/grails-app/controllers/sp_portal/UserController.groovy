@@ -4,10 +4,15 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
 
 
-class UserController {
+
+
+class UserController extends MainController {
 
     public static String ADMIN_ROLE = "ADMIN_ROLE";
     public static String USER_ROLE = "USER_ROLE";
+
+
+    def beforeInterceptor = [action:this.&isLoggedIn, except:["login", "authenticate", "index"]]
 
     static {
          ADMIN_ROLE = "ADMIN_ROLE";
@@ -19,37 +24,6 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-// Authentication Methods
-
-    def login(){
-
-    }
-
-    def authenticate(){
-        def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
-        if(user){
-          session.user = user
-          flash.message = "Hello ${user.userName}!"
-          applyPermissions(user);
-        }else{
-          flash.message = "Sorry, ${params.userName}. Please try again."
-          redirect(action:"login")
-        }
-      }
-
-     def logout() {
-        flash.message = "Goodbye ${session.user.name}"
-        session.user = null
-        redirect(controller:"entry", action:"list")
-     }
-
-
-    private String hashPassword(String unhashedPW, String userName){
-        return "hashed" + unhashedPW;
-    }
-
-
-
 
 
     def index() {
@@ -57,6 +31,7 @@ class UserController {
     }
 
     def list() {
+        log("IN ACTION LIST");
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
     }
@@ -64,6 +39,24 @@ class UserController {
     def create() {
         [userInstance: new User(params)]
     }
+
+    def importData() {
+        log("Import Data Pressed");
+
+    //    StandardizedPatient patients = StandardizedPatient.list();
+     //   for (StandardizedPatient patient : patients ){
+
+       //     log( ">>>>>>>>>>> " + patient.name);
+       // }
+
+
+
+        redirect(action: "list", params: params)
+
+
+
+    }
+
 
     def save() {
         handleInboundPassword(params);
@@ -105,9 +98,20 @@ class UserController {
     }
 
     def update() {
+
+
+        boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
+        def userInstance = User.get(params.id)
+        if (!passwordsMatch){
+            render(view: "edit", model: [userInstance: userInstance])
+            return;
+        }
+
+
         handleInboundPassword(params);
 
-        def userInstance = User.get(params.id)
+
+
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "list")
@@ -116,6 +120,9 @@ class UserController {
 
         if (params.version) {
             def version = params.version.toLong()
+
+
+
             if (userInstance.version > version) {
                 userInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'user.label', default: 'User')] as Object[],
@@ -155,44 +162,82 @@ class UserController {
         }
     }
 
+    def clearData(){
+        User.deleteAll(User.list());
+        Role.deleteAll(Role.list());
+        render "ok"
+    }
 
-    private void applyPermissions(User user){
+    private void setupDefaultData(){
+          //  if (Role.list().size() == 0){
 
-        log(">>>>>>>>>>>>>>>>>" + ADMIN_ROLE)
-        def result = user.roles.findAll{ role -> role.roleName.contains(ADMIN_ROLE) }
-        if ( result.size() > 0 ){
-            redirect(action: "list")
-        } else {
-            redirect(controller:"entry", action:"list")
+                Role adminRole = new Role();
+                adminRole.roleName = ADMIN_ROLE;
+                adminRole.roleDescription = "Administrate Users";
+                adminRole.save();
+
+                Role userRole = new Role();
+                userRole.roleName = USER_ROLE;
+                userRole.roleDescription = "Normal Users";
+                userRole.save();
+
+                User admin = new User();
+                User user1 = new User();
+
+                log("1 " + admin);
+
+                admin.userName = grailsApplication.config.sp_portal.admin.username;
+                admin.userEmail = grailsApplication.config.sp_portal.admin.email;
+                admin.passwordHash = hashPassword(""+grailsApplication.config.sp_portal.admin.password,admin.userName);
+                admin.isActive = true;
+
+
+
+
+                log("2 " + admin);
+                log("2 " + admin.userEmail);
+
+                def roles = [];
+                roles.add(Role.findByRoleName(ADMIN_ROLE));
+
+
+                admin.roles = roles;
+
+                admin.save();
+
+
+                // test data
+                user1.userName = "user1";
+                user1.userEmail = "a@b";
+                user1.passwordHash = hashPassword("user1");
+                user1.isActive = true;
+
+
+                def roles2 = [];
+                roles2.add(Role.findByRoleName(USER_ROLE));
+
+                user1.roles = roles2;
+
+                user1.save();
+
+            // }
+    }
+
+
+
+
+
+    private boolean comparePasswords(String p1,String p2){
+        log("Comparing passwords " + p1 + "  and " + p2  );
+        if ( p1 != p2) {
+             flash.message = "Passwords do not match";
+             log(" returning false");
+             return false;
         }
+        log(" returning true");
+        return true;
     }
 
 
-    private void handleInboundPassword(params){
-
-
-        log("In handleInboundPassword  " + params);
-
-        if (params.passwordHash) {
-            params.passwordHash = hashPassword(params.passwordHash,params.userName);
-        } else {
-            def userInstance = User.get(params.id);
-            if (userInstance){
-                params.passwordHash = userInstance.passwordHash;
-            }
-        }
-
-        log("Leaving handleInboundPassword  " + params);
-
-    }
-
-
-    private void handleOutboundPassword(user){
-        user.passwordHash = null;
-    }
-
-    private void log(String msg){
-        println(msg);
-    }
 
 }

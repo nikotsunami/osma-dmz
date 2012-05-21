@@ -12,4 +12,8 @@ class Role {
     static belongsTo = User;
     static hasMany = [users:User];
 
+    public String toString(){
+        return this.roleName;
+    }
+
 }
