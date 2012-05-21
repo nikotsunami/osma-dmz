@@ -34,13 +34,12 @@ class AuthenticationController extends MainController {
         def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
         if(user && user.isActive){
           session.user = user
-          flash.message = "Hello ${user.userName}!"
+          flash.message = "${message(code: 'default.login.success.message')} ${user.userName}!"
           applyPermissions(user);
 
         }else{
           setupDefaultData();
-
-          flash.message = "Sorry, ${params.userName}. Please try again."
+          flash.message = message(code: 'default.lgoin.unsuccess.message',args: [params.userName])
           redirect(action:"login")
 
         }
@@ -60,7 +59,7 @@ class AuthenticationController extends MainController {
     }
 
      def logout() {
-        flash.message = "Goodbye ${session.user.userName}"
+        flash.message = "${message(code: 'default.logout.message')} ${session.user.userName}"
         session.user = null
         redirect(action:"login")
      }
@@ -112,7 +111,7 @@ class AuthenticationController extends MainController {
     private boolean comparePasswords(String p1,String p2){
         log("Comparing passwords " + p1 + "  and " + p2  );
         if ( p1 != p2) {
-             flash.message = "Passwords do not match";
+             flash.message = "${message(code: 'default.password.match.message')}";
              log(" returning false");
              return false;
         }

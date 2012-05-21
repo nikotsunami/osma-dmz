@@ -66,6 +66,7 @@ body {
 
 a:link, a:visited, a:hover {
 	color: #48802c;
+	float: right;
 }
 
 a:hover, a:active {

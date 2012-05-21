@@ -21,7 +21,7 @@
         <div id="grailsLogo" role="banner">
         <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
         <g:if test="${session.user}">
-           <g:link controller="authentication" action="logout" >Logout</g:link>
+           <g:link controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
         </g:if>
         </div>
 
