@@ -18,12 +18,18 @@
         <r:layoutResources />
     </head>
     <body>
-        <div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> hello </a></div>
+        <div id="grailsLogo" role="banner">
+        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
+        <g:if test="${session.user}">
+           <g:link controller="authentication" action="logout" >Logout</g:link>
+        </g:if>
+        </div>
 
 
         <g:layoutBody/>
         <div class="footer" role="contentinfo"></div>
         <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+ 			
         <g:javascript library="application"/>
         <r:layoutResources />
     </body>

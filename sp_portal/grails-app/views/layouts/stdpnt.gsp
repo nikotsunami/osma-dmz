@@ -17,9 +17,17 @@
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'portal.css')}" type="text/css">
         <g:layoutHead/>
         <r:layoutResources />
+        
     </head>
     <body>
+     <div id="grailsLogo" role="banner">
+        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
+        <g:if test="${session.user}">
+           <g:link controller="authentication" action="logout" >Logout</g:link>
+        </g:if>
+        </div>
     <div class="stdpnt-menu">
+    
         <ul>
           <td><g:link controller="myAccount" action="show" ><li>My Account</li></g:link></td>
           <td><g:link controller="personalDetails" action="show" ><li>Personal Details</li></g:link></td>

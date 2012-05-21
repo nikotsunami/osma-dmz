@@ -29,10 +29,10 @@ class AuthenticationController extends MainController {
     }
 
     def authenticate(){
-log(" auth " + params);
+        log(" auth " + params);
 
         def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
-        if(user){
+        if(user && user.isActive){
           session.user = user
           flash.message = "Hello ${user.userName}!"
           applyPermissions(user);

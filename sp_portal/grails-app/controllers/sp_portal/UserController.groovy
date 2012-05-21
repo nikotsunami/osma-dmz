@@ -59,16 +59,28 @@ class UserController extends MainController {
 
 
     def save() {
-        handleInboundPassword(params);
-
-        def userInstance = new User(params)
-        if (!userInstance.save(flush: true)) {
-            render(view: "create", model: [userInstance: userInstance])
-            return
+        
+        boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
+        
+        
+        if(passwordsMatch){
+        
+        
+         def userInstance = new User(params)
+         handleInboundPassword(userInstance);   
+        
+		        if (!userInstance.save(flush: true)) {
+		            render(view: "create", model: [userInstance: userInstance])
+		            return
+		        }
+		        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+            redirect(action: "show", id: userInstance.id)
+        }else{
+           	flash.message = message(code: 'default.password.message')
+           	redirect(action: "create")
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-        redirect(action: "show", id: userInstance.id)
+        
     }
 
     def show() {
