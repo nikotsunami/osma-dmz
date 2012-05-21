@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping package="ch.unibas.medizin.osce.domain" />
+        <mapping package="ch.unibas.medizin.osce.shared" />
+        <mapping class="ch.unibas.medizin.osce.domain.AnamnesisForm"/>
+        <mapping class="ch.unibas.medizin.osce.domain.StandardizedPatient"/>
+        <mapping class="ch.unibas.medizin.osce.domain.SpokenLanguage"/>
+        <mapping class="ch.unibas.medizin.osce.domain.Scar"/>
+        <mapping class="ch.unibas.medizin.osce.domain.AnamnesisCheck"/>
+        <mapping class="ch.unibas.medizin.osce.domain.AnamnesisChecksValue"/>
+        <mapping class="ch.unibas.medizin.osce.domain.Nationality"/>
+        <mapping class="ch.unibas.medizin.osce.domain.Description"/>
+        <mapping class="ch.unibas.medizin.osce.domain.Bankaccount"/>
+        <mapping class="ch.unibas.medizin.osce.domain.Profession"/>
+        <mapping class="ch.unibas.medizin.osce.domain.LangSkill"/>
+    </session-factory>
+</hibernate-configuration>
