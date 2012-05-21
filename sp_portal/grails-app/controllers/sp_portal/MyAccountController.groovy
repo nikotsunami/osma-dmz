@@ -122,7 +122,7 @@ class MyAccountController extends MainController {
     private boolean comparePasswords(String p1,String p2){
         log("Comparing passwords " + p1 + "  and " + p2  );
         if ( p1 != p2) {
-             flash.message = "Passwords do not match";
+             flash.message = message(code: 'default.password.match.message');
              log(" returning false");
              return false;
         }

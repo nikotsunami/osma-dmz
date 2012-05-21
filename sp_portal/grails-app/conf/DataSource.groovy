@@ -18,15 +18,15 @@ environments {
             url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
 
-        dataSource_original {
+      /*  dataSource_original {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "validate"
+           dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = "r00ty"
+            password = "admin"
         }
-
+       */
     }
     test {
         dataSource {

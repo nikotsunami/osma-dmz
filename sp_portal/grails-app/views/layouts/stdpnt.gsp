@@ -19,12 +19,19 @@
         <r:layoutResources />
     </head>
     <body>
+     <div id="grailsLogo" role="banner">
+        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
+        <g:if test="${session.user}">
+           <g:link controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
+        </g:if>
+        </div>
     <div class="stdpnt-menu">
         <ul>
-          <td><g:link controller="myAccount" action="show" ><li>My Account</li></g:link></td>
-          <td><g:link controller="personalDetails" action="show" ><li>Personal Details</li></g:link></td>
-          <td><g:link controller="banksDetails" action="show" ><li>Banks Details</li></g:link></td>
-          <li>Health Questions</li>
+        <li><g:message code="default.health.message"/></li>
+          <td><g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link></td>
+          <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
+          <td><g:link controller="banksDetails" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
+          <li><g:message code="default.questions.message"/></li>
         </ul>
     </div>
     <div class="stdpnt-main-panel">
