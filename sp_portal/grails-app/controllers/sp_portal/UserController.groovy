@@ -37,19 +37,21 @@ class UserController extends MainController {
     }
 
     def create() {
-     	  params.isActive=true
+          params.isActive=true
         [userInstance: new User(params)]
-       
+
     }
 
     def importData() {
         log("Import Data Pressed");
 
-    //    StandardizedPatient patients = StandardizedPatient.list();
-     //   for (StandardizedPatient patient : patients ){
+         def patients = StandardizedPatient.original.list();
+         for (StandardizedPatient patient : patients ){
 
-       //     log( ">>>>>>>>>>> " + patient.name);
-       // }
+            log( ">>>>>>>>>>> " + patient.name + " " + patient.profession.profession + " " + patient.bankaccount.bankName);
+            //log( ">>>>>>>>>>> " + patient.anamnesisForm.anamnesisChecksValues.size() );
+
+         }
 
 
 
@@ -61,28 +63,28 @@ class UserController extends MainController {
 
 
     def save() {
-        
+
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
-        
-        
+
+
         if(passwordsMatch){
-        
-        
+
+
          def userInstance = new User(params)
-         handleInboundPassword(userInstance);   
-        
-		        if (!userInstance.save(flush: true)) {
-		            render(view: "create", model: [userInstance: userInstance])
-		            return
-		        }
-		        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+         handleInboundPassword(userInstance);
+
+                if (!userInstance.save(flush: true)) {
+                    render(view: "create", model: [userInstance: userInstance])
+                    return
+                }
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
             redirect(action: "show", id: userInstance.id)
         }else{
-           	flash.message = message(code: 'default.password.message')
-           	redirect(action: "create")
+            flash.message = message(code: 'default.password.message')
+            redirect(action: "create")
         }
 
-        
+
     }
 
     def show() {

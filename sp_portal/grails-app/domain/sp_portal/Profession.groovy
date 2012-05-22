@@ -5,6 +5,9 @@ class Profession {
       datasources(['DEFAULT', 'original'])
    }
 
+    Integer version
+    Long id
+
     String profession
 
 

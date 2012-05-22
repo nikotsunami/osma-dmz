@@ -7,6 +7,8 @@ class StandardizedPatient {
   //    version column: 'version', sqlType: 'int', length:11
         description column: 'descriptions'
         profession column: 'profession'
+        bankaccount column: 'bank_account'
+        anamnesisForm column: 'anamnesis_form'
    }
 
 
@@ -30,11 +32,11 @@ class StandardizedPatient {
     String videoPath
     Integer weight
     Integer workPermission
- //   AnamnesisForm anamnesisForm
+    AnamnesisForm anamnesisForm
     Description description
     Profession profession
  //   Nationality nationality
-  //  Bankaccount bankaccount
+    Bankaccount bankaccount
 
    // static hasMany = [langSkills: LangSkill]
 
