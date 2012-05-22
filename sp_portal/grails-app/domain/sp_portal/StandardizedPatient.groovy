@@ -40,16 +40,16 @@ class StandardizedPatient {
     Bankaccount bankaccount
 
    // static hasMany = [langSkills: LangSkill]
-   
+
    static hasOne = [anamnesisForm: AnamnesisForm,
                     bankaccount: Bankaccount,
                     description: Description]
-   
+
    static hasMany = [profession: Profession,
                      nationality: Nationality]
 
    static mappedBy = [anamnesisForm: 'id',
-                      profession: 'id', 
+                      profession: 'id',
                       nationality: 'id',
                       bankaccount: 'id',
                       description: 'id'

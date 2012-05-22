@@ -45,25 +45,39 @@ class UserController extends MainController {
     def importData() {
         log("Import Data Pressed");
 
+         def scars =  Scar.original.list();
+         for (Scar scar : scars ){
+
+             Scar newScar = new Scar();
+             newScar.id = scar.id;
+             newScar.bodypart = scar.bodypart;
+             newScar.traitType = scar.traitType;
+
+             newScar.save();
+
+         }
+
+
+
          def patients = StandardizedPatient.original.list();
          for (StandardizedPatient patient : patients ){
 
-            log( ">>>>>>>>>>> " + patient.description );
-            
+
+
          }
-         
+
         def anamnesisCheckList =  AnamnesisCheck.original.list();
         for (AnamnesisCheck check : anamnesisCheckList ){
 
              log( ">>>>>>>>>>> id: " +check.id+"  text: "+ check.text );
-          
+
          }
-         
+
          def checksValue =  AnamnesisChecksValue.original.list();
          for (AnamnesisChecksValue checkValue : checksValue ){
 
             log( ">>>>>>>>>>> id: " +checkValue.id+"  createDate: "+ checkValue.anamnesisForm.createDate );
-             log( "########### id: " +checkValue.id+"  text: "+ checkValue.anamnesisCheck.text );            
+             log( "########### id: " +checkValue.id+"  text: "+ checkValue.anamnesisCheck.text );
         }
 
 
@@ -72,21 +86,21 @@ class UserController extends MainController {
          for (LangSkill skill : skills ){
 
              log( ">>>>>>>>>>> skill: " +skill.skill+"  name: "+ skill.standardizedPatient.name );
-             log( "########### id: " +skill.id+"  languageName: "+ skill.spokenLanguage.languageName );            
+             log( "########### id: " +skill.id+"  languageName: "+ skill.spokenLanguage.languageName );
          }
 
 
-
+/*
          def scars =  Scar.original.list();
          for (Scar scar : scars ){
 
              log( ">>>>>>>>>>> bodypart: " +scar.bodypart);
-             
-         }
 
+         }
+*/
         redirect(action: "list", params: params)
-        
-        
+
+
 
 
 

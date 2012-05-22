@@ -5,7 +5,7 @@ class AnamnesisChecksValue {
       datasources(['DEFAULT', 'original'])
       anamnesisCheck column: 'anamnesischeck'
       anamnesisForm column: 'anamnesisform'
-    }
+   }
 
 
     Integer version
@@ -16,11 +16,13 @@ class AnamnesisChecksValue {
     AnamnesisForm anamnesisForm
     AnamnesisCheck anamnesisCheck
 
-    static hasMany = [anamnesisForm: AnamnesisForm,
+//    static belongsTo = [AnamnesisCheck, AnamnesisForm]
+
+  static hasMany = [anamnesisForm: AnamnesisForm,
                      anamnesisCheck: AnamnesisCheck]
 
     static mappedBy = [anamnesisForm: 'id',
-                      anamnesisCheck: 'id' 
+                      anamnesisCheck: 'id'
                        ]
 
     static constraints = {

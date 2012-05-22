@@ -13,11 +13,11 @@ class LangSkill {
     StandardizedPatient standardizedPatient
     SpokenLanguage spokenLanguage
 
-        
+
     static hasMany = [standardizedPatient: StandardizedPatient,
                      spokenLanguage: SpokenLanguage]
 
     static mappedBy = [standardizedPatient: 'id',
-                      spokenLanguage: 'id' 
+                      spokenLanguage: 'id'
                        ]
 }

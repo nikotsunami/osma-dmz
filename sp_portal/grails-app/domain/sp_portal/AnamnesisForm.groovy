@@ -8,7 +8,7 @@ class AnamnesisForm {
     Date createDate
     Integer version
     Long id
-    
+
     static hasMany = [//anamnesisChecksValues: AnamnesisChecksValue,
                       //scars: Scar,
                         standardizedPatients: StandardizedPatient

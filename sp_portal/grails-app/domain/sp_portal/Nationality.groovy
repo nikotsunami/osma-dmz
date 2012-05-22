@@ -7,7 +7,7 @@ class Nationality {
 
     Integer version
     Long id
-    String nationality 
+    String nationality
 
 
     static constraints = {
