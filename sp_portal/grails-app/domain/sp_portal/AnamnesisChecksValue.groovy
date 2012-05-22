@@ -3,8 +3,9 @@ package sp_portal
 class AnamnesisChecksValue {
     static mapping = {
       datasources(['DEFAULT', 'original'])
-  //    anamnesisCheck column: 'id'
-   }
+      anamnesisCheck column: 'anamnesischeck'
+      anamnesisForm column: 'anamnesisform'
+    }
 
 
     Integer version
@@ -12,10 +13,15 @@ class AnamnesisChecksValue {
     String anamnesisChecksValue
     String comment
     Boolean truth
-//    AnamnesisForm anamnesisForm
-  //  AnamnesisCheck anamnesisCheck
+    AnamnesisForm anamnesisForm
+    AnamnesisCheck anamnesisCheck
 
-//    static belongsTo = [AnamnesisCheck, AnamnesisForm]
+    static hasMany = [anamnesisForm: AnamnesisForm,
+                     anamnesisCheck: AnamnesisCheck]
+
+    static mappedBy = [anamnesisForm: 'id',
+                      anamnesisCheck: 'id' 
+                       ]
 
     static constraints = {
         anamnesisChecksValue nullable: true

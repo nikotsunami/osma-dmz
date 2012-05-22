@@ -15,7 +15,7 @@ class Bankaccount {
     String ownerName
     Integer postalCode
 
-  //  static hasMany = [standardizedPatients: StandardizedPatient]
+    static hasMany = [standardizedPatients: StandardizedPatient]
 
     static constraints = {
         bic nullable: true, maxSize: 40

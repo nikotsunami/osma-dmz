@@ -48,14 +48,45 @@ class UserController extends MainController {
          def patients = StandardizedPatient.original.list();
          for (StandardizedPatient patient : patients ){
 
-            log( ">>>>>>>>>>> " + patient.name + " " + patient.profession.profession + " " + patient.bankaccount.bankName);
-            //log( ">>>>>>>>>>> " + patient.anamnesisForm.anamnesisChecksValues.size() );
+            log( ">>>>>>>>>>> " + patient.description );
+            
+         }
+         
+        def anamnesisCheckList =  AnamnesisCheck.original.list();
+        for (AnamnesisCheck check : anamnesisCheckList ){
 
+             log( ">>>>>>>>>>> id: " +check.id+"  text: "+ check.text );
+          
+         }
+         
+         def checksValue =  AnamnesisChecksValue.original.list();
+         for (AnamnesisChecksValue checkValue : checksValue ){
+
+            log( ">>>>>>>>>>> id: " +checkValue.id+"  createDate: "+ checkValue.anamnesisForm.createDate );
+             log( "########### id: " +checkValue.id+"  text: "+ checkValue.anamnesisCheck.text );            
+        }
+
+
+
+          def skills =  LangSkill.original.list();
+         for (LangSkill skill : skills ){
+
+             log( ">>>>>>>>>>> skill: " +skill.skill+"  name: "+ skill.standardizedPatient.name );
+             log( "########### id: " +skill.id+"  languageName: "+ skill.spokenLanguage.languageName );            
          }
 
 
 
+         def scars =  Scar.original.list();
+         for (Scar scar : scars ){
+
+             log( ">>>>>>>>>>> bodypart: " +scar.bodypart);
+             
+         }
+
         redirect(action: "list", params: params)
+        
+        
 
 
 

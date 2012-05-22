@@ -9,6 +9,7 @@ class StandardizedPatient {
         profession column: 'profession'
         bankaccount column: 'bank_account'
         anamnesisForm column: 'anamnesis_form'
+        nationality column: 'nationality'
    }
 
 
@@ -35,10 +36,24 @@ class StandardizedPatient {
     AnamnesisForm anamnesisForm
     Description description
     Profession profession
- //   Nationality nationality
+    Nationality nationality
     Bankaccount bankaccount
 
    // static hasMany = [langSkills: LangSkill]
+   
+   static hasOne = [anamnesisForm: AnamnesisForm,
+                    bankaccount: Bankaccount,
+                    description: Description]
+   
+   static hasMany = [profession: Profession,
+                     nationality: Nationality]
+
+   static mappedBy = [anamnesisForm: 'id',
+                      profession: 'id', 
+                      nationality: 'id',
+                      bankaccount: 'id',
+                      description: 'id'
+                       ]
 
 
     static constraints = {

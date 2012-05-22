@@ -11,7 +11,8 @@ class Description {
    }
 
     String description
-
+    
+    static hasMany = [standardizedPatients: StandardizedPatient]
 
     static constraints = {
         description nullable: true, maxSize: 999
