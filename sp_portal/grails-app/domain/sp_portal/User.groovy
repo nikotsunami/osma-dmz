@@ -1,16 +1,17 @@
 package sp_portal
+import local.*;
 
 class User {
 
     static mapping = {
 
-        standardizedPatient table: 'standardized_patient' , column: 'id'
     }
 
     static constraints = {
         userName(unique:true)
         passwordHash(password:true)
         userEmail()
+        standardizedPatient(nullable: true)
     }
 
     String userName;
@@ -18,7 +19,7 @@ class User {
     String passwordHash;
     boolean isActive;
 
-    StandardizedPatient standardizedPatient;
+    local.StandardizedPatient standardizedPatient;
 
     static hasMany = [roles:Role]
 

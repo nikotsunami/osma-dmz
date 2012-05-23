@@ -2,8 +2,9 @@ package sp_portal
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class PersonalDetailsController {
+class PersonalDetailsController  extends MainController {
 
+    def beforeInterceptor = [action:this.&isLoggedIn]
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -31,11 +32,13 @@ class PersonalDetailsController {
     }
 
     def show() {
-        def standardizedPatientInstance = StandardizedPatient.get(params.id)
-        if (!standardizedPatientInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
-            redirect(action: "list")
-            return
+        def standardizedPatientInstance = session.user.standardizedPatient
+        if (standardizedPatientInstance){
+            if (!standardizedPatientInstance) {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
+                redirect(action: "list")
+                return
+            }
         }
 
         [standardizedPatientInstance: standardizedPatientInstance]

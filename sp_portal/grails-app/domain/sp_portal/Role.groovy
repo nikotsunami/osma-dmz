@@ -4,8 +4,6 @@ class Role {
 
 
     static constraints = {
-       roleName column:'role_name'
-       roleDescription column: 'role_description'
     }
 
     String roleName = "";

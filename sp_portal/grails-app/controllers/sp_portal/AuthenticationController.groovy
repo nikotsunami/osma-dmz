@@ -25,21 +25,23 @@ class AuthenticationController extends MainController {
 // Authentication Methods
 
     def login(){
-
+     //  setupDefaultData();
     }
 
     def authenticate(){
         log(" auth " + params);
 
         def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
+
+        log(" user " + user);
         if(user && user.isActive){
           session.user = user
           flash.message = "${message(code: 'default.login.success.message')} ${user.userName}!"
           applyPermissions(user);
 
         }else{
-          setupDefaultData();
           flash.message = message(code: 'default.lgoin.unsuccess.message',args: [params.userName])
+          setupDefaultData();
           redirect(action:"login")
 
         }
@@ -53,6 +55,7 @@ class AuthenticationController extends MainController {
             log("redirectING TO ACTION LIST");
             redirect(controller:"user", action: "list")
         } else {
+
             redirect(controller:"StdPnt", action:"index")
         }
 
@@ -71,8 +74,8 @@ class AuthenticationController extends MainController {
 
 
     private void setupDefaultData(){
-          //  if (Role.list().size() == 0){
-
+           if (Role.list().size() == 0){
+                log("setup Default Data ")
                 Role adminRole = new Role();
                 adminRole.roleName = ADMIN_ROLE;
                 adminRole.roleDescription = "Administrate Users";
@@ -101,8 +104,9 @@ class AuthenticationController extends MainController {
                 admin.roles = roles;
 
                 admin.save();
+                log("setup Default Data over" + admin)
 
-            // }
+           }
     }
 
 
