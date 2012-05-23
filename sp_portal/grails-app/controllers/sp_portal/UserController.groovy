@@ -42,6 +42,10 @@ class UserController extends MainController {
 
     }
 
+		def createUserMessage(def list,String username, String password){
+				list.add(" created user with username " + username + " " + password);
+		}
+
 		def importMessage(def list,String type, String ident){
 				list.add(" imported " + type + " " + ident);
 		}
@@ -266,10 +270,33 @@ class UserController extends MainController {
          		  }
              newPatient.save(); 
              
+             
+             
              importMessage(messages,"StandardizedPatient", ""+patient.id);
              
+              User user = new User();
+
+              log("1 " + user);
+
+              user.userName = newPatient.email;
+              user.userEmail = newPatient.email;
+              user.passwordHash = hashPassword(""+newPatient.socialInsuranceNo,user.userName);
+              user.isActive = true;
+
+              log("2 " + user);
+              log("2 " + user.userEmail);
+
+              def roles = [];
+              roles.add(Role.findByRoleName(USER_ROLE));
+
+              user.roles = roles;
+
+              user.save();
+             
+             	createUserMessage(messages,user.userName,user.passwordHash)
+             
            }else {
-          	existsMessage(messages,"StandardizedPatient", ""+patient.id);
+          	  existsMessage(messages,"StandardizedPatient", ""+patient.id);
           }
 
          }
