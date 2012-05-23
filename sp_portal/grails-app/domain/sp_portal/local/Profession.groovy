@@ -8,12 +8,16 @@ class Profession {
 
     Integer version
     Long id
-		Long origId
+        Long origId
     String profession
 
 
     static constraints = {
-        profession nullable: true, maxSize: 60  
+        profession nullable: true, maxSize: 60
         version nullable: true
+    }
+
+    public String toString(){
+        return profession;
     }
 }

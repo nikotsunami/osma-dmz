@@ -32,7 +32,8 @@ class PersonalDetailsController  extends MainController {
     }
 
     def show() {
-        def standardizedPatientInstance = session.user.standardizedPatient
+
+        def standardizedPatientInstance = User.findById(session.user.id).standardizedPatient;
         if (standardizedPatientInstance){
             if (!standardizedPatientInstance) {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
@@ -45,7 +46,7 @@ class PersonalDetailsController  extends MainController {
     }
 
     def edit() {
-        def standardizedPatientInstance = session.user.standardizedPatient;
+        def standardizedPatientInstance = User.findById(session.user.id).standardizedPatient;
         if (!standardizedPatientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
             redirect(action: "list")
@@ -56,7 +57,7 @@ class PersonalDetailsController  extends MainController {
     }
 
     def update() {
-        def standardizedPatientInstance = StandardizedPatient.get(params.id)
+        def standardizedPatientInstance = User.findById(session.user.id).standardizedPatient;
         if (!standardizedPatientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
             redirect(action: "list")
@@ -85,7 +86,7 @@ class PersonalDetailsController  extends MainController {
         redirect(action: "show", id: standardizedPatientInstance.id)
     }
 
-    def delete() {
+   /* def delete() {
         def standardizedPatientInstance = StandardizedPatient.get(params.id)
         if (!standardizedPatientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
@@ -102,5 +103,5 @@ class PersonalDetailsController  extends MainController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
             redirect(action: "show", id: params.id)
         }
-    }
+    }*/
 }

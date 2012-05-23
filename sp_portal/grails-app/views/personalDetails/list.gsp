@@ -1,5 +1,5 @@
 
-<%@ page import="sp_portal.StandardizedPatient" %>
+<%@ page import="sp_portal.local.StandardizedPatient" %>
 <!doctype html>
 <html>
 	<head>

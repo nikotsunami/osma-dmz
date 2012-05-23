@@ -1,4 +1,4 @@
-<%@ page import="sp_portal.StandardizedPatient" %>
+<%@ page import="sp_portal.local.StandardizedPatient" %>
 
 
 
@@ -146,43 +146,51 @@
 	<g:field type="number" name="workPermission" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'anamnesisForm', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'anamnesisForm', 'error')} ">
 	<label for="anamnesisForm">
 		<g:message code="standardizedPatient.anamnesisForm.label" default="Anamnesis Form" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:select id="anamnesisForm" name="anamnesisForm.id" from="${sp_portal.AnamnesisForm.list()}" optionKey="id" required="" value="${standardizedPatientInstance?.anamnesisForm?.id}" class="many-to-one"/>
+	<g:select id="anamnesisForm" name="anamnesisForm.id" from="${sp_portal.local.AnamnesisForm.list()}" optionKey="id" value="${standardizedPatientInstance?.anamnesisForm?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'bankaccount', 'error')} required">
-	<label for="bankaccount">
-		<g:message code="standardizedPatient.bankaccount.label" default="Bankaccount" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="bankaccount" name="bankaccount.id" from="${sp_portal.Bankaccount.list()}" optionKey="id" required="" value="${standardizedPatientInstance?.bankaccount?.id}" class="many-to-one"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'description', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="standardizedPatient.description.label" default="Description" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:select id="description" name="description.id" from="${sp_portal.Description.list()}" optionKey="id" required="" value="${standardizedPatientInstance?.description?.id}" class="many-to-one"/>
+	<g:select id="description" name="description.id" from="${sp_portal.local.Description.list()}" optionKey="id" value="${standardizedPatientInstance?.description?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'nationality', 'error')} required">
-	<label for="nationality">
-		<g:message code="standardizedPatient.nationality.label" default="Nationality" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="nationality" name="nationality.id" from="${sp_portal.Nationality.list()}" optionKey="id" required="" value="${standardizedPatientInstance?.nationality?.id}" class="many-to-one"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'profession', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'profession', 'error')} ">
 	<label for="profession">
 		<g:message code="standardizedPatient.profession.label" default="Profession" />
+		
+	</label>
+	<g:select id="profession" name="profession.id" from="${sp_portal.local.Profession.list()}" optionKey="id" value="${standardizedPatientInstance?.profession?.id}" class="many-to-one" noSelection="['null': '']"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'nationality', 'error')} ">
+	<label for="nationality">
+		<g:message code="standardizedPatient.nationality.label" default="Nationality" />
+		
+	</label>
+	<g:select id="nationality" name="nationality.id" from="${sp_portal.local.Nationality.list()}" optionKey="id" value="${standardizedPatientInstance?.nationality?.id}" class="many-to-one" noSelection="['null': '']"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'bankaccount', 'error')} ">
+	<label for="bankaccount">
+		<g:message code="standardizedPatient.bankaccount.label" default="Bankaccount" />
+		
+	</label>
+	<g:select id="bankaccount" name="bankaccount.id" from="${sp_portal.local.Bankaccount.list()}" optionKey="id" value="${standardizedPatientInstance?.bankaccount?.id}" class="many-to-one" noSelection="['null': '']"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'origId', 'error')} required">
+	<label for="origId">
+		<g:message code="standardizedPatient.origId.label" default="Orig Id" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="profession" name="profession.id" from="${sp_portal.Profession.list()}" optionKey="id" required="" value="${standardizedPatientInstance?.profession?.id}" class="many-to-one"/>
+	<g:field type="number" name="origId" required="" value="${fieldValue(bean: standardizedPatientInstance, field: 'origId')}"/>
 </div>
 

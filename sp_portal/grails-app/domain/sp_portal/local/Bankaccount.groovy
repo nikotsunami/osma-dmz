@@ -28,4 +28,8 @@ class Bankaccount {
         postalCode nullable: true
         version nullable: true
     }
+
+    public String toString(){
+        return bankName;
+    }
 }

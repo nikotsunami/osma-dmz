@@ -16,4 +16,8 @@ class Nationality {
         nationality nullable: true, maxSize: 40
         version nullable: true
     }
+
+    public String toString(){
+        return nationality;
+    }
 }
