@@ -25,7 +25,7 @@ class AuthenticationController extends MainController {
 // Authentication Methods
 
     def login(){
-
+      // setupDefaultData();
     }
 
     def authenticate(){
@@ -38,8 +38,8 @@ class AuthenticationController extends MainController {
           applyPermissions(user);
 
         }else{
-          setupDefaultData();
           flash.message = message(code: 'default.lgoin.unsuccess.message',args: [params.userName])
+          setupDefaultData();
           redirect(action:"login")
 
         }
@@ -53,6 +53,7 @@ class AuthenticationController extends MainController {
             log("redirectING TO ACTION LIST");
             redirect(controller:"user", action: "list")
         } else {
+            
             redirect(controller:"StdPnt", action:"index")
         }
 

@@ -42,69 +42,262 @@ class UserController extends MainController {
 
     }
 
+		def importMessage(def list,String type, String ident){
+				list.add(" imported " + type + " " + ident);
+		}
+
+		def existsMessage(def list,String type, String ident){
+				list.add(" " + type + " " + ident + " Already Exists ");
+		}
+
+
     def importData() {
+    		def messages = [];
+    
         log("Import Data Pressed");
 
-         def scars =  Scar.original.list();
-         for (Scar scar : scars ){
-
-             Scar newScar = new Scar();
-             newScar.id = scar.id;
+         def scars =  remote.Scar.list();
+         for (remote.Scar scar : scars ){
+          if(!(local.Scar.findByOrigId(scar.id))){
+         		 
+         
+             local.Scar newScar = new local.Scar();
+             newScar.origId = scar.id;
              newScar.bodypart = scar.bodypart;
              newScar.traitType = scar.traitType;
 
              newScar.save();
-
+             importMessage(messages,"scar", ""+scar.id);
+          } else {
+          	existsMessage(messages,"scar", ""+scar.id);
+          }
          }
+         
+         
+        def anamnesisCheckList =  remote.AnamnesisCheck.list();
+        for (remote.AnamnesisCheck check : anamnesisCheckList ){
+          if(!(local.AnamnesisCheck.findByOrigId(check.id))){  
+             local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
+             newCheck.origId = check.id;
+             newCheck.sortOrder = check.sortOrder;
+             newCheck.text = check.text;
+             newCheck.type = check.type;
+             newCheck.value = check.value;
+             newCheck.save();
+             importMessage(messages,"AnamnesisCheck", ""+check.id);
+          }else {
+          	existsMessage(messages,"AnamnesisCheck", ""+check.id);
+          }
 
+        }
+       
+       
+        def anamnesisForm  =  remote.AnamnesisForm .list();
+        for (remote.AnamnesisForm anamnesisFormValue : anamnesisForm ){
+          if(!(local.AnamnesisForm.findByOrigId(anamnesisFormValue.id))){  
+            
+             local.AnamnesisForm newAnamnesisForm = new local.AnamnesisForm();
+             newAnamnesisForm.origId = anamnesisFormValue.id;
+             newAnamnesisForm.createDate = anamnesisFormValue.createDate;
+             newAnamnesisForm.save();
+ 						 importMessage(messages,"AnamnesisForm", ""+anamnesisFormValue.id);
+					}else {
+          	existsMessage(messages,"AnamnesisForm", ""+anamnesisFormValue.id);
+          }
+        }  
 
+        def bankaccountList =  remote.Bankaccount.list();
+        for (remote.Bankaccount bankAccount : bankaccountList ){
+          
+          if(!(local.Bankaccount.findByOrigId(bankAccount.id))){  
+            
+              local.Bankaccount newBankaccount= new local.Bankaccount();
+              newBankaccount.origId = bankAccount.id;
+							newBankaccount.bic = bankAccount.bic;
+							newBankaccount.iban = bankAccount.iban;
+							newBankaccount.bankName = bankAccount.bankName;
+							newBankaccount.city = bankAccount.city;
+							newBankaccount.ownerName = bankAccount.ownerName;
+							newBankaccount.postalCode = bankAccount.postalCode;           
+              newBankaccount.save();
 
-         def patients = StandardizedPatient.original.list();
-         for (StandardizedPatient patient : patients ){
-
-
-
-         }
-
-        def anamnesisCheckList =  AnamnesisCheck.original.list();
-        for (AnamnesisCheck check : anamnesisCheckList ){
-
-             log( ">>>>>>>>>>> id: " +check.id+"  text: "+ check.text );
-
-         }
-
-         def checksValue =  AnamnesisChecksValue.original.list();
-         for (AnamnesisChecksValue checkValue : checksValue ){
-
-            log( ">>>>>>>>>>> id: " +checkValue.id+"  createDate: "+ checkValue.anamnesisForm.createDate );
-             log( "########### id: " +checkValue.id+"  text: "+ checkValue.anamnesisCheck.text );
+							importMessage(messages,"Bankaccount", ""+bankAccount.id);
+					}else {
+          	existsMessage(messages,"Bankaccount", ""+bankAccount.id);
+          }
         }
 
 
 
-          def skills =  LangSkill.original.list();
-         for (LangSkill skill : skills ){
 
-             log( ">>>>>>>>>>> skill: " +skill.skill+"  name: "+ skill.standardizedPatient.name );
-             log( "########### id: " +skill.id+"  languageName: "+ skill.spokenLanguage.languageName );
+        def descriptions   =  remote.Description.list();
+        for (remote.Description description : descriptions ){
+          
+          if(!(local.Description.findByOrigId(description.id))){  
+            
+             local.Description newDescription = new local.Description();
+             newDescription.origId = description.id;
+             newDescription.description = description.description;
+             newDescription.save();
+             
+             importMessage(messages,"Description", ""+description.id);
+					}else {
+          	existsMessage(messages,"Description", ""+description.id);
+          }
+        }  
+
+
+
+        def languages =  remote.SpokenLanguage.list();
+        for (remote.SpokenLanguage language : languages ){
+          if(!(local.SpokenLanguage.findByOrigId(language.id))){  
+            
+             local.SpokenLanguage newLanguage = new local.SpokenLanguage();
+             newLanguage.origId = language.id;
+             newLanguage.languageName = language.languageName;
+             newLanguage.save();
+            
+            importMessage(messages,"SpokenLanguage", ""+language.id);
+          }else {
+          	existsMessage(messages,"SpokenLanguage", ""+language.id);
+          }
+
+        }  
+
+        def nationalitys =  remote.Nationality.list();
+        for (remote.Nationality nationality : nationalitys ){
+          if(!(local.Nationality.findByOrigId(nationality.id))){  
+           
+             local.Nationality newNationality = new local.Nationality();
+             newNationality.origId = nationality.id;
+             newNationality.nationality = nationality.nationality;
+             newNationality.save();
+             
+             importMessage(messages,"Nationality", ""+nationality.id);
+					}else {
+          	existsMessage(messages,"Nationality", ""+nationality.id);
+          }
+        }
+
+        def professions =  remote.Profession.list();
+        for (remote.Profession profession : professions ){
+          if(!(local.Profession.findByOrigId(profession.id))){  
+            
+             local.Profession newProfession = new local.Profession();
+             newProfession.origId = profession.id;
+             newProfession.profession = profession.profession;
+             newProfession.save();
+             
+             importMessage(messages,"Profession", ""+profession.id);
+					}else {
+          	existsMessage(messages,"Profession", ""+profession.id);
+          }
+        }
+
+
+
+        def checkValues =  remote.AnamnesisChecksValue .list();
+        for (remote.AnamnesisChecksValue  checkValue : checkValues ){
+          if(!(local.AnamnesisChecksValue.findByOrigId(checkValue.id))){    
+            
+             local.AnamnesisChecksValue  newCheckValue = new local.AnamnesisChecksValue ();
+             newCheckValue.origId = checkValue.id;
+             newCheckValue.anamnesisChecksValue = checkValue.anamnesisChecksValue;
+             newCheckValue.comment = checkValue.comment;
+             newCheckValue.truth = checkValue.truth;
+             log("Anamnesis form " + checkValue.anamnesisForm);
+             if(checkValue.anamnesisForm){
+               newCheckValue.anamnesisForm = local.AnamnesisForm.findByOrigId(checkValue.anamnesisForm.id);//problem
+             }
+             if(checkValue.anamnesisCheck){
+               newCheckValue.anamnesisCheck = local.AnamnesisCheck.findByOrigId(checkValue.anamnesisCheck.id);
+             }
+             newCheckValue.save();
+             
+             importMessage(messages,"AnamnesisChecksValue", ""+checkValue.id);
+          }else {
+          	existsMessage(messages,"AnamnesisChecksValue", ""+checkValue.id);
+          }
+        }
+
+
+
+         def patients = remote.StandardizedPatient.list();
+         for (remote.StandardizedPatient patient : patients ){
+           if(!(local.StandardizedPatient.findByOrigId(patient.id))){     
+             
+             local.StandardizedPatient  newPatient = new local.StandardizedPatient();
+             newPatient.origId = patient.id;
+             
+             newPatient.birthday = patient.birthday;
+             newPatient.city = patient.city;
+             newPatient.email = patient.email;
+             newPatient.gender = patient.gender;
+             newPatient.height = patient.height;
+             newPatient.immagePath = patient.immagePath;
+             newPatient.maritalStatus = patient.maritalStatus;
+             newPatient.mobile = patient.mobile;
+             newPatient.name = patient.name;
+             newPatient.postalCode = patient.postalCode;
+             
+             newPatient.preName = patient.preName;
+             newPatient.socialInsuranceNo = patient.socialInsuranceNo;
+             newPatient.street = patient.street;
+             newPatient.telephone = patient.telephone;
+             newPatient.telephone2 = patient.telephone2;
+             newPatient.videoPath = patient.videoPath;
+             newPatient.weight = patient.weight;
+             newPatient.workPermission = patient.workPermission;
+             if (patient.anamnesisForm){
+              	newPatient.anamnesisForm = local.AnamnesisForm.findByOrigId(patient.anamnesisForm.id);
+             }
+             if (patient.description){
+             		newPatient.description = local.Description.findByOrigId(patient.description.id);
+             }
+             if (patient.profession){
+             		newPatient.profession = local.Profession.findByOrigId(patient.profession.id);
+             }
+             if (patient.nationality){
+             		newPatient.nationality = local.Nationality.findByOrigId(patient.nationality.id);
+             }
+             
+             if (patient.bankaccount){
+                 newPatient.bankaccount = local.Bankaccount.findByOrigId(patient.bankaccount.id);// TOdo
+         		  }
+             newPatient.save(); 
+             
+             importMessage(messages,"StandardizedPatient", ""+patient.id);
+             
+           }else {
+          	existsMessage(messages,"StandardizedPatient", ""+patient.id);
+          }
+
          }
 
 
-/*
-         def scars =  Scar.original.list();
-         for (Scar scar : scars ){
-
-             log( ">>>>>>>>>>> bodypart: " +scar.bodypart);
-
+       def langSkills =  remote.LangSkill.list();
+        for (remote.LangSkill langSkill : langSkills ){
+          if(!(local.LangSkill.findByOrigId(langSkill.id))){        
+             local.LangSkill newLangSkill = new local.LangSkill();
+             newLangSkill.origId = langSkill.id;
+						 newLangSkill.skill = langSkill.skill;
+						 if(langSkill.standardizedPatient){
+						 		newLangSkill.standardizedPatient = local.StandardizedPatient.findByOrigId(langSkill.standardizedPatient.id);
+						 }
+						 if(langSkill.spokenLanguage){
+						 		newLangSkill.spokenLanguage = local.SpokenLanguage.findByOrigId(langSkill.spokenLanguage.id);
+             }
+             newLangSkill.save();
+             
+             importMessage(messages,"LangSkill", ""+langSkill.id);
+          }else {
+          	existsMessage(messages,"LangSkill", ""+langSkill.id);
+          }
          }
-*/
-        redirect(action: "list", params: params)
+        
+        [messages: messages]
 
-
-
-
-
-    }
+   }
 
 
     def save() {
@@ -113,24 +306,21 @@ class UserController extends MainController {
 
 
         if(passwordsMatch){
-
-
-         def userInstance = new User(params)
-         handleInboundPassword(userInstance);
-
-                if (!userInstance.save(flush: true)) {
-                    render(view: "create", model: [userInstance: userInstance])
-                    return
-                }
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-            redirect(action: "show", id: userInstance.id)
+	         def userInstance = new User(params)
+	         handleInboundPassword(userInstance);
+	
+	                if (!userInstance.save(flush: true)) {
+	                    render(view: "create", model: [userInstance: userInstance])
+	                    return
+	                }
+	                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+	            redirect(action: "show", id: userInstance.id)
         }else{
             flash.message = message(code: 'default.password.message')
             redirect(action: "create")
         }
-
-
     }
+    
 
     def show() {
         def userInstance = User.get(params.id)
@@ -224,8 +414,24 @@ class UserController extends MainController {
     }
 
     def clearData(){
-        User.deleteAll(User.list());
-        Role.deleteAll(Role.list());
+       // User.deleteAll(User.list());
+       // Role.deleteAll(Role.list());
+        log("" +local.Scar.list());
+        local.StandardizedPatient.deleteAll(local.StandardizedPatient.list());
+         local.AnamnesisForm.deleteAll(local.AnamnesisForm.list());
+         local.AnamnesisCheck.deleteAll(local.AnamnesisCheck.list());
+         local.AnamnesisChecksValue.deleteAll(local.AnamnesisChecksValue.list());
+         local.Scar.deleteAll(local.Scar.list());
+        
+         local.Bankaccount.deleteAll(local.Bankaccount.list());
+         local.Description.deleteAll(local.Description.list());
+         local.SpokenLanguage.deleteAll(local.SpokenLanguage.list());
+         local.Nationality.deleteAll(local.Nationality.list());
+				 local.Profession.deleteAll(local.Profession.list());
+				 
+
+				 local.LangSkill.deleteAll(local.LangSkill.list());
+        
         render "ok"
     }
 
@@ -300,5 +506,4 @@ class UserController extends MainController {
     }
 
 
-
-}
+ }
