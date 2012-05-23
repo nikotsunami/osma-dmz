@@ -38,7 +38,13 @@ class UserController extends MainController {
 
     def create() {
           params.isActive=true
-        [userInstance: new User(params)]
+
+
+
+          User newUser = new User(params);
+          newUser.standardizedPatient  = standardizedPatient;
+
+        [userInstance: newUser]
 
     }
 
@@ -115,8 +121,15 @@ class UserController extends MainController {
         if(passwordsMatch){
 
 
-         def userInstance = new User(params)
-         handleInboundPassword(userInstance);
+                def userInstance = new User(params)
+                handleInboundPassword(userInstance);
+
+                def standardizedPatient = new StandardizedPatient();
+
+                standardizedPatient.email = userInstance.userEmail;
+
+
+                userInstance.standardizedPatient = standardizedPatient.save();
 
                 if (!userInstance.save(flush: true)) {
                     render(view: "create", model: [userInstance: userInstance])
@@ -230,7 +243,7 @@ class UserController extends MainController {
     }
 
     private void setupDefaultData(){
-          //  if (Role.list().size() == 0){
+            if (Role.list().size() == 0){
 
                 Role adminRole = new Role();
                 adminRole.roleName = ADMIN_ROLE;
@@ -281,7 +294,7 @@ class UserController extends MainController {
 
                 user1.save();
 
-            // }
+            }
     }
 
 
