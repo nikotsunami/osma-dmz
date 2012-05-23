@@ -19,7 +19,10 @@
     </head>
     <body>
         <div id="grailsLogo" role="banner">
-        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
+        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails" style="margin-top:10px"/> 
+   <img src="${resource(dir: 'images', file: 'title.png')}" /> 
+
+
         <g:if test="${session.user}">
            <g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
         </g:if>
