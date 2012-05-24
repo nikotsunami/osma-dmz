@@ -14,6 +14,8 @@ class RoleControllerTests {
       assert params != null
       // TODO: Populate valid properties like...
       //params["name"] = 'someValidName'
+       params["roleName"] = "role_name";
+       params["roleDescription"] = "role_desc";
     }
 
     void testIndex() {
@@ -38,8 +40,8 @@ class RoleControllerTests {
     void testSave() {
         controller.save()
 
-        assert model.roleInstance != null
-        assert view == '/role/create'
+        //assert model.id != null
+        assert view == '/role/show'
 
         response.reset()
 

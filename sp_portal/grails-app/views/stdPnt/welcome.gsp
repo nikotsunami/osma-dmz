@@ -4,8 +4,8 @@
 <!doctype html>
 <html>
     <head>
-      <meta name="layout" content="stdPnt">
-      
+      <meta name="layout" content="stdp      nt">
+
     </head>
     <body>
 

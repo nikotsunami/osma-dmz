@@ -31,10 +31,10 @@ class UserController extends MainController {
     def list() {
         log("IN ACTION LIST");
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        
-        
+
+
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
-        
+
     }
 
     def create() {
@@ -64,9 +64,10 @@ class UserController extends MainController {
 
 
     def importData() {
-            def messages = [];
-
+        def messages = [];
         log("Import Data Pressed");
+
+        def needsTitleChecks = [];
 
          def scars =  remote.Scar.list();
          for (remote.Scar scar : scars ){
@@ -87,9 +88,11 @@ class UserController extends MainController {
 
 
         def anamnesisCheckList =  remote.AnamnesisCheck.list();
-        // add AnamnesisCheck data which type is title 
+        // add AnamnesisCheck data which type is title
+
+
         def titleCheckList = remote.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId());
-        
+
         for (remote.AnamnesisCheck titleCheck : titleCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(titleCheck.id))){
              local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
@@ -99,11 +102,11 @@ class UserController extends MainController {
              newCheck.type = titleCheck.type;
              newCheck.value = titleCheck.value;
              newCheck.userSpecifiedOrder = titleCheck.userSpecifiedOrder;
-	           
-	           if(titleCheck.title){
-	             newCheck.title = local.AnamnesisForm.findByOrigId(titleCheck.id);
-	           }
-             
+
+               if(titleCheck.title){
+                 newCheck.title = local.AnamnesisForm.findByOrigId(titleCheck.id);
+               }
+
              newCheck.save();
              importMessage(messages,"AnamnesisCheck", ""+titleCheck.id);
           }else {
@@ -111,23 +114,28 @@ class UserController extends MainController {
           }
 
         }
-        
-        
+
+
         for (remote.AnamnesisCheck check : anamnesisCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(check.id))){
-             local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
-             newCheck.origId = check.id;
-             newCheck.sortOrder = check.sortOrder;
-             newCheck.text = check.text;
-             newCheck.type = check.type;
-             newCheck.value = check.value;
-             newCheck.userSpecifiedOrder = check.userSpecifiedOrder;
-	           
-	           if(check.title){
-	             newCheck.title = local.AnamnesisForm.findByOrigId(check.id);
-	           }
-             newCheck.save();
-             importMessage(messages,"AnamnesisCheck", ""+check.id);
+
+             if (check.type != AnamnesisCheckTypes.QUESTION_TITLE.getTypeId()){
+                 local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
+
+                 newCheck.origId = check.id;
+                 newCheck.sortOrder = check.sortOrder;
+                 newCheck.text = check.text;
+                 newCheck.type = check.type;
+                 newCheck.value = check.value;
+                 newCheck.userSpecifiedOrder = check.userSpecifiedOrder;
+
+                   if(check.title){
+                     newCheck.title = local.AnamnesisCheck.findByOrigId(check.title.id);
+                     log(" title = " + newCheck.title.text);
+                   }
+                 newCheck.save();
+                 importMessage(messages,"AnamnesisCheck", ""+check.id);
+              }
           }else {
             existsMessage(messages,"AnamnesisCheck", ""+check.id);
           }

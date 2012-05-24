@@ -27,6 +27,7 @@ class DataImportExportController extends MainController {
 
         if (params.data){
             def jsonObject = JSON.parse(params.data);
+            syncData(jsonObject);
             render jsonObject.email;
         } else {
                 render "No data"
@@ -35,6 +36,11 @@ class DataImportExportController extends MainController {
     }
 
     private boolean syncData(jsonObject){
+        remote.StandardizedPatient sp = new remote.StandardizedPatient(jsonObject);
+
+        remote.Bankaccount bank = new remote.Bankaccount(jsonObject.bankaccount)
+        println(">>>>>>>>>>>. " + sp);
+        println(">>>>>>>>>>>. " + bank);
 
     }
 }

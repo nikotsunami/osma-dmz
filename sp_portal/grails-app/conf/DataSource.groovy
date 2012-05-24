@@ -34,7 +34,7 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = "admin"
+            password = "r00ty"
         }
 
     }
