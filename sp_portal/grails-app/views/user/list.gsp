@@ -47,6 +47,7 @@
 
                         <td>${fieldValue(bean: userInstance, field: "userName")}</td>
 
+
                     </tr>
                 </g:each>
                 </tbody>

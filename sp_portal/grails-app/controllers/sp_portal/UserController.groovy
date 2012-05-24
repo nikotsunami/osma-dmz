@@ -3,9 +3,6 @@ package sp_portal
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
 
-
-
-
 class UserController extends MainController {
 
     public static String ADMIN_ROLE = "ADMIN_ROLE";
