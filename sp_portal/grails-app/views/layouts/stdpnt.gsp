@@ -1,9 +1,12 @@
+<%@ page import="sp_portal.AnamnesisCheck" %>
+
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"><!--<![endif]-->
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,21 +20,29 @@
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'portal.css')}" type="text/css">
         <g:layoutHead/>
         <r:layoutResources />
+  
+     
     </head>
     <body>
-     <div id="grailsLogo" role="banner">
+      <div id="grailsLogo" role="banner">
         <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/> 
         <g:if test="${session.user}">
            <g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
         </g:if>
         </div>
+    
     <div class="stdpnt-menu">
         <ul>
         <li><g:message code="default.health.message"/></li>
           <td><g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link></td>
           <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
           <td><g:link controller="banksDetails" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
-          <li><g:message code="default.questions.message"/></li>
+
+        <li><g:message code="default.questions.message"/></li>
+         <g:each var="check" in="${checkList}">
+					<li>${check.text}</li>
+				</g:each>
+        
         </ul>
     </div>
     <div class="stdpnt-main-panel">

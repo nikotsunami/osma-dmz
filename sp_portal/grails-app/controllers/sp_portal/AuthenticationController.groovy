@@ -55,8 +55,7 @@ class AuthenticationController extends MainController {
             log("redirectING TO ACTION LIST");
             redirect(controller:"user", action: "list")
         } else {
-
-            redirect(controller:"StdPnt", action:"index")
+          redirect(controller:"StdPnt", action:"index")
         }
 
     }
@@ -66,6 +65,8 @@ class AuthenticationController extends MainController {
         session.user = null
         redirect(action:"login")
      }
+     
+
 
 
 
