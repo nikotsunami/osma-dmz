@@ -4,7 +4,7 @@ import local.*;
 class AnamnesisCheck {
     static mapping = {
       datasources(['DEFAULT'])
-      title table: 'anamnesis_check' , column: 'id'
+      title column: 'title'
    }
 
     Long id
@@ -14,9 +14,11 @@ class AnamnesisCheck {
     String text
     Integer type
     String value
-    //AnamnesisCheck title
-
-    //static hasMany = [anamnesisChecksValues: local.AnamnesisChecksValue]
+    Integer userSpecifiedOrder;
+    AnamnesisCheck title
+   
+    static mappedBy = [title: 'id',
+                       ]
 
     static constraints = {
         sortOrder nullable: true
@@ -24,5 +26,7 @@ class AnamnesisCheck {
         type nullable: true
         value nullable: true
         version nullable: true
+        title nullable: true
+        userSpecifiedOrder nullable: true
     }
 }

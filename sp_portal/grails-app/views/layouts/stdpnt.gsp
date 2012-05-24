@@ -1,4 +1,4 @@
-<%@ page import="sp_portal.AnamnesisCheck" %>
+<%@ page import="sp_portal.local.AnamnesisCheck" %>
 
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
@@ -37,11 +37,8 @@
           <td><g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link></td>
           <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
           <td><g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
-
-        <li><g:message code="default.questions.message"/></li>
-         <g:each var="check" in="${checkList}">
-					<li>${check.text}</li>
-				</g:each>
+          <td><g:link controller="stdPnt" action="showQuestion" ><li><g:message code="default.questions.message"/></li></g:link></td>
+   
         
         </ul>
     </div>

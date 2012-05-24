@@ -97,6 +97,6 @@ log4j = {
 }
 
 sp_portal.admin.username = "admin"
-sp_portal.admin.password = "password123"
+sp_portal.admin.password = "123"
 sp_portal.admin.email = "paul@jserver"
 

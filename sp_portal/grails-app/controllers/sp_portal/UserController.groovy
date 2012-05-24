@@ -2,6 +2,7 @@ package sp_portal
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
+import ch.unibas.medizin.osce.shared.AnamnesisCheckTypes;
 
 class UserController extends MainController {
 
@@ -30,7 +31,10 @@ class UserController extends MainController {
     def list() {
         log("IN ACTION LIST");
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        
+        
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
+        
     }
 
     def create() {
@@ -40,7 +44,7 @@ class UserController extends MainController {
 
 
           User newUser = new User(params);
-          newUser.standardizedPatient  = standardizedPatient;
+         // newUser.standardizedPatient  = standardizedPatient;
 
         [userInstance: newUser]
 
@@ -83,6 +87,32 @@ class UserController extends MainController {
 
 
         def anamnesisCheckList =  remote.AnamnesisCheck.list();
+        // add AnamnesisCheck data which type is title 
+        def titleCheckList = remote.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId());
+        
+        for (remote.AnamnesisCheck titleCheck : titleCheckList ){
+          if(!(local.AnamnesisCheck.findByOrigId(titleCheck.id))){
+             local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
+             newCheck.origId = titleCheck.id;
+             newCheck.sortOrder = titleCheck.sortOrder;
+             newCheck.text = titleCheck.text;
+             newCheck.type = titleCheck.type;
+             newCheck.value = titleCheck.value;
+             newCheck.userSpecifiedOrder = titleCheck.userSpecifiedOrder;
+	           
+	           if(titleCheck.title){
+	             newCheck.title = local.AnamnesisForm.findByOrigId(titleCheck.id);
+	           }
+             
+             newCheck.save();
+             importMessage(messages,"AnamnesisCheck", ""+titleCheck.id);
+          }else {
+            existsMessage(messages,"AnamnesisCheck", ""+titleCheck.id);
+          }
+
+        }
+        
+        
         for (remote.AnamnesisCheck check : anamnesisCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(check.id))){
              local.AnamnesisCheck newCheck = new local.AnamnesisCheck();
@@ -91,6 +121,11 @@ class UserController extends MainController {
              newCheck.text = check.text;
              newCheck.type = check.type;
              newCheck.value = check.value;
+             newCheck.userSpecifiedOrder = check.userSpecifiedOrder;
+	           
+	           if(check.title){
+	             newCheck.title = local.AnamnesisForm.findByOrigId(check.id);
+	           }
              newCheck.save();
              importMessage(messages,"AnamnesisCheck", ""+check.id);
           }else {

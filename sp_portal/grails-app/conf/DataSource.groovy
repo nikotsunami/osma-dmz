@@ -25,7 +25,7 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
             username = "root"
-            password = "r00ty"
+            password = "admin"
         }
 */
        dataSource_original {
@@ -34,7 +34,7 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = "r00ty"
+            password = "admin"
         }
 
     }
