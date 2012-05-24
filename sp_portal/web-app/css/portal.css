@@ -1,13 +1,14 @@
 .stdpnt-menu {
-    background-color : red;
+    background-color : #96BEFC;
     width: 190px;
+    height: 100%;
     float: left;
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
 .stdpnt-main-panel {
-    background-color : yellow ;
+    background-color : white ;
     width: 618px;
     float: left;
     padding-left: 10px;

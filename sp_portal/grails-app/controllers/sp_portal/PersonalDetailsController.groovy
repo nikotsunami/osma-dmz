@@ -17,11 +17,11 @@ class PersonalDetailsController  extends MainController {
     }
 
     def create() {
-        [standardizedPatientInstance: new StandardizedPatient(params)]
+        [standardizedPatientInstance: new local.StandardizedPatient(params)]
     }
 
     def save() {
-        def standardizedPatientInstance = new StandardizedPatient(params)
+        def standardizedPatientInstance = new local.StandardizedPatient(params)
         if (!standardizedPatientInstance.save(flush: true)) {
             render(view: "create", model: [standardizedPatientInstance: standardizedPatientInstance])
             return
