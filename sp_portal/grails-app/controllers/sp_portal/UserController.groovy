@@ -377,13 +377,15 @@ class UserController extends MainController {
 
     def save() {
 
+				println("*******save the new user params: " + params);
+
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
 
 
         if(passwordsMatch){
-
-                handleInboundPassword(userInstance);
+               
              def userInstance = new User(params)
+             
              handleInboundPassword(userInstance);
 
                 def standardizedPatient = new local.StandardizedPatient();
