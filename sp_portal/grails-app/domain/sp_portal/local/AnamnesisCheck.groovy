@@ -17,7 +17,7 @@ class AnamnesisCheck {
     Integer userSpecifiedOrder;
     AnamnesisCheck title
    
-    static mappedBy = [title: 'id',
+    static mappedBy = [title: 'id'
                        ]
 
     static constraints = {

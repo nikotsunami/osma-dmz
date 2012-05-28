@@ -1,0 +1,17 @@
+
+<%@ page import="sp_portal.User" %>
+<%@ page import="sp_portal.local.AnamnesisCheck" %>
+<%@ page import="ch.unibas.medizin.osce.shared.AnamnesisCheckTypes" %>
+<!doctype html>
+<html>
+<head>
+      <meta name="layout" content="stdpnt">
+<title>showPage</title>
+</head>
+<body>			 
+			
+			  <iframe src="${createLink(action:'showpage',controller:'checkQuestions')}" width="100%" height="600"  frameborder="0" scrolling="yes">
+				</iframe>
+				
+	</body>
+</html>
