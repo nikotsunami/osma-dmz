@@ -95,6 +95,7 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+grails.converters.json.date = 'javascript'
 
 sp_portal.admin.username = "admin"
 sp_portal.admin.password = "123"

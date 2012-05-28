@@ -4,7 +4,7 @@
 <!doctype html>
 <html>
     <head>
-      <meta name="layout" content="stdp      nt">
+      <meta name="layout" content="stdpnt">
 
     </head>
     <body>

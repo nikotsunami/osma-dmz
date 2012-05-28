@@ -1,0 +1,26 @@
+.stdpnt-menu {
+    background-color : #96BEFC;
+    width: 190px;
+    float: left;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.stdpnt-main-panel {
+    background-color : white ;
+    width: 618px;
+    float: left;
+    padding-left: 10px;
+}
+
+
+.stdpnt-menu li {
+    list-style-type:none;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.stdpnt-menu li:hover {
+    background-color : white;
+}

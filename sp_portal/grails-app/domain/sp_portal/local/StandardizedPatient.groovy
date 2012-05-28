@@ -87,8 +87,11 @@ class StandardizedPatient {
      }
 
   /*  String toString(){
-      return "[ version = "+ version+ " id = " + id+ " birthday = " + birthday+ " city = " + city +" email = "+ email + 
+      return "[ version = "+ version+ " id = " + id+ " birthday = " + birthday+ " city = " + city +" email = "+ email +
 " gender = " + gender + " height = " + height + " immagePath =" +immagePath+" maritalStatus = "+maritalStatus +" mobile = " + mobile +" ]";
    }
 */
+
+
+
 }

@@ -11,8 +11,8 @@ class AnamnesisForm {
     Long id
     Long origId
 
-    static hasMany = [//anamnesisChecksValues: AnamnesisChecksValue,
-                      //scars: Scar,
+    static hasMany = [anamnesisChecksValues: AnamnesisChecksValue,
+                      scars: Scar,
                         standardizedPatients: StandardizedPatient
                        ]
 
