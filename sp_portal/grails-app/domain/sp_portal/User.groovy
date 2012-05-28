@@ -2,11 +2,6 @@ package sp_portal
 import local.*;
 
 class User {
-
-    static mapping = {
-
-    }
-
     static constraints = {
         userName(unique:true)
         passwordHash(password:true)
