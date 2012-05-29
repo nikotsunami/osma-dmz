@@ -57,7 +57,7 @@ class CheckQuestionsController  extends MainController {
     def titles = local.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId(),[sort:"id"]) 
 
     def show() {
-    
+       titleIndex = 0;
               
     }
     
@@ -282,10 +282,11 @@ class CheckQuestionsController  extends MainController {
 						      			}
 						      }
 						      
-						      
+						      if(checkInstance.type != AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
 						 
-						      if(valueStr !=null && !valueStr.equals("")){
-						        valueStr = valueStr.substring(0,valueStr.length()-1);
+							      if(valueStr !=null && !valueStr.equals("")){
+							        valueStr = valueStr.substring(0,valueStr.length()-1);
+							      }
 						      }
 								   
 								    
