@@ -193,7 +193,9 @@
                 <li class="fieldcontain">
                     <span id="profession-label" class="property-label"><g:message code="standardizedPatient.profession.label" default="Profession" /></span>
 
-                        <span class="property-value" aria-labelledby="profession-label"><g:link controller="profession" action="show" id="${standardizedPatientInstance?.profession?.id}">${standardizedPatientInstance?.profession?.encodeAsHTML()}</g:link></span>
+                        <span class="property-value" aria-labelledby="profession-label">
+                        <g:fieldValue bean="${standardizedPatientInstance}" field="profession"/>
+                        </span>
 
                 </li>
                 </g:if>

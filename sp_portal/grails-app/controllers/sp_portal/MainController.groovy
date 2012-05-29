@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 class MainController {
 
     def isLoggedIn(){
+    println(" at isLoggedIn method!");
          def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
          if(session.user){
             return true;
