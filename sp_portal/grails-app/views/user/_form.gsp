@@ -4,7 +4,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'isActive', 'error')} ">
     <label for="isActive">
-        <g:message code="user.isActive.label" default="Is Active" />
+        <g:message code="user.isActive.label" />
 
     </label>
     <g:checkBox name="isActive" value="${userInstance?.isActive}" />
@@ -12,7 +12,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordHash', 'error')} ">
     <label for="passwordHash">
-        <g:message code="user.passwordHash.label" default="Password" />
+        <g:message code="user.passwordHash.label"  />
 
     </label>
     <g:passwordField name="passwordHash" value="${userInstance?.passwordHash}"/>
@@ -20,7 +20,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordHash', 'error')} ">
     <label for="passwordHash">
-        <g:message code="user.passwordHash.label" default="Confirm Password" />
+        <g:message code="user.confirmPasswordHash.label" />
 
     </label>
     <g:passwordField name="confirmPassword" value="${userInstance?.passwordHash}"/>
@@ -28,7 +28,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'roles', 'error')} ">
     <label for="roles">
-        <g:message code="user.roles.label" default="Roles" />
+        <g:message code="user.roles.label"  />
 
     </label>
     <g:select name="roles" from="${sp_portal.Role.list()}" multiple="multiple" optionKey="id" size="5" value="${userInstance?.roles*.id}" class="many-to-many"/>
