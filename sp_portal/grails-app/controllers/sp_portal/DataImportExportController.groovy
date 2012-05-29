@@ -6,7 +6,8 @@ import org.codehaus.groovy.grails.web.json.*;
 
 class DataImportExportController extends MainController {
 
-    def beforeInterceptor = [action:this.&isLoggedIn]
+    def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
+
     //static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     static finders = [ "StandardizedPatient": { id ->local.StandardizedPatient.findByOrigId(id)},

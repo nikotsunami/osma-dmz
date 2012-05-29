@@ -45,11 +45,16 @@
 			
 				</fieldset>
 				<fieldset class="buttons" style="algin:bottom">
-					<g:submitButton name="Save" value="save" />
-	        <g:actionSubmit action="showFirst"  name="First" value="|<<" />
-		      <g:actionSubmit action="showPreviou"  name="Previous" value="<" />
-					<g:actionSubmit action="showNext" name="Previous" value="&gt;" />
-					<g:actionSubmit action="showEnd"  name="End" value="&gt;&gt;|" />
+					<g:submitButton name="Save" value="${message(code: 'default.button.save')} " />
+					
+					<g:if test="${params.int('index') != 0}">
+		        <g:actionSubmit action="showFirst"  name="First" value="${message(code: 'default.button.first')}" />
+			      <g:actionSubmit action="showPreviou"  name="Previous" value="${message(code: 'default.button.previous')}" />
+					</g:if>
+					<g:if test="${params.int('index') != (questions.size()-1)}">
+						<g:actionSubmit action="showNext" name="Previous" value="${message(code: 'default.button.next')}" />
+						<g:actionSubmit action="showEnd"  name="End" value="${message(code: 'default.button.end')}" />
+					</g:if>
 				</fieldset>
 			</g:form>
 	</body>

@@ -2,9 +2,13 @@ package sp_portal
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class RoleController {
+class RoleController extends MainController {
 
+		def beforeInterceptor = [action:this.&isLoggedInAsAdmin]    
+    
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    
+    
 
     def index() {
         redirect(action: "list", params: params)

@@ -63,6 +63,7 @@ class AuthenticationController extends MainController {
      def logout() {
         flash.message = "${message(code: 'default.logout.message')} ${session.user.userName}"
         session.user = null
+        session.titleIndex= null;
         redirect(action:"login")
      }
      
