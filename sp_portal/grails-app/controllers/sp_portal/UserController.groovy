@@ -10,7 +10,7 @@ class UserController extends MainController {
     public static String USER_ROLE = "USER_ROLE";
 
 
-    def beforeInterceptor = [action:this.&isLoggedIn, except:["login", "authenticate", "index"]]
+    def beforeInterceptor = [action:this.&isLoggedInAsAdmin, except:["login", "authenticate", "index"]]
 
     static {
          ADMIN_ROLE = "ADMIN_ROLE";

@@ -10,7 +10,7 @@ class MyAccountController extends MainController {
     public static String USER_ROLE = "USER_ROLE";
 
 
-    def beforeInterceptor = [action:this.&isLoggedIn]
+    def beforeInterceptor = [action:this.&isLoggedInAsUser]
 
     static {
          ADMIN_ROLE = "ADMIN_ROLE";

@@ -4,8 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class RoleController extends MainController {
 
-    def beforeInterceptor = [action:this.&isLoggedIn]
-    
+		def beforeInterceptor = [action:this.&isLoggedInAsAdmin]    
     
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     

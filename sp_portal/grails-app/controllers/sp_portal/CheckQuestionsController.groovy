@@ -9,6 +9,7 @@ import java.util.List;
 
 class CheckQuestionsController  extends MainController {
 
+    def beforeInterceptor = [action:this.&isLoggedInAsUser]
 
     def patient = User.findById(session.user.id);
     
