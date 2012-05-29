@@ -62,7 +62,7 @@ class CheckQuestionsController  extends MainController {
     }
     
     
-    def showpage() {
+    def showPage() {
     
 	     int index =  Math.min(params.index ? params.int('index') : 0, 100);
 	        def currentTitle = null;
@@ -90,7 +90,7 @@ class CheckQuestionsController  extends MainController {
 			        
 			        
 	        }else{
-	            redirect(action: "showpage")
+	            redirect(action: "showPage")
 	        }
               
     }
@@ -108,7 +108,7 @@ class CheckQuestionsController  extends MainController {
         }
         setSessionTitleIndex();
         saveData();
-        redirect(action: "showpage", params: [index: titleIndex])
+        redirect(action: "showPage", params: [index: titleIndex])
     }
     
     def showPreviou(){
@@ -118,28 +118,28 @@ class CheckQuestionsController  extends MainController {
         }
         setSessionTitleIndex();
         saveData();
-        redirect(action: "showpage", params: [index: titleIndex])
+        redirect(action: "showPage", params: [index: titleIndex])
     }
      
     def showFirst(){
     		titleIndex = 0;
     		setSessionTitleIndex();
     		saveData();
-        redirect(action: "showpage", params: [index: titleIndex])
+        redirect(action: "showPage", params: [index: titleIndex])
     }
     
     def showEnd(){
     		titleIndex = titles.size-1;
     		setSessionTitleIndex();  
     		saveData();
-        redirect(action: "showpage", params: [index: titleIndex])
+        redirect(action: "showPage", params: [index: titleIndex])
     }
     
     
     def save(){
 				saveData();
    		
-     		redirect(action: "showpage", params: [index: session.titleIndex])
+     		redirect(action: "showPage", params: [index: session.titleIndex])
     
     }
     
