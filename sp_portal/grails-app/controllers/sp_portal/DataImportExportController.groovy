@@ -77,6 +77,7 @@ class DataImportExportController extends MainController {
 
 /*
 
+
 {"class":"sp_portal.local.StandardizedPatient",
         "anamnesisForm":{"class":"sp_portal.local.AnamnesisForm",
                         "anamnesisChecksValues":[{"class":"sp_portal.local.AnamnesisChecksValue",
@@ -107,12 +108,13 @@ class DataImportExportController extends MainController {
                 "bankaccount":{"class":"sp_portal.local.Bankaccount",
                                                 "bankName":"Basler Kantonalbank",
                                                 "bic":"GENODEF1JEV",
-                                                "city":null,
+                                                "city":SHanghai,
                                                 "iban":"CH46 3948 4853 2029 3",
-                                                "id":2000,
+                                                "id":51,
                                                 "ownerName":null,
                                                 "postalCode":null,
-                                                "standardizedPatients":[{"_ref":"../..","class":"sp_portal.local.StandardizedPatient"}]},
+                                                "standardizedPatients":[{"_ref":"../..","class":"sp_portal.local.StandardizedPatient"}]
+                                                },
         "birthday":new Date(-484560000000),
         "city":"Metz",
         "description":null,
@@ -125,7 +127,7 @@ class DataImportExportController extends MainController {
         "name":"Lamarie",
         "nationality":{"class":"sp_portal.local.Nationality",
                         "nationality":"Frankreich","id":7},
-        "id":570,
+        "id":5711,
         "postalCode":4057,
         "preName":"Marianne",
         "profession":{"class":"sp_portal.local.Profession","id":3,"profession":"Bauarbeiter/in"},
@@ -193,11 +195,10 @@ class DataImportExportController extends MainController {
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-
+  
 
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
-            
          
 
 
@@ -221,9 +222,9 @@ class DataImportExportController extends MainController {
 
 
                     if (sp[prop.name].equals(jsonObject[prop])){
-           //             println( "5) eq<<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
+                        println( "5) eq<<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
                     }else{
-           //            println( "6) not<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
+                       println( "6) not<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
                     }
                 }
 
@@ -233,14 +234,17 @@ class DataImportExportController extends MainController {
                if (Date != prop.type){
 
                    def fieldFinder = finders[datapath+"."+prop.name];
+                    
                    if (fieldFinder){
                         // known Entity relationship
                         if (prop.type != Set){
 														//  1 to 1 relationship
                             // Are the ids the same?
+                            // Confirm the property value has an id field so it is a db entity
                             if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name].id ){
+                            		println(" syncOneClass pre-existing ");
                                 // Yes good so sync the fields
-                                syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name );
+                                sp[prop.name] =  syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name );
                             } else {
                                 // No then overwrite
                                   def newValue = syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name );
@@ -282,7 +286,6 @@ class DataImportExportController extends MainController {
                 } else {
 
                     // handle date fields
-                     println( "Date ccccc " +jsonObject[prop.name].getClass() );
                      if (jsonObject[prop.name].getClass() == Date){
                           sp[prop.name] = jsonObject.get(prop.name);
                      }
