@@ -34,10 +34,8 @@ class BankaccountController {
         def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
         if (!bankaccountInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
-            redirect(action: "list")
-            return
+       	    return
         }
-
         [bankaccountInstance: bankaccountInstance]
     }
 

@@ -80,9 +80,9 @@ class UserController extends MainController {
              newScar.traitType = scar.traitType;
 
              newScar.save();
-             importMessage(messages,"scar", ""+scar.id);
+             importMessage(messages,"${message(code: 'default.scar.message')}",""+scar.id);
           } else {
-            existsMessage(messages,"scar", ""+scar.id);
+            existsMessage(messages,"${message(code: 'default.scar.message')}", ""+scar.id);
           }
          }
 
@@ -108,9 +108,9 @@ class UserController extends MainController {
                }
 
              newCheck.save();
-             importMessage(messages,"AnamnesisCheck", ""+titleCheck.id);
+             importMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+titleCheck.id);
           }else {
-            existsMessage(messages,"AnamnesisCheck", ""+titleCheck.id);
+            existsMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+titleCheck.id);
           }
 
         }
@@ -134,10 +134,10 @@ class UserController extends MainController {
                      log(" title = " + newCheck.title.text);
                    }
                  newCheck.save();
-                 importMessage(messages,"AnamnesisCheck", ""+check.id);
+                 importMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
               }
           }else {
-            existsMessage(messages,"AnamnesisCheck", ""+check.id);
+            existsMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
           }
 
         }
@@ -151,9 +151,9 @@ class UserController extends MainController {
              newAnamnesisForm.origId = anamnesisFormValue.id;
              newAnamnesisForm.createDate = anamnesisFormValue.createDate;
              newAnamnesisForm.save();
-                         importMessage(messages,"AnamnesisForm", ""+anamnesisFormValue.id);
+                         importMessage(messages,"${message(code: 'default.AnamnesisForm.message')}", ""+anamnesisFormValue.id);
                     }else {
-            existsMessage(messages,"AnamnesisForm", ""+anamnesisFormValue.id);
+            existsMessage(messages,"${message(code: 'default.AnamnesisForm.message')}", ""+anamnesisFormValue.id);
           }
         }
 
@@ -172,9 +172,9 @@ class UserController extends MainController {
                             newBankaccount.postalCode = bankAccount.postalCode;
               newBankaccount.save();
 
-                            importMessage(messages,"Bankaccount", ""+bankAccount.id);
+                            importMessage(messages,"${message(code: 'default.Bankaccount.message')}", ""+bankAccount.id);
                     }else {
-            existsMessage(messages,"Bankaccount", ""+bankAccount.id);
+            existsMessage(messages,"${message(code: 'default.Bankaccount.message')}", ""+bankAccount.id);
           }
         }
 
@@ -191,9 +191,10 @@ class UserController extends MainController {
              newDescription.description = description.description;
              newDescription.save();
 
-             importMessage(messages,"Description", ""+description.id);
+
+             importMessage(messages,"${message(code: 'default.Description.message')}", ""+description.id);
                     }else {
-            existsMessage(messages,"Description", ""+description.id);
+            existsMessage(messages,"${message(code: 'default.Description.message')}", ""+description.id);
           }
         }
 
@@ -208,9 +209,9 @@ class UserController extends MainController {
              newLanguage.languageName = language.languageName;
              newLanguage.save();
 
-            importMessage(messages,"SpokenLanguage", ""+language.id);
+            importMessage(messages,"${message(code: 'default.SpokenLanguage.message')}", ""+language.id);
           }else {
-            existsMessage(messages,"SpokenLanguage", ""+language.id);
+            existsMessage(messages,"${message(code: 'default.SpokenLanguage.message')}", ""+language.id);
           }
 
         }
@@ -224,9 +225,9 @@ class UserController extends MainController {
              newNationality.nationality = nationality.nationality;
              newNationality.save();
 
-             importMessage(messages,"Nationality", ""+nationality.id);
+             importMessage(messages,"${message(code: 'default.Nationality.message')}", ""+nationality.id);
                     }else {
-            existsMessage(messages,"Nationality", ""+nationality.id);
+            existsMessage(messages,"${message(code: 'default.Nationality.message')}", ""+nationality.id);
           }
         }
 
@@ -238,10 +239,9 @@ class UserController extends MainController {
              newProfession.origId = profession.id;
              newProfession.profession = profession.profession;
              newProfession.save();
-
-             importMessage(messages,"Profession", ""+profession.id);
+             importMessage(messages,"${message(code: 'default.Profession.message')}", ""+profession.id);
                     }else {
-            existsMessage(messages,"Profession", ""+profession.id);
+            existsMessage(messages,"${message(code: 'default.Profession.message')}", ""+profession.id);
           }
         }
 
@@ -264,10 +264,9 @@ class UserController extends MainController {
                newCheckValue.anamnesisCheck = local.AnamnesisCheck.findByOrigId(checkValue.anamnesisCheck.id);
              }
              newCheckValue.save();
-
-             importMessage(messages,"AnamnesisChecksValue", ""+checkValue.id);
+             importMessage(messages,"${message(code: 'default.AnamnesisChecksValue.message')}", ""+checkValue.id);
           }else {
-            existsMessage(messages,"AnamnesisChecksValue", ""+checkValue.id);
+            existsMessage(messages,"${message(code: 'default.AnamnesisChecksValue.message')}", ""+checkValue.id);
           }
         }
 
@@ -319,7 +318,7 @@ class UserController extends MainController {
 
 
 
-             importMessage(messages,"StandardizedPatient", ""+patient.id);
+             importMessage(messages,"${message(code: 'default.StandardizedPatient.message')}", ""+patient.id);
 
               User user = new User();
 
@@ -344,7 +343,7 @@ class UserController extends MainController {
                 createUserMessage(messages,user.userName,user.passwordHash)
 
            }else {
-              existsMessage(messages,"StandardizedPatient", ""+patient.id);
+              existsMessage(messages,"${message(code: 'default.StandardizedPatient.message')}", ""+patient.id);
           }
 
          }
@@ -364,9 +363,9 @@ class UserController extends MainController {
              }
              newLangSkill.save();
 
-             importMessage(messages,"LangSkill", ""+langSkill.id);
+             importMessage(messages,"${message(code: 'default.LangSkill.message')}", ""+langSkill.id);
           }else {
-            existsMessage(messages,"LangSkill", ""+langSkill.id);
+            existsMessage(messages,"${message(code: 'default.LangSkill.message')}", ""+langSkill.id);
           }
          }
 

@@ -241,7 +241,7 @@ class DataImportExportController extends MainController {
 														//  1 to 1 relationship
                             // Are the ids the same?
                             // Confirm the property value has an id field so it is a db entity
-                            if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name].id ){
+                            if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name]?.id ){
                             		println(" syncOneClass pre-existing ");
                                 // Yes good so sync the fields
                                 sp[prop.name] =  syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name );
@@ -295,7 +295,6 @@ class DataImportExportController extends MainController {
             }
 
         }    // end loop over all the proerties in the class
-
         sp.save();
         return sp;
 
