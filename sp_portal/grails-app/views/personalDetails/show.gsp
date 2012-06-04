@@ -204,7 +204,8 @@
                 <li class="fieldcontain">
                     <span id="nationality-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Nationality" /></span>
 
-                        <span class="property-value" aria-labelledby="nationality-label"><g:link controller="nationality" action="show" id="${standardizedPatientInstance?.nationality?.id}">${standardizedPatientInstance?.nationality?.encodeAsHTML()}</g:link></span>
+                        <span class="property-value" aria-labelledby="nationality-label">
+                        <g:fieldValue bean="${standardizedPatientInstance}" field="nationality"/></span>
 
                 </li>
                 </g:if>
@@ -213,7 +214,8 @@
                 <li class="fieldcontain">
                     <span id="bankaccount-label" class="property-label"><g:message code="standardizedPatient.bankaccount.label" default="Bankaccount" /></span>
 
-                        <span class="property-value" aria-labelledby="bankaccount-label"><g:link controller="bankaccount" action="show" id="${standardizedPatientInstance?.bankaccount?.id}">${standardizedPatientInstance?.bankaccount?.encodeAsHTML()}</g:link></span>
+                    <span class="property-value" aria-labelledby="bankaccount-label">
+                    <g:fieldValue bean="${standardizedPatientInstance}" field="bankaccount"/></span>
 
                 </li>
                 </g:if>
