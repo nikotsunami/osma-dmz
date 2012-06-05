@@ -1,49 +1,73 @@
 DMZ server
 -----------------------------------
 
+The DMZ application was developed in Grails, which is a technology based on Java and especially Spring and Hibernate.
+It can be built as a war file and deployed to any java servlet contained such as tomcat.
+
+
 1. BUILD THE SYSTEM
 =============================================================================
-   
+
    1.1 To install grails follow these steps:
-       
-       - Download gralis installation package from http://www.google.com.hk/url?sa=t&rct=j&q=grails&source=web&cd=2&ved=0CGcQFjAB&url=http%3A%2F%2Fgrails.org%2FDownload&ei=JXzMT63yNeeoiAfKrdnfBg&usg=AFQjCNGJ9lxtzfREZNjtGEeRqCSX2YrsZA&cad=rjt
+
+       - Download gralis installation package from http://grails.org/Download
 
        - create a GRAILS_HOME environment variable that points to the path of the Grails distribution (the folder contain this file).
 
        - add the bin folder in the Grails distribution to the PATH environment variable.
-   
-   1.2 To compile:
-     
+
+   1.2 Configure database config
+
+           Configure database details in sp_portal/grails-app/conf/DataSource.groovy
+            environments {
+                production {
+                    dataSource {
+                         configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+                        dbCreate = "create"
+                        driverClassName = "com.mysql.jdbc.Driver"
+                        url = "jdbc:mysql://localhost/osce_public"
+                        username = "<db username>"
+                        password = "<db password>"
+                    }
+
+                    dataSource_original {
+                        // see sections 2.3 and 2.4 below
+                    }
+            }
+
+   1.3 To compile:
+
        - you can run the grails command, as follows:
-        
+
        > grails compile
 
-   1.3 To create war file:
-   
+   1.4 To create war file:
+
        - you can run the grails command as follows:
-       
+
+
        > grails war
-   
-   1.4 To run:
-       
-       - you can run the grails command as follows:
-       
-       > grails run-app
+
+   1.5 To run in development mode:
+
+       - you can run the grails command as follows, this is very userful for testing your configuration:
+
+       > grails -Dgrails.env=production run-app
 
    For more info checkout the Grails homepage at http://grails.org
 
 
 2. LOGIN IN
 =============================================================================
-  
+
    2.1 To configure admin username and password:
 
-	In the directory sp_portal \ grails-app \ conf, you can change ' Config ' file like this:     
+    In the directory sp_portal \ grails-app \ conf, you can change ' Config ' file like this:
 
           sp_portal.admin.username = "admin"
           sp_portal.admin.password = "password123"
 
-	Administrator username will become 'admin', and the password will become 'password123'.
+    Administrator username will become 'admin', and the password will become 'password123'.
 
    2.2 To log in:
 
@@ -54,28 +78,45 @@ DMZ server
           - Enter your user name and password in the login page, then you will be logged in.
 
    2.3 To import users from original database:
+        During development it was desirable to be able to import users from the original osce database directly, it may also be useful to do this
+        in production before the server is placed in the DMZ. However users may also be pushed to the DMZ system from the osce system individually.
 
-      - First you have to log in as the administrator.
+      - First you must configure the datasource_orig in sp_portal/grails-app/conf/DataSource.groovy
+      in:
+            environments {
+                production {
+                    dataSource_original {
+                         configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+                        dbCreate = "create"
+                        driverClassName = "com.mysql.jdbc.Driver"
+                        url = "jdbc:mysql://localhost/osce"
+                        username = "<db username>"
+                        password = "<db password>"
+                    }
+            }
+      - Then you have to log in as the administrator.
 
       - Then click Import Data button, in order to import users from original database.
 
-   2.4 To disable original original database:
+   2.4 To disable original database:
+   In  production use the dataSource_original
 
-      - To set the datasource to be an in memory db or to the osce_public db, you need to comment DataSource files down osce_public of configuration like this:
-        
+      - To set the dataSource_original to be an in memory db like this
+
               e.g:
-              
-        /*  dataSource {
-              configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-              dbCreate = "create"
-              driverClassName = "com.mysql.jdbc.Driver"
-              url = "jdbc:mysql://localhost/osce_public"
-              username = "root"
-              password = "admin"
+            environments {
+                production {
+                    dataSource_original {
+                          configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+                          dbCreate = "create"
+                          driverClassName = "com.mysql.jdbc.Driver"
+                          url = "jdbc:mysql://localhost/osce_public"
+                          username = "root"
+                          password = "admin"
+                        }
             }
-         */
 
-              It will set up the data source is a database in memory.
+              It will set up the dataSource_original source as a database in memory and importing data will have no effect.
 
    2.5 To change user password:
 
@@ -94,20 +135,20 @@ DMZ server
 
    3.1 To configure osce server to connect to DMZ:
 
-       You need to change the osce server web.xml document , In the XML document DMZ_HOST_ADDRESS to oneself of the DMZ server address.
+       You need to change the osce server web.xml file, In the XML document set DMZ_HOST_ADDRESS to the DMZ server address.
 
      3.2 To send StandarizedPatient to DMZ server(user name is email,password is socialInsurance):
-	
+
             First you have to log in osce server, and then click Simulationspatienten menu,
 
-            Then select a standarizedPatient, on the right, there is a send to DMZ button and click, You can 
+            Then select a standarizedPatient, on the right, there is a send to DMZ button and click, You can
 
-            send a StandarizedPatient to the DMZ server(user name is email,password is socialInsurance).
-            
+            send a StandarizedPatient to the DMZ server(an account will be created for them with user name as their email, and password as their socialInsurance number).
+
 
      3.3  To pull standardized patient back to osce server
 
-	Again, just click on pull to DMZ button.
+    Again, just click on pull to DMZ button.
 
 
 

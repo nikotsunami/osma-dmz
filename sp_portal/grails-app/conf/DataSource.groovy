@@ -12,29 +12,21 @@ hibernate {
 // environment specific settings
 environments {
     development {
+
+        // DEVELOPMENT ONLY
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
 
-/*
-        dataSource {
-            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "create"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/osce_public"
-            username = "root"
-            password = "admin"
-        }
-*/
-       dataSource_original {
+        dataSource_original {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
            dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = "r00ty"
+            password = ""
         }
 
     }
@@ -45,20 +37,23 @@ environments {
         }
     }
     production {
-        dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE"
-            pooled = true
-            properties {
-               maxActive = -1
-               minEvictableIdleTimeMillis=1800000
-               timeBetweenEvictionRunsMillis=1800000
-               numTestsPerEvictionRun=3
-               testOnBorrow=true
-               testWhileIdle=true
-               testOnReturn=true
-               validationQuery="SELECT 1"
-            }
+
+        // Null datasource can be changed to osce database to allow bulk import of data.
+        dataSource_original {
+             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
+
+        // DMZ database datasource
+        dataSource {
+            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+            dbCreate = "create"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/osce_public"
+            username = "<username>"
+            password = "<password>"
+        }
+
     }
 }
