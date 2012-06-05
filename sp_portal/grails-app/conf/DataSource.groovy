@@ -38,21 +38,24 @@ environments {
     }
     production {
 
-        // Null datasource can be changed to osce database to allow bulk import of data.
+        // DMZ database datasource
         dataSource_original {
-             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE"
+            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+            dbCreate = "validate"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/osce"
+            username = "root"
+            password = "r00ty"
         }
 
         // DMZ database datasource
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "create"
+            dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
-            username = "<username>"
-            password = "<password>"
+            username = "root"
+            password = "r00ty"
         }
 
     }
