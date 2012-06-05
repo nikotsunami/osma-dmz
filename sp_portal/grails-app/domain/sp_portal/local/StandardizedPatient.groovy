@@ -61,20 +61,20 @@ class StandardizedPatient {
     static constraints = {
         birthday nullable: true, maxSize: 19
         city nullable: true, maxSize: 30
-        email nullable: true, maxSize: 40
+        email nullable: true, maxSize: 40, email:true
         gender nullable: true
         height nullable: true
-        immagePath nullable: true
+        immagePath nullable: true,maxSize:253
         maritalStatus nullable: true
         mobile nullable: true, maxSize: 30
         name nullable: true, maxSize: 40
         postalCode nullable: true
         preName nullable: true, maxSize: 40
-        socialInsuranceNo nullable: true, maxSize: 13
+        socialInsuranceNo nullable: true, maxSize: 13,matches: "[0-9]{13,13}"
         street nullable: true, maxSize: 60
         telephone nullable: true, maxSize: 30
         telephone2 nullable: true, maxSize: 30
-        videoPath nullable: true
+        videoPath nullable: true,maxSize:253
         weight nullable: true
         workPermission nullable: true
         version nullable: true
