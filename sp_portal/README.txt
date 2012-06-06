@@ -107,13 +107,10 @@ It can be built as a war file and deployed to any java servlet contained such as
             environments {
                 production {
                     dataSource_original {
-                          configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-                          dbCreate = "create"
-                          driverClassName = "com.mysql.jdbc.Driver"
-                          url = "jdbc:mysql://localhost/osce_public"
-                          username = "root"
-                          password = "admin"
-                        }
+                        configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+                        dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+                        url = "jdbc:h2:mem:devDb;MVCC=TRUE"
+                    }
             }
 
               It will set up the dataSource_original source as a database in memory and importing data will have no effect.
@@ -143,7 +140,8 @@ It can be built as a war file and deployed to any java servlet contained such as
 
             Then select a standarizedPatient, on the right, there is a send to DMZ button and click, You can
 
-            send a StandarizedPatient to the DMZ server(an account will be created for them with user name as their email, and password as their socialInsurance number).
+            send a StandarizedPatient to the DMZ server(an account will be created for them with user name as their email, and password as their socialInsurance number)
+            If the user's socialInsurance number is empty then the current default password will be the string "null".
 
 
      3.3  To pull standardized patient back to osce server
@@ -151,8 +149,10 @@ It can be built as a war file and deployed to any java servlet contained such as
     Again, just click on pull to DMZ button.
 
 
-
-
+4. I18n
+=============================================================================
+    We have currently added full translations in English and Chinese other partial translations of default strings are available.
+    To add futher translations property files should be editied or added in sp_portal/grails-app/i18n/
 
 
 
