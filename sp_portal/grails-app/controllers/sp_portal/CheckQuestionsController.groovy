@@ -10,8 +10,9 @@ import java.util.List;
 class CheckQuestionsController  extends MainController {
 
     def beforeInterceptor = [action:this.&isLoggedInAsUser]
+  
 
-    def patient = User.findById(session.user.id);
+   
     
 
     def test() {
@@ -59,12 +60,13 @@ class CheckQuestionsController  extends MainController {
 
     def show() {
        titleIndex = 0;
+       
               
     }
     
     
     def showPage() {
-    
+   		 def patient = getCurrentPatient();
 	     int index =  Math.min(params.index ? params.int('index') : 0, 100);
 	        def currentTitle = null;
 	       if(params.index == null){
@@ -138,15 +140,16 @@ class CheckQuestionsController  extends MainController {
     
     
     def save(){
-				saveData();
-   		
-     		redirect(action: "showPage", params: [index: session.titleIndex])
+    			saveData();
+    			redirect(controller:"thank", action:"thank")
+			
+
     
     }
     
     private void saveData(){
   
-    	
+    	def patient = getCurrentPatient();
    		def questionIdStrings = params.findAll({ key, value ->
    																										key.startsWith("question")
    																										});
@@ -293,4 +296,10 @@ class CheckQuestionsController  extends MainController {
 								    
 								return checkInstance;
     }
+   
+  	 private getCurrentPatient(){
+        def patient = User.findById(session.user.id);
+        return patient;
+    }
+
 }
