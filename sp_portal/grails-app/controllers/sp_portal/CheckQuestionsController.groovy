@@ -59,6 +59,7 @@ class CheckQuestionsController  extends MainController {
 
     def show() {
        titleIndex = 0;
+       session.titleIndex = titleIndex;
               
     }
     
@@ -156,6 +157,7 @@ class CheckQuestionsController  extends MainController {
    		
    			def components = key.split("\\.");
    			
+   			
    			// If there are 2 parts to the string then it is a valid "question".id format
 	   		if (components.size() == 2){
 	   				def questionId = components[1];
@@ -166,15 +168,13 @@ class CheckQuestionsController  extends MainController {
 	   			 setValueStr(checkInstance,questionId,value);
 	   			
            if(patient.standardizedPatient.anamnesisForm!=null || checkInstance!=null){
+         
 				   def checkValue = local.AnamnesisChecksValue.findByAnamnesisFormAndAnamnesisCheck(patient.standardizedPatient.anamnesisForm,checkInstance);
 			       if(checkValue!=null){
 	       					checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
-							    if(checkValue!=null){
-							      checkValue.anamnesisCheck = checkInstance;
-							    }
+							    checkValue.anamnesisCheck = checkInstance;
 							    checkValue.anamnesisChecksValue=valueStr;
-							    checkValue.origId = checkInstance.origId;
-							 
+							    					
 							    checkValue.comment = null;
 							    checkValue.truth = null;
 							       
@@ -187,8 +187,7 @@ class CheckQuestionsController  extends MainController {
 								      checkValueInstance.anamnesisCheck = checkInstance;
 								    }
 								    checkValueInstance.anamnesisChecksValue=valueStr;
-								    checkValueInstance.origId = checkInstance.origId;
-								 
+								  
 								    checkValueInstance.comment = null;
 								    checkValueInstance.truth = null;
 								       
