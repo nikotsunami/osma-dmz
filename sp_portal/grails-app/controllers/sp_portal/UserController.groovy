@@ -115,7 +115,22 @@ println("create the user ");
 
         }
 
+				def anamnesisCheckTitleList = remote.AnamnesisCheckTitle.list();
+				for (remote.AnamnesisCheckTitle anamnesisCheckTitle : anamnesisCheckTitleList ){
+          if(!(local.AnamnesisCheckTitle.findByOrigId(anamnesisCheckTitle.id))){
 
+             local.AnamnesisCheckTitle newAnamnesisCheckTitle= new local.AnamnesisCheckTitle();
+             newAnamnesisCheckTitle.origId = anamnesisCheckTitle.id;
+             newAnamnesisCheckTitle.sortOrder = anamnesisCheckTitle.sortOrder;
+             newAnamnesisCheckTitle.text = anamnesisCheckTitle.text;
+             newAnamnesisCheckTitle.save();
+
+             importMessage(messages,"${message(code: 'default.Nationality.message')}", ""+anamnesisCheckTitle.id);
+                    }else {
+            existsMessage(messages,"${message(code: 'default.Nationality.message')}", ""+anamnesisCheckTitle.id);
+          }
+        }
+        
         for (remote.AnamnesisCheck check : anamnesisCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(check.id))){
 
@@ -133,13 +148,23 @@ println("create the user ");
                      newCheck.title = local.AnamnesisCheck.findByOrigId(check.title.id);
                      log(" title = " + newCheck.title.text);
                    }
+                   if(check.anamnesisCheckTitle){
+                    newCheck.anamnesisCheckTitle=local.AnamnesisCheckTitle.findByOrigId(check.anamnesisCheckTitle.id)
+                      log(" title = " + newCheck.anamnesisCheckTitle.text);
+                   }
+                    
+                   
+                 
                  newCheck.save();
+
+             
+                 
                  importMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
               }
           }else {
             existsMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
           }
-
+           
         }
 
 

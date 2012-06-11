@@ -56,7 +56,8 @@ class CheckQuestionsController  extends MainController {
         redirect(action: "show", params: params)
     }
     
-    def titles = local.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId(),[sort:"id"]) 
+    def titles = local.AnamnesisCheckTitle.findAll() 
+    
 
     def show() {
        titleIndex = 0;
@@ -68,6 +69,7 @@ class CheckQuestionsController  extends MainController {
     def showPage() {
    		 def patient = getCurrentPatient();
 	     int index =  Math.min(params.index ? params.int('index') : 0, 100);
+	     println("^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^& index "+index);
 	        def currentTitle = null;
 	       if(params.index == null){
 	       		params.index = 0;
@@ -81,7 +83,7 @@ class CheckQuestionsController  extends MainController {
 			        def validValue = [];
 			        def checkValue = [];
 			        if (currentTitle != null){
-			        		questions = local.AnamnesisCheck.findAllByTitle(currentTitle,[sort:"sortOrder"]);
+			        		questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
 				        	  checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
 				        					       
 			        }
