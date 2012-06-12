@@ -10,9 +10,9 @@ import java.util.List;
 class CheckQuestionsController  extends MainController {
 
     def beforeInterceptor = [action:this.&isLoggedInAsUser]
-  
 
-   
+
+
 
 
     def test() {
@@ -61,8 +61,8 @@ class CheckQuestionsController  extends MainController {
     def show() {
        titleIndex = 0;
        session.titleIndex = titleIndex;
-       
-              
+
+
     }
 
 
@@ -108,17 +108,17 @@ class CheckQuestionsController  extends MainController {
     def showNext(){
             titleIndex++;
             if(titleIndex >= titles.size){
-	    		//titleIndex = titles.size-1;  
-	    		saveData();
-	    		redirect(controller:"thank", action:"thank")
+                //titleIndex = titles.size-1;
+                saveData();
+                redirect(controller:"thank", action:"thank")
         }else{
-        	setSessionTitleIndex();
-        	saveData();
-        	redirect(action: "showPage", params: [index: titleIndex])
+            setSessionTitleIndex();
+            saveData();
+            redirect(action: "showPage", params: [index: titleIndex])
         }
-        
+
     }
-    
+
     def showPreviou(){
             titleIndex--;
             if(titleIndex < 0){
@@ -145,8 +145,8 @@ class CheckQuestionsController  extends MainController {
 
 
     def save(){
-    			saveData();
-    			redirect(action: "showPage",params: [index: titleIndex])
+                saveData();
+                redirect(action: "showPage",params: [index: titleIndex])
     }
 
     private void saveData(){
@@ -160,7 +160,7 @@ class CheckQuestionsController  extends MainController {
 
             def components = key.split("\\.");
 
-   			
+
             // If there are 2 parts to the string then it is a valid "question".id format
             if (components.size() == 2){
                     def questionId = components[1];
@@ -171,7 +171,7 @@ class CheckQuestionsController  extends MainController {
                  setValueStr(checkInstance,questionId,value);
 
            if(patient.standardizedPatient.anamnesisForm!=null || checkInstance!=null){
-         
+
                    def checkValue = local.AnamnesisChecksValue.findByAnamnesisFormAndAnamnesisCheck(patient.standardizedPatient.anamnesisForm,checkInstance);
                    if(checkValue!=null){
                             checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
@@ -217,87 +217,87 @@ class CheckQuestionsController  extends MainController {
     def setValueStr(checkInstance,questionId,value){
 
 
-                              boolean isTrue = false;
-                              String [] possibleValues = checkInstance.value.split("\\|");
+          boolean isTrue = false;
+          String [] possibleValues = checkInstance.value.split("\\|");
 
-                              def submittedValues = value;
+          def submittedValues = value;
 
-                              if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
-                                 if(submittedValues.equals("true")){
-                                      valueStr = "1-";
-                                   }else{
-                                      valueStr = "0-";
-                                   }
-                              }
-
-
-                              if(checkInstance.type == AnamnesisCheckTypes.QUESTION_MULT_S.getTypeId()){
+          if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
+             if(submittedValues.equals("true")){
+                  valueStr = "1-";
+               }else{
+                  valueStr = "0-";
+               }
+          }
 
 
-                                      for(String currentPossibleValue : possibleValues){
+          if(checkInstance.type == AnamnesisCheckTypes.QUESTION_MULT_S.getTypeId()){
 
-                                         def found = false;
-                                     if(submittedValues.equals(currentPossibleValue)){
 
+                  for(String currentPossibleValue : possibleValues){
+
+                     def found = false;
+                 if(submittedValues.equals(currentPossibleValue)){
+
+                        found = true;
+                 }
+
+                     if(!found){
+                         valueStr+="0-";
+                         isTrue = false;
+                     } else {
+                         valueStr+="1-";
+                     }
+                  }
+          }
+
+          if(checkInstance.type == AnamnesisCheckTypes.QUESTION_MULT_M.getTypeId()){
+
+
+                 for(String currentPossibleValue : possibleValues){
+                    def found = false;
+
+                        if(!(submittedValues instanceof String)){
+                             for(String currentSubmittedValue : submittedValues){
+                                     if(currentSubmittedValue.equals(currentPossibleValue)){
                                             found = true;
                                      }
-
-                                         if(!found){
-                                             valueStr+="0-";
-                                             isTrue = false;
-                                         } else {
-                                             valueStr+="1-";
-                                         }
-                                      }
-                              }
-
-                              if(checkInstance.type == AnamnesisCheckTypes.QUESTION_MULT_M.getTypeId()){
-
-
-                                     for(String currentPossibleValue : possibleValues){
-                                        def found = false;
-
-                                            if(!(submittedValues instanceof String)){
-                                                 for(String currentSubmittedValue : submittedValues){
-                                                         if(currentSubmittedValue.equals(currentPossibleValue)){
-                                                                found = true;
-                                                         }
-                                                     }
+                                 }
 
 
 
-                                             }else{
-                                                     if(submittedValues.equals(currentPossibleValue)){
-                                                        found = true;
-                                                 }
+                         }else{
+                                 if(submittedValues.equals(currentPossibleValue)){
+                                    found = true;
+                             }
 
 
-                                             }
-                                               if(!found){
-                                                     valueStr+="0-";
-                                                     isTrue = false;
-                                                 } else {
-                                                     valueStr+="1-";
-                                                 }
-                                          }
+                         }
+                           if(!found){
+                                 valueStr+="0-";
+                                 isTrue = false;
+                             } else {
+                                 valueStr+="1-";
+                             }
+                      }
 
-                              }
+          }
 
-                              if(checkInstance.type == AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
-                                        if(submittedValues!=null){
-                                          valueStr = submittedValues;
-                                        }
-                              }
+          if(checkInstance.type == AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
+                    if(submittedValues!=null){
+                      valueStr = submittedValues;
+                    }
+          }
 
-                              if(checkInstance.type != AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
+          if(checkInstance.type != AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
 
-                                  if(valueStr !=null && !valueStr.equals("")){
-                                    valueStr = valueStr.substring(0,valueStr.length()-1);
-                                  }
-                              }
+              if(valueStr !=null && !valueStr.equals("")){
+                valueStr = valueStr.substring(0,valueStr.length()-1);
+              }
+          }
 
 
-                                return checkInstance;
+            return checkInstance;
     }
 
 
@@ -305,10 +305,6 @@ class CheckQuestionsController  extends MainController {
         def patient = User.findById(session.user.id);
         return patient;
     }
-   
-  	 private getCurrentPatient(){
-        def patient = User.findById(session.user.id);
-        return patient;
-    }
+
 
 }
