@@ -107,11 +107,15 @@ class CheckQuestionsController  extends MainController {
     def showNext(){
     		titleIndex++; 
     		if(titleIndex >= titles.size){      
-	    		titleIndex = titles.size-1;  
+	    		//titleIndex = titles.size-1;  
+	    		saveData();
+	    		redirect(controller:"thank", action:"thank")
+        }else{
+        	setSessionTitleIndex();
+        	saveData();
+        	redirect(action: "showPage", params: [index: titleIndex])
         }
-        setSessionTitleIndex();
-        saveData();
-        redirect(action: "showPage", params: [index: titleIndex])
+        
     }
     
     def showPreviou(){
@@ -141,10 +145,7 @@ class CheckQuestionsController  extends MainController {
     
     def save(){
     			saveData();
-    			redirect(controller:"thank", action:"thank")
-			
-
-    
+    			redirect(action: "showPage",params: [index: titleIndex])
     }
     
     private void saveData(){
