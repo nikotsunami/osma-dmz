@@ -69,7 +69,6 @@ class CheckQuestionsController  extends MainController {
     def showPage() {
    		 def patient = getCurrentPatient();
 	     int index =  Math.min(params.index ? params.int('index') : 0, 100);
-	     println("^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^&^& index "+index);
 	        def currentTitle = null;
 	       if(params.index == null){
 	       		params.index = 0;

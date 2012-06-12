@@ -39,7 +39,7 @@ class UserController extends MainController {
 
     def create() {
           params.isActive=true
-println("create the user ");
+					println("create the user ");
           def standardizedPatient = new local.StandardizedPatient();
 
 
