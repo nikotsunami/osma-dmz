@@ -4,7 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class StandardizedPatientController  extends sp_portal.MainController {
 
-    def beforeInterceptor = [action:this.&isLoggedIn]
+    def beforeInterceptor = [action:this.&isLoggedInAsUser]
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {

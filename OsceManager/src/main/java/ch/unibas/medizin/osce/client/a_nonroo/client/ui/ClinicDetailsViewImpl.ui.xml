@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:my="urn:import:ch.unibas.medizin.osce.client.style.widgets">
+	<ui:style src="../styles.css" />
+		
+	<g:VerticalPanel addStyleNames="{style.tabStyle}">
+		
+		<g:HTMLPanel styleName="{style.patientControls}">
+			<div class="{style.controlsright}">
+				<h3 class="{style.header}" style="display:inline">
+					<span ui:field="displayRenderer"></span>
+				</h3>
+				<my:IconButton ui:field="edit" icon="pencil"></my:IconButton>
+				<my:IconButton ui:field="delete" icon="trash"></my:IconButton>
+			</div>
+		</g:HTMLPanel>
+
+		<g:TabPanel ui:field="clinicPanel" addStyleNames="gwt-InvertedTabPanel" width="100%">
+			<g:Tab>
+				<g:TabHTML></g:TabHTML>
+				<g:HTMLPanel addStyleNames="{style.patientDetails}">
+					<table class="{style.fields}" id="boundElementHolder">
+					<colgroup>
+						<col></col>
+						<col></col>
+					</colgroup>
+					<tbody>
+						<tr id="name">
+							<td><span class="{style.label}" ui:field="labelName"></span></td>
+							<td><span ui:field="name" /></td>
+						</tr>
+						<tr id="street">
+							<td><span class="{style.label}" ui:field="labelStreet"></span></td>
+							<td><span ui:field="street" /></td>
+						</tr>
+						<tr id="city">
+							<td><span class="{style.label}" ui:field="labelCity"></span></td>
+							<td><span ui:field="city" /></td>
+						</tr>
+					</tbody>
+					</table>
+				</g:HTMLPanel>
+			</g:Tab>
+
+			<g:Tab>
+				<g:TabHTML></g:TabHTML>
+				<g:HTMLPanel addStyleNames="{style.patientDetails}">
+					<g:VerticalPanel ui:field="doctors"/>
+				</g:HTMLPanel>
+			</g:Tab>
+		</g:TabPanel>
+	</g:VerticalPanel>
+</ui:UiBinder>

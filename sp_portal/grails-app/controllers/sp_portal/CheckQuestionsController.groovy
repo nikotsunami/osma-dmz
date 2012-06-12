@@ -10,8 +10,9 @@ import java.util.List;
 class CheckQuestionsController  extends MainController {
 
     def beforeInterceptor = [action:this.&isLoggedInAsUser]
+  
 
-
+   
 
 
     def test() {
@@ -60,7 +61,8 @@ class CheckQuestionsController  extends MainController {
     def show() {
        titleIndex = 0;
        session.titleIndex = titleIndex;
-
+       
+              
     }
 
 
@@ -139,9 +141,10 @@ class CheckQuestionsController  extends MainController {
 
 
     def save(){
-                saveData();
+    			saveData();
+    			redirect(controller:"thank", action:"thank")
+			
 
-            redirect(action: "showPage", params: [index: session.titleIndex])
 
     }
 
@@ -301,4 +304,10 @@ class CheckQuestionsController  extends MainController {
         def patient = User.findById(session.user.id);
         return patient;
     }
+   
+  	 private getCurrentPatient(){
+        def patient = User.findById(session.user.id);
+        return patient;
+    }
+
 }

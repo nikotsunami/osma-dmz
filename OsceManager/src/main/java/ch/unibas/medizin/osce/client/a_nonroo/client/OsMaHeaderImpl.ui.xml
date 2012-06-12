@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:ch.unibas.medizin.osce.client.style.widgets">
+	<ui:with field="uiStyles" type="ch.unibas.medizin.osce.client.style.resources.UiStyles"/>
+	
+	
+	<!-- <g:HTMLPanel>
+		<h1><g:label ui:field="appName"/></h1>
+		<div class="{style.controlPanel}">
+			<g:Label ui:field="selectLanguageLabel"></g:Label>
+			<g:ValueListBox ui:field="selectLanguageBox"></g:ValueListBox>
+			<my:IconButton icon="power" ui:field="logoutButton" />
+		</div>
+	</g:HTMLPanel> -->
+	<g:HTMLPanel styleName="{uiStyles.uiCss.backgroundRegular}" ui:field="panel">
+		<g:HorizontalPanel addStyleNames="{uiStyles.uiCss.alignRight} {uiStyles.uiCss.horizontalSpacing}">
+			<g:Label ui:field="selectLanguageLabel"></g:Label>
+			<g:ValueListBox ui:field="selectLanguageBox"></g:ValueListBox>
+			<my:IconButton icon="power" ui:field="logoutButton" />
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

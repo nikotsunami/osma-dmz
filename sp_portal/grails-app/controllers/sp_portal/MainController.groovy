@@ -26,12 +26,17 @@ class MainController {
       boolean isLogin = false;
 		  if(session.user){
 		  		User user = session.user;
-          def result = user.roles.findAll{ role -> role.roleName.contains(AuthenticationController.ADMIN_ROLE) }		  
-					if ( result.size() > 0 ){
+		  		def newUser = User.findById(user.id);
+		  		if(newUser!=null){
+		  			 def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.ADMIN_ROLE) }		  
+						 if ( result.size() > 0 ){
 			            isLogin = true;
-			    }else{
-			    	 session.user = null;
-			    }
+			       }else{
+			    	   		session.user = null;
+			    	}
+		  		}
+		  	
+         
 		  }  
 	     if(!isLogin){
 	         redirect(controller:"authentication", action:"login")
@@ -42,14 +47,18 @@ class MainController {
     def isLoggedInAsUser(){    
     
       boolean isLogin = false;
-		  if(session.user){
+		  if(session.user){	 
 		  		User user = session.user;
-          def result = user.roles.findAll{ role -> role.roleName.contains(AuthenticationController.USER_ROLE) }		  
-					if ( result.size() > 0 ){
+		  		def newUser = User.findById(user.id);
+		  		if(newUser!=null){
+		  		 	def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.USER_ROLE) }	
+						if ( result.size() > 0 ){
 			            isLogin = true;
-			    }else{
-			    	 session.user = null;
-			    }
+			    	}else{
+			    	 		session.user = null;
+			    	}
+		  		} 
+         
 		  }  
       if(!isLogin){
          redirect(controller:"authentication", action:"login")
@@ -119,7 +128,8 @@ class MainController {
     private void handleOutboundPassword(user){
         user.passwordHash = null;
     }
-
+   
+		
 
 
 

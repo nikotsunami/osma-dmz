@@ -2,8 +2,8 @@ package sp_portal.local
 import sp_portal.User;
 import org.springframework.dao.DataIntegrityViolationException
 
-class BankaccountController {
-
+class BankaccountController extends sp_portal.MainController{
+	def beforeInterceptor = [action:this.&isLoggedInAsUser]
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
