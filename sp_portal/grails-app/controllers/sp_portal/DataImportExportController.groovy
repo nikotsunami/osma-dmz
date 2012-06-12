@@ -9,7 +9,7 @@ class DataImportExportController extends MainController {
     //def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
    
 
-    //static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     static finders = [ "StandardizedPatient": { id ->local.StandardizedPatient.findByOrigId(id)},
                        "StandardizedPatient.bankaccount":{ id ->local.Bankaccount.findByOrigId(id)},
@@ -18,6 +18,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.profession":{ id ->local.Profession.findByOrigId(id)},
                        "StandardizedPatient.nationality":{ id ->local.Nationality.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
                        ]
@@ -33,6 +34,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.profession":{ id,jsonData -> def x = new local.Profession(); x.origId = id; return x},
                        "StandardizedPatient.nationality":{ id,jsonData -> def x = new local.Nationality(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData -> def x = new local.AnamnesisChecksValue(); x.origId = id; return x},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData -> def x = new local.Scar(); x.origId = id; return x},
                        ]
@@ -83,19 +85,23 @@ class DataImportExportController extends MainController {
                         "anamnesisChecksValues":[{"class":"sp_portal.local.AnamnesisChecksValue",
                                                     "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":3,"sortOrder":10,"text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
                                                             "title":{"class":"sp_portal.local.AnamnesisCheck","id":12,"sortOrder":9,"text":"Treatment history category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
-                                                            "type":1,"userSpecifiedOrder":null,"value":""},
+                                                            "type":1,"userSpecifiedOrder":null,"value":"","anamnesisCheckTitle":null},
                                                             "anamnesisChecksValue":null,
                                                             "anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},
                                                             "comment":null,"id":9,"truth":false},
                                                  {"class":"sp_portal.local.AnamnesisChecksValue",
                                                      "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":1,"sortOrder":2,"text":"Rauchen Sie?",
                                                             "title":{"class":"sp_portal.local.AnamnesisCheck","id":101,"sortOrder":1,"text":"Personal lifestyle category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
-                                                            "type":1,"userSpecifiedOrder":null,"value":""},
+                                                            "type":1,"userSpecifiedOrder":null,"value":"",
+                                                            "anamnesisCheckTitle":null},
+                                                            
                                                             "anamnesisChecksValue":null,"anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},"comment":null,"id":8,"truth":true},
                                                  {"class":"sp_portal.local.AnamnesisChecksValue",
+                                                 			
                                                      "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":1,"sortOrder":2,"text":"Rauchen Sie 222?",
                                                             "title":{"class":"sp_portal.local.AnamnesisCheck","id":101,"sortOrder":1,"text":"Personal lifestyle category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
-                                                            "type":1,"userSpecifiedOrder":null,"value":"JDJDJDDJDJDJ"},
+                                                            "type":1,"userSpecifiedOrder":null,"value":"JDJDJDDJDJDJ",
+                                                            "anamnesisCheckTitle":null},
                                                             "anamnesisChecksValue":null,"anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},"comment":null,"id":80,"truth":true}
                                                 ],
                                                 
@@ -118,7 +124,7 @@ class DataImportExportController extends MainController {
         "birthday":new Date(-484560000000),
         "city":"Metz",
         "description":null,
-        "email":"qqq@rrr.com",
+        "email":"ppp@rrr.com",
         "gender":1,
         "height":162,
         "immagePath":null,
@@ -127,7 +133,7 @@ class DataImportExportController extends MainController {
         "name":"Lamarie",
         "nationality":{"class":"sp_portal.local.Nationality",
                         "nationality":"Frankreich","id":7},
-        "id":5711,
+        "id":2,
         "postalCode":4057,
         "preName":"Marianne",
         "profession":{"class":"sp_portal.local.Profession","id":3,"profession":"Bauarbeiter/in"},
