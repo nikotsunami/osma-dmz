@@ -18,8 +18,8 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.profession":{ id ->local.Profession.findByOrigId(id)},
                        "StandardizedPatient.nationality":{ id ->local.Nationality.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
                        ]
     static creators = [ "StandardizedPatient": { id,jsonData-> 
@@ -34,8 +34,8 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.profession":{ id,jsonData -> def x = new local.Profession(); x.origId = id; return x},
                        "StandardizedPatient.nationality":{ id,jsonData -> def x = new local.Nationality(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData -> def x = new local.AnamnesisChecksValue(); x.origId = id; return x},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData -> def x = new local.Scar(); x.origId = id; return x},
                        ]
    	static def createUser(standardizedPatient,jsonData){
@@ -85,29 +85,31 @@ class DataImportExportController extends MainController {
                         "anamnesisChecksValues":[{"class":"sp_portal.local.AnamnesisChecksValue",
                                                     "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":3,"sortOrder":10,"text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
                                                             "title":{"class":"sp_portal.local.AnamnesisCheck","id":12,"sortOrder":9,"text":"Treatment history category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
-                                                            "type":1,"userSpecifiedOrder":null,"value":"","anamnesisCheckTitle":null},
+                                                            "type":1,"userSpecifiedOrder":null,"value":"","anamnesisCheckTitle":{"class":"sp_portal.local.AnamnesisCheckTitle","id":1,"sortOrder":null,"text":"Title Value 1 "},
+                                                            "anamnesisCheckTitle":{"class":"sp_portal.local.AnamnesisCheckTitle","id":1,"sortOrder":null,"text":"Title Value 1 "}},
                                                             "anamnesisChecksValue":null,
                                                             "anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},
                                                             "comment":null,"id":9,"truth":false},
                                                  {"class":"sp_portal.local.AnamnesisChecksValue",
-                                                     "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":1,"sortOrder":2,"text":"Rauchen Sie?",
-                                                            "title":{"class":"sp_portal.local.AnamnesisCheck","id":101,"sortOrder":1,"text":"Personal lifestyle category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
-                                                            "type":1,"userSpecifiedOrder":null,"value":"",
-                                                            "anamnesisCheckTitle":null},
-                                                            
-                                                            "anamnesisChecksValue":null,"anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},"comment":null,"id":8,"truth":true},
+                                                     "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":3,"sortOrder":10,"text":"Nehmen Sie ?",
+                                                            "title":{"class":"sp_portal.local.AnamnesisCheck","id":12,"sortOrder":9,"text":"Treatment history category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
+                                                            "type":1,"userSpecifiedOrder":null,"value":"","anamnesisCheckTitle":{"class":"sp_portal.local.AnamnesisCheckTitle","id":2,"sortOrder":null,"text":"Title Value 1 "},
+                                                            "anamnesisCheckTitle":{"class":"sp_portal.local.AnamnesisCheckTitle","id":2,"sortOrder":null,"text":"Title Value 2 "}},
+                                                            "anamnesisChecksValue":null,
+                                                            "anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},
+                                                            "comment":null,"id":9,"truth":false},
                                                  {"class":"sp_portal.local.AnamnesisChecksValue",
                                                  			
                                                      "anamnesisCheck":{"class":"sp_portal.local.AnamnesisCheck","id":1,"sortOrder":2,"text":"Rauchen Sie 222?",
-                                                            "title":{"class":"sp_portal.local.AnamnesisCheck","id":101,"sortOrder":1,"text":"Personal lifestyle category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
+                                                            "title":{"class":"sp_portal.local.AnamnesisCheck","id":13,"sortOrder":1,"text":"Personal lifestyle category","title":null,"type":4,"userSpecifiedOrder":null,"value":""},
                                                             "type":1,"userSpecifiedOrder":null,"value":"JDJDJDDJDJDJ",
-                                                            "anamnesisCheckTitle":null},
+                                                            "anamnesisCheckTitle":{"class":"sp_portal.local.AnamnesisCheckTitle","id":3,"sortOrder":null,"text":"Title Value 3 "}},
                                                             "anamnesisChecksValue":null,"anamnesisForm":{"_ref":"../..","class":"sp_portal.local.AnamnesisForm"},"comment":null,"id":80,"truth":true}
                                                 ],
                                                 
 
         "createDate":new Date(1279382400000),
-        "id":3,
+        "id":10,
         "scars":[],
         "standardizedPatients":[
                 {"_ref":"../..","class":"sp_portal.local.StandardizedPatient"}]},
@@ -124,7 +126,7 @@ class DataImportExportController extends MainController {
         "birthday":new Date(-484560000000),
         "city":"Metz",
         "description":null,
-        "email":"ppp@rrr.com",
+        "email":"vfr@rrr.com",
         "gender":1,
         "height":162,
         "immagePath":null,
@@ -133,11 +135,11 @@ class DataImportExportController extends MainController {
         "name":"Lamarie",
         "nationality":{"class":"sp_portal.local.Nationality",
                         "nationality":"Frankreich","id":7},
-        "id":2,
+        "id":16,
         "postalCode":4057,
         "preName":"Marianne",
         "profession":{"class":"sp_portal.local.Profession","id":3,"profession":"Bauarbeiter/in"},
-        "socialInsuranceNo":"qqq",
+        "socialInsuranceNo":null,
         "street":"Feldbergstrasse 145",
         "telephone":null,
         "telephone2":";kjlkjlj",
@@ -301,6 +303,8 @@ class DataImportExportController extends MainController {
             }
 
         }    // end loop over all the proerties in the class
+        println("****************************************************  sp.errors() "+ sp.errors);
+       
         sp.save();
         return sp;
 
