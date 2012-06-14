@@ -14,7 +14,7 @@ class RoleController extends MainController {
         redirect(action: "list", params: params)
     }
 
-    def list() {
+    def list() {   
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [roleInstanceList: Role.list(params), roleInstanceTotal: Role.count()]
     }

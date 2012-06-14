@@ -18,10 +18,10 @@ class AnamnesisChecksValue {
     AnamnesisForm anamnesisForm
     AnamnesisCheck anamnesisCheck
 
-//    static belongsTo = [AnamnesisCheck, AnamnesisForm]
+   static belongsTo = [ AnamnesisForm]
 
-  static hasMany = [anamnesisForm: AnamnesisForm,
-                     anamnesisCheck: AnamnesisCheck]
+//  static hasMany = [anamnesisForm: AnamnesisForm,
+//                     anamnesisCheck: AnamnesisCheck]
 
     static mappedBy = [anamnesisForm: 'id',
                       anamnesisCheck: 'id'
@@ -34,7 +34,7 @@ class AnamnesisChecksValue {
         version nullable: true
         anamnesisForm nullable: true
         anamnesisCheck nullable: true
-
+				origId nullable: true
     }
 
 }

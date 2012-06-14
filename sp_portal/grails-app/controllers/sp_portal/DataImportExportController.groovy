@@ -3,6 +3,11 @@ package sp_portal
 import grails.converters.deep.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.codehaus.groovy.grails.web.json.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 class DataImportExportController extends MainController {
 
@@ -19,7 +24,9 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.nationality":{ id ->local.Nationality.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
+					// "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisForm":{ id ->local.AnamnesisForm.findByOrigId(id)},
+                    // "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+					   "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
                        ]
     static creators = [ "StandardizedPatient": { id,jsonData-> 
     																					 				def x = new local.StandardizedPatient();
@@ -56,13 +63,13 @@ class DataImportExportController extends MainController {
     static exclusions = ["hasOne","validationSkipMap","gormPersistentEntity",
                         "PersistentEntity","properties","metaClass","class","id","dirty",
                          "count","dirtyPropertyNames","validationErrorsMap","errors", "hasMany","gormDynamicFinders",
-                         "all", "attached" ,"domainClass","constraints","mapping",
+                         "all", "attached" ,"domainClass","constraints","mapping","belongsTo",
                          "descriptionId", "professionId","bankaccountId","mappedBy","nationalityId","anamnesisFormId","anamnesisCheckId"];
 
 
 
     def exportSP(){
-        if (params.id){
+           if (params.id){
               local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
             if (patient){
@@ -148,9 +155,12 @@ class DataImportExportController extends MainController {
 		
 
     def importSP(){
- 
+ 				println("--------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (params.data){
-             def jsonObject = JSON.parse(params.data);
+            String data = params.data;
+            data = preProcessData(data);
+            def jsonObject = JSON.parse(data);
+       			preProcessData(jsonObject);      
             syncData(new JSONObject(jsonObject));
             render jsonObject.email;
         } else {
@@ -158,23 +168,120 @@ class DataImportExportController extends MainController {
 
         }
     }
-
+    
+    
+    private String preProcessData(String data){
+    		data = data.replaceAll("bankAccount", "bankaccount");
+    		data = data.replaceAll("BIC", "bic");
+    		data = data.replaceAll("IBAN", "iban");    		
+    		data = data.replaceAll("anamnesischecksvalues", "anamnesisChecksValues");    		
+    		data = data.replaceAll("anamnesischeck", "anamnesisCheck");    		
+    		data = data.replaceAll("anamnesisform", "anamnesisForm");    		
+    		
+    		     
+    		return data;
+    }
+    
+    private void preProcessData(jsonObject){
+       
+    		String gender = jsonObject.get("gender");
+    		if(jsonObject.containsKey("gender")){
+    			if(gender){
+	    			jsonObject.remove("gender");
+					  if(gender.toLowerCase().equals("male")){
+	    			 		jsonObject.put("gender",0);
+	    			}else if(gender.toLowerCase().equals("female")){
+	    				  jsonObject.put("gender",1);
+	    			}
+    			}
+    		}
+    		
+    		String maritalStatus = jsonObject.get("maritalStatus");
+		    if(jsonObject.containsKey("maritalStatus")){
+		    		if(maritalStatus){
+		    			jsonObject.remove("maritalStatus");
+		    		  int status = 0;
+		  		  	if (maritalStatus.toUpperCase().equals("UNMARRIED")) {
+								status = 0;
+							} else if(maritalStatus.toUpperCase().equals("MARRIED")){
+								status = 1;
+							} else if(maritalStatus.toUpperCase().equals("CIVIL_UNION")){
+								status = 2;
+							} else if(maritalStatus.toUpperCase().equals("DIVORCED")){
+								status = 3;
+							} else if(maritalStatus.toUpperCase().equals("SEPARATED")){
+								status = 4;
+							} else if(maritalStatus.toUpperCase().equals("WIDOWED")){
+								status = 5;
+							}			
+							jsonObject.put("maritalStatus",status);
+		  			}
+		     }
+		     
+		     String workPermission = jsonObject.get("workPermission");
+		    if(jsonObject.containsKey("workPermission")){
+		    		if(workPermission){
+		    			jsonObject.remove("workPermission");
+		    		  int status = 0;
+		  		  	if (workPermission.toUpperCase().equals("B")) {
+								status = 0;
+							} else if(workPermission.toUpperCase().equals("L")){
+								status = 1;
+							} else if(workPermission.toUpperCase().equals("C")){
+								status = 2;
+							} 	
+							jsonObject.put("workPermission",status);
+		  			}
+		     } 
+			 
+    }
+    
+    
+    
+	  	
     /**
      * Syncs the data for everything below SP
      */
-    private boolean syncData(jsonObject){
+    private boolean syncData(jsonObject){  
         println( "syncData()");
         syncOneClass(jsonObject, "StandardizedPatient" );
 
     }
 
-
-  
-    
-
-
+ 
+		 private int anamnesisChecksTypeTransformet(String type){
+		 			
+		 			if (type.toUpperCase().equals("QUESTION_MULT_M")) {
+						return 0;
+					} else if(type.toUpperCase().equals("QUESTION_MULT_S")){
+						return 1;
+					} else if(type.toUpperCase().equals("QUESTION_OPEN")){
+						return 2;
+					} else if(type.toUpperCase().equals("QUESTION_TITLE")){
+						return 3;
+					} else if(type.toUpperCase().equals("QUESTION_YES_NO")){
+						return 4;
+					}  else {
+						return -1;
+					}
+		 }
+			private int traitTypeTransformet(String type){
+				    		
+					if(type.toUpperCase().equals("SCAR")){
+						return 0;
+					}else if(type.toUpperCase().equals("TATTOO")){
+						return 1;
+					}else if(type.toUpperCase().equals("NOT_TO_EXAMINE")){
+						return 2;
+					}else{
+						return -1;
+					}		
+									
+			}
+ 
     private def syncOneClass(jsonObject, datapath ){
-        println( "syncOneClass  " + datapath);
+        println( "----------syncOneClass  datapath: " + datapath);
+			  println( "++++++++++syncOneClass  jsonObject: " + jsonObject);
 
         if (!jsonObject || (jsonObject == JSONObject.NULL)  || !jsonObject.id){
             return false;
@@ -201,13 +308,26 @@ class DataImportExportController extends MainController {
             if(exclusions.find {it == prop.name}) return
          
 
-
+            println(">>>>>>>> line 205 property is a basic type? "+([Long, String, Integer, Boolean, Short].contains( prop.type))+" --- property name is: "+prop.name + "   +++ property type is: "+prop.type);
             // if it is a basic type
             if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
 
                 // if the json data contains this property
                 if(jsonObject.containsKey(prop.name)) {
-
+				
+				println(">>>>>>>>prop.name: "+prop.name+" jsonObject.get(prop.name): "+jsonObject.get(prop.name));
+				if(prop.name.toUpperCase().equals("TRAITTYPE")){
+					 int type = traitTypeTransformet(jsonObject.get(prop.name));
+				     if(type!=-1){
+					 	sp[prop.name] = type;
+					 }
+				}else if(prop.name.toUpperCase().equals("TYPE")){
+				     int type = anamnesisChecksTypeTransformet(jsonObject.get(prop.name));
+				     if(type!=-1){
+				    	sp[prop.name] = type;
+				     }
+				}else{
+								
                     // set the value to the one from JSON
                     if ( jsonObject[prop.name] && (jsonObject[prop.name] != JSONObject.NULL)){
                         sp[prop.name] = jsonObject.get(prop.name);
@@ -218,29 +338,30 @@ class DataImportExportController extends MainController {
                         }
 
                     }
-
-
-
+										
                     if (sp[prop.name].equals(jsonObject[prop])){
                         println( "5) eq<<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
                     }else{
                        println( "6) not<<<<<<<<<<<<< property " + prop + "  <<<< patient: " + sp[prop.name]  + "<<<< data: " + jsonObject[prop] )
                     }
-                }
+    			}
+              }
 
             } else {
 
+							println(">>>>> prop.type is Date? "+(Date != prop.type)+" >>>prop.type is: "+prop.type +" >>>>>>>prop.name: "+prop.name+" >>>>Date: "+Date);
                // not a basic type
                if (Date != prop.type){
 
                    def fieldFinder = finders[datapath+"."+prop.name];
-                    
+                   println(">>>>>>>datapath.prop.name: "+datapath+"."+prop.name);
                    if (fieldFinder){
                         // known Entity relationship
+                        println(">>>>>>>>>line 312 property type is set? "+(prop.type != Set) + " >>>property type is: "+prop.type +" >>>prop.name"+prop.name);
                         if (prop.type != Set){
 														//  1 to 1 relationship
                             // Are the ids the same?
-                            // Confirm the property value has an id field so it is a db entity
+                            // Confirm the property value has an id field so it is a db entity                        
                             if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name]?.id ){
                             		println(" syncOneClass pre-existing ");
                                 // Yes good so sync the fields
@@ -258,48 +379,55 @@ class DataImportExportController extends MainController {
 
                         } else {
                             //  one to many relationship, so clear the current values and reinitialize from JSON data
-                            sp[prop.name] = []
-
-                            //
-                            def array = jsonObject[prop.name];
-
-                            if (array){
-                                array.each{ member ->
-
-                                      // No then overwrite
-                                      def newValue = syncOneClass(member,datapath+"."+prop.name );
-                                       if (newValue){
-                                            println("aDDING  " + datapath+"         "+newValue );
-                                            sp[prop.name].add(newValue);
-                                       } else {
-
-                                            println("@@@@@@@@@@@@ Couldn't do " + datapath+"."+prop.name );
-                                       }
-
-                                };
-                            }
+							println("one to many relationship prop.name: "+prop.name);
+	                            sp[prop.name] = []
+	
+	                            //
+	                            def array = jsonObject[prop.name];
+															
+	                            if (array){
+	                                array.each{ member ->
+	
+	                                      // No then overwrite
+	                                      def newValue = syncOneClass(member,datapath+"."+prop.name );
+	                                    println("sync the class's value is: "+member +">>>class is: "+datapath+"."+prop.name);
+	                                       if (newValue){
+	                                            println("aDDING  " + datapath+"         "+newValue );
+	                                            sp[prop.name].add(newValue);
+	                                        } else {
+	
+	                                            println("@@@@@@@@@@@@ Couldn't do " + datapath+"."+prop.name );
+	                                       }
+	
+	                                };
+							}
                         }
 
                     } else {
                         println( "####################### No Finder for " + datapath+"."+prop.name);
                     }
                 } else {
+                                
+                   	 	DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+          	
+						Date date=null;
+						try {
+							date = sdf.parse(jsonObject.get(prop.name));
+							println(" processed date " + date);
+							sp[prop.name] = date;
+						} catch (ParseException e) {
+								e.printStackTrace();
+						}	
+									                     
+      
+                }  
 
-                    // handle date fields
-                     if (jsonObject[prop.name].getClass() == Date){
-                          sp[prop.name] = jsonObject.get(prop.name);
-                     }
-
-                }
-
-            }
+            } 
 
         }    // end loop over all the proerties in the class
         sp.save();
         return sp;
 
     }
-/*
-
-*/
+    
 }

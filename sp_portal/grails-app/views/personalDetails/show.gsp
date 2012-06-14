@@ -184,7 +184,9 @@
                 <li class="fieldcontain">
                     <span id="description-label" class="property-label"><g:message code="standardizedPatient.description.label" default="Description" /></span>
 
-                        <span class="property-value" aria-labelledby="description-label"><g:link controller="description" action="show" id="${standardizedPatientInstance?.description?.id}">${standardizedPatientInstance?.description?.encodeAsHTML()}</g:link></span>
+                        <span class="property-value" aria-labelledby="description-label">
+                          <g:fieldValue bean="${standardizedPatientInstance}" field="description"/>
+                        </span>
 
                 </li>
                 </g:if>

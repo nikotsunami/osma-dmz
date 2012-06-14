@@ -25,7 +25,7 @@ class AuthenticationController extends MainController {
 // Authentication Methods
 
     def login(){
-     //  setupDefaultData();
+      setupDefaultData();
     }
 
     def authenticate(){

@@ -27,6 +27,7 @@ class Bankaccount {
         ownerName nullable: true, maxSize: 40
         postalCode nullable: true
         version nullable: true
+        origId nullable: true
     }
 
     public String toString(){

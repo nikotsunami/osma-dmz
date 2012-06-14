@@ -12,21 +12,29 @@ hibernate {
 // environment specific settings
 environments {
     development {
-
-        // DEVELOPMENT ONLY
-        dataSource {
+      /*  dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
+	*/
 
-        dataSource_original {
+        dataSource {
+            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
+            dbCreate = "create"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/osce_public"
+            username = "root"
+            password = "admin"
+        }
+
+       dataSource_original {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
            dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = ""
+            password = "admin"
         }
 
     }
@@ -37,18 +45,6 @@ environments {
         }
     }
     production {
-
-        // DMZ database datasource
-        dataSource_original {
-            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "validate"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/osce"
-            username = "root"
-            password = "r00ty"
-        }
-
-        // DMZ database datasource
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "validate"

@@ -82,11 +82,13 @@ class MainController {
 				}
 				   
 				
+				// println("#^#^#^#^#^#^^#^#^#^#^#^#^ unhashedPW:"+password +"userName "+userName+" md "+(new BASE64Encoder()).encode(md.digest()));
 				 return (new BASE64Encoder()).encode(md.digest());
 				
 	}
 	
     private String hashPassword(String unhashedPW, String userName){
+    println("%%%%%%%%%%%%%%%%%%%%%%%%%%%% unhashedPW:"+unhashedPW +"userName "+userName);
         return encodePassword(unhashedPW,userName);
     }
     
@@ -105,6 +107,7 @@ class MainController {
         if (params.passwordHash) {
       		  if(session.user!=null){
       		  User user = session.user;
+      		  user = User.findById(user.id);
       		  def result = user.roles.findAll{ role -> role.roleName.contains(ADMIN_ROLE) }
       		  if(result.size()>0){
            		 params.passwordHash = hashPassword(params.passwordHash,params.userName);
