@@ -314,7 +314,6 @@ class DataImportExportController extends MainController {
 
                             if (prop.type != Set){
                                                             //  1 to 1 relationship
-                                logIf(debugCase() , " 1 to 1 case")
                                 // Are the ids the same?
                                 // Confirm the property value has an id field so it is a db entity
                                 if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name]?.id ){
@@ -371,18 +370,20 @@ class DataImportExportController extends MainController {
 
                         }
                     } else {
-
-                            DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-                            Date date=null;
-                            try {
-                                date = sdf.parse(jsonObject.get(prop.name));
-
-                                sp[prop.name] = date;
-                            } catch (ParseException e) {
-                                    e.printStackTrace();
-                            }
-
+							if(jsonObject.get(prop.name).getClass() == Date){
+								sp[prop.name] = jsonObject.get(prop.name);
+							}else{
+	                            DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
+	                            Date date=null;
+	                            try {
+	                                date = sdf.parse(jsonObject.get(prop.name));
+	
+	                                sp[prop.name] = date;
+	                            } catch (ParseException e) {
+	                                    e.printStackTrace();
+	                            }
+							}
 
                     }
 
