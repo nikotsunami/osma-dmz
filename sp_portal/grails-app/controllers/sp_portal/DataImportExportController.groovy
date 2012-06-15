@@ -43,7 +43,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData,context -> def x = new local.AnamnesisChecksValue();
                                                                                                             x.origId = id;
 
-                                                                                                            println("adding post hooks")
+                                                                                                            println(" adding post hooks ")
                                                                                                             context.postHooks << {
 
                                                                                                                     def form = finders["StandardizedPatient.anamnesisForm"](context["StandardizedPatient.anamnesisForm"]);
@@ -87,12 +87,15 @@ class DataImportExportController extends MainController {
            if (params.id){
               local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
-            if (patient){
-                render patient as JSON;
-            } else {
-                render params.id +"not found"
-            }
-        }
+				if (patient){
+println(" AAAAAA");				
+				
+					render patient as JSON;
+				} else {
+					render params.id +"not found"
+println(" BBBBB ");									
+				}
+			}
     }
 
 
@@ -140,12 +143,12 @@ class DataImportExportController extends MainController {
                     }
                 }
             }
-
+		    
             String maritalStatus = jsonObject.get("maritalStatus");
             if(jsonObject.containsKey("maritalStatus")){
                     if(maritalStatus){
                         jsonObject.remove("maritalStatus");
-                      int status = 0;
+                      int status = -1;
                     if (maritalStatus.toUpperCase().equals("UNMARRIED")) {
                                 status = 0;
                             } else if(maritalStatus.toUpperCase().equals("MARRIED")){
@@ -159,23 +162,33 @@ class DataImportExportController extends MainController {
                             } else if(maritalStatus.toUpperCase().equals("WIDOWED")){
                                 status = 5;
                             }
-                            jsonObject.put("maritalStatus",status);
+	
+							if (status == -1){
+								jsonObject.put("maritalStatus",null);
+							} else {
+								jsonObject.put("maritalStatus",status);
+							}
                     }
              }
 
              String workPermission = jsonObject.get("workPermission");
-            if(jsonObject.containsKey("workPermission")){
+            if (jsonObject.containsKey("workPermission")){
                     if(workPermission){
                         jsonObject.remove("workPermission");
-                      int status = 0;
-                    if (workPermission.toUpperCase().equals("B")) {
-                                status = 0;
-                            } else if(workPermission.toUpperCase().equals("L")){
-                                status = 1;
-                            } else if(workPermission.toUpperCase().equals("C")){
-                                status = 2;
-                            }
-                            jsonObject.put("workPermission",status);
+                      int status = -1;
+						if (workPermission.toUpperCase().equals("B")) {
+									status = 0;
+						} else if(workPermission.toUpperCase().equals("L")){
+							status = 1;
+						} else if(workPermission.toUpperCase().equals("C")){
+							status = 2;
+						}
+                        
+						if (status == -1){
+							jsonObject.put("workPermission",null);
+						} else {
+							jsonObject.put("workPermission",status);
+						}
                     }
              }
 
@@ -198,39 +211,38 @@ class DataImportExportController extends MainController {
 
     }
 
+	private int anamnesisChecksTypeTransformet(String type){
 
-         private int anamnesisChecksTypeTransformet(String type){
+			if (type.toUpperCase().equals("QUESTION_OPEN")) {
+				return 0;
+			} else if(type.toUpperCase().equals("QUESTION_YES_NO")){
+				return 1;
+			} else if(type.toUpperCase().equals("QUESTION_MULT_S")){
+				return 2;
+			} else if(type.toUpperCase().equals("QUESTION_MULT_M")){
+				return 3;
+			} else if(type.toUpperCase().equals("QUESTION_TITLE")){
+				return 4;
+			}  else {
+				return -1;
+			}
+	}
+	private int traitTypeTransformet(String type){
 
-                    if (type.toUpperCase().equals("QUESTION_MULT_M")) {
-                        return 0;
-                    } else if(type.toUpperCase().equals("QUESTION_MULT_S")){
-                        return 1;
-                    } else if(type.toUpperCase().equals("QUESTION_OPEN")){
-                        return 2;
-                    } else if(type.toUpperCase().equals("QUESTION_TITLE")){
-                        return 3;
-                    } else if(type.toUpperCase().equals("QUESTION_YES_NO")){
-                        return 4;
-                    }  else {
-                        return -1;
-                    }
-         }
-            private int traitTypeTransformet(String type){
+			if(type.toUpperCase().equals("SCAR")){
+				return 0;
+			}else if(type.toUpperCase().equals("TATTOO")){
+				return 1;
+			}else if(type.toUpperCase().equals("NOT_TO_EXAMINE")){
+				return 2;
+			}else{
+				return -1;
+			}
 
-                    if(type.toUpperCase().equals("SCAR")){
-                        return 0;
-                    }else if(type.toUpperCase().equals("TATTOO")){
-                        return 1;
-                    }else if(type.toUpperCase().equals("NOT_TO_EXAMINE")){
-                        return 2;
-                    }else{
-                        return -1;
-                    }
-
-            }
+	}
 
     private def syncOneClass(jsonObject, datapath, contextIds ){
-
+	
 
 
         if (!jsonObject || (jsonObject == JSONObject.NULL)  || !jsonObject.id){
@@ -257,7 +269,7 @@ class DataImportExportController extends MainController {
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-
+	def debugContition = {return datapath.contains("StandardizedPatient.anamnesisForm.anamnesisChecksValues") && prop.name == "anamnesisChecksValue" }
 
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
@@ -265,10 +277,10 @@ class DataImportExportController extends MainController {
 
                 // if it is a basic type
                 if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
-
+logIf(debugContition(), "" + datapath + " " +   prop.name  );
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
-
+logIf(debugContition(), " A "  );
 
                         if(prop.name.toUpperCase().equals("TRAITTYPE")){
                              int type = traitTypeTransformet(jsonObject.get(prop.name));
@@ -282,21 +294,25 @@ class DataImportExportController extends MainController {
                              }
                         }else{
 
+logIf(debugContition(), " B " );
+
                             // set the value to the one from JSON
-                            if ( jsonObject[prop.name] && (jsonObject[prop.name] != JSONObject.NULL)){
+                            if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
+logIf(debugContition(), " C " +"  "+prop.name+"  "+jsonObject.get(prop.name));								
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
+logIf(debugContition(), " D " );																
 
                                 }
 
                             }
-
+logIf(debugContition(), " E " );																
                             if (sp[prop.name].equals(jsonObject[prop])){
 
                             }else{
-
+ 
                             }
                         }
                   }
@@ -366,24 +382,23 @@ class DataImportExportController extends MainController {
                                 }
                             }
 
-                        } else {
-
-                        }
+                        } 
                     } else {
+
 							if(jsonObject.get(prop.name).getClass() == Date){
-								sp[prop.name] = jsonObject.get(prop.name);
+									sp[prop.name] = jsonObject.get(prop.name);
 							}else{
-	                            DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+								DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	                            Date date=null;
-	                            try {
-	                                date = sdf.parse(jsonObject.get(prop.name));
+								Date date=null;
+								try {
+									date = sdf.parse(jsonObject.get(prop.name));
 	
-	                                sp[prop.name] = date;
-	                            } catch (ParseException e) {
-	                                    e.printStackTrace();
-	                            }
-							}
+									sp[prop.name] = date;
+								} catch (ParseException e) {
+										e.printStackTrace();
+								}
+							}	
 
                     }
 
@@ -398,7 +413,7 @@ class DataImportExportController extends MainController {
 
     private def logIf(condition, message){
         if (condition){
-            printf(">" + message );
+            println(">" + message );
         }
     }
 
