@@ -27,7 +27,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisForm":{ id ->local.AnamnesisForm.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
-
+					  						
                        ]
     static creators = [ "StandardizedPatient": { id,jsonData,context->
                                                             def x = new local.StandardizedPatient();
@@ -57,7 +57,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
-                       ]
+					    ]
     static def createUser(standardizedPatient,jsonData){
          def x =new User();
          x.userName= jsonData.email;
@@ -88,12 +88,9 @@ class DataImportExportController extends MainController {
               local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
 				if (patient){
-println(" AAAAAA");				
-				
 					render patient as JSON;
 				} else {
 					render params.id +"not found"
-println(" BBBBB ");									
 				}
 			}
     }
@@ -103,12 +100,15 @@ println(" BBBBB ");
 
 
     def importSP(){
-                println("--------------------------------------------------------------------------------------------------------------------------------------------------------");
+println("--------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (params.data){
             String data = params.data;
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
-                preProcessData(jsonObject);
+            preProcessData(jsonObject);
+
+println(jsonObject);
+
             syncData(new JSONObject(jsonObject));
             render jsonObject.email;
         } else {
@@ -125,6 +125,8 @@ println(" BBBBB ");
             data = data.replaceAll("anamnesischecksvalues", "anamnesisChecksValues");
             data = data.replaceAll("anamnesischeck", "anamnesisCheck");
             data = data.replaceAll("anamnesisform", "anamnesisForm");
+			data = data.replaceAll("sort_order", "sortOrder");
+			data = data.replaceAll("descriptions", "description");
 
 
             return data;
@@ -269,7 +271,7 @@ println(" BBBBB ");
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-	def debugContition = {return datapath.contains("StandardizedPatient.anamnesisForm.anamnesisChecksValues") && prop.name == "anamnesisChecksValue" }
+	def debugContition = {return datapath.contains("StandardizedPatient") && prop.name == "socialInsuranceNo" }
 
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
@@ -299,7 +301,7 @@ logIf(debugContition(), " B " );
                             // set the value to the one from JSON
                             if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
-logIf(debugContition(), " C " +"  "+prop.name+"  "+jsonObject.get(prop.name));								
+logIf(debugContition(), " C " +"  "+prop.name+"  "+sp[prop.name]);								
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
@@ -319,7 +321,7 @@ logIf(debugContition(), " E " );
 
                 } else {
 
-
+logIf(debugContition(), " F " );	
                    // not a basic type
                    if (Date != prop.type){
 

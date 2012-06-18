@@ -174,31 +174,29 @@ class CheckQuestionsController  extends MainController {
 
                    def checkValue = local.AnamnesisChecksValue.findByAnamnesisFormAndAnamnesisCheck(patient.standardizedPatient.anamnesisForm,checkInstance);
                    if(checkValue!=null){
-                            checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
-                                if(checkValue!=null){
-                                  checkValue.anamnesisCheck = checkInstance;
-                                }
-                                checkValue.anamnesisChecksValue=valueStr;
-                                checkValue.origId = checkInstance.origId;
+						checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
+						if(checkValue!=null){
+						  checkValue.anamnesisCheck = checkInstance;
+						}
+						checkValue.anamnesisChecksValue=valueStr;
+						
+						checkValue.comment = null;
+						checkValue.truth = null;
 
-                                checkValue.comment = null;
-                                checkValue.truth = null;
-
-                                checkValue.save();
+						checkValue.save();
                    }else{
 
-                                    local.AnamnesisChecksValue checkValueInstance = new local.AnamnesisChecksValue();
-                                    checkValueInstance.anamnesisForm = patient.standardizedPatient.anamnesisForm;
-                                    if(checkInstance!=null){
-                                      checkValueInstance.anamnesisCheck = checkInstance;
-                                    }
-                                    checkValueInstance.anamnesisChecksValue=valueStr;
-                                    checkValueInstance.origId = checkInstance.origId;
+						local.AnamnesisChecksValue checkValueInstance = new local.AnamnesisChecksValue();
+						checkValueInstance.anamnesisForm = patient.standardizedPatient.anamnesisForm;
+						if(checkInstance!=null){
+						  checkValueInstance.anamnesisCheck = checkInstance;
+						}
+						checkValueInstance.anamnesisChecksValue=valueStr;
+						
+						checkValueInstance.comment = null;
+						checkValueInstance.truth = null;
 
-                                    checkValueInstance.comment = null;
-                                    checkValueInstance.truth = null;
-
-                                    checkValueInstance.save();
+						checkValueInstance.save();
                          }
                      }
 
