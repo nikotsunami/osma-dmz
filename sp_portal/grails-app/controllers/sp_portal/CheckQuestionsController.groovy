@@ -74,28 +74,26 @@ class CheckQuestionsController  extends MainController {
 	       if(params.index == null){
 	       		params.index = 0;
 	       }
-	            
 	       currentTitle = titles[index];
-	        
 	        if(currentTitle){
 	              
 			        def questions = [];
 			        def validValue = [];
 			        def checkValue = [];
 			        if (currentTitle != null){
-			        		questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
-				        	  checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
+							questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
+				        	checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
 				        					       
 			        }
 			        if(checkValue!=null){
-			       
 			        		[title: currentTitle , questions: questions,titleSize: titles.size,checkValue: checkValue]
 			        
 			        }
 			        
 			        
 	        }else{
-	            redirect(action: "showPage")
+				render "no questions";
+	            //redirect(action: "showPage")
 	        }
               
     }
@@ -153,8 +151,8 @@ class CheckQuestionsController  extends MainController {
     private void saveData(){
         def patient = getCurrentPatient();
         def questionIdStrings = params.findAll({ key, value ->
-                                                                                                        key.startsWith("question")
-                                                                                                        });
+													key.startsWith("question")
+													});
 
         def questionIds = questionIdStrings.each({ key, value ->
 
