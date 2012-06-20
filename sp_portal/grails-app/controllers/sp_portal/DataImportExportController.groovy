@@ -22,10 +22,12 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.description":{ id ->local.Description.findByOrigId(id)},
                        "StandardizedPatient.profession":{ id ->local.Profession.findByOrigId(id)},
                        "StandardizedPatient.nationality":{ id ->local.Nationality.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},                       
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisForm":{ id ->local.AnamnesisForm.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+                       
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
 					  						
                        ]
@@ -54,7 +56,9 @@ class DataImportExportController extends MainController {
 
 
                                                                                                             return x},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},                    
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+                       
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
 					    ]
@@ -271,7 +275,7 @@ println(jsonObject);
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-	def debugContition = {return datapath.contains("StandardizedPatient") && prop.name == "socialInsuranceNo" }
+	def debugContition = {return datapath.contains("StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle")}
 
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return

@@ -5,6 +5,7 @@ class AnamnesisCheck {
     static mapping = {
       datasources(['original'])
       title column: 'title'
+      anamnesisCheckTitle column: 'anamnesis_check_title'
    }
 
     Long id
@@ -14,12 +15,12 @@ class AnamnesisCheck {
     String text
     Integer type
     String value
-    Integer userSpecifiedOrder;
-//    static hasMany = [title: AnamnesisCheck ]
-AnamnesisCheck title;
-    
-    static mappedBy = [title: 'id'
-                       ]
+    Integer userSpecifiedOrder
+    AnamnesisCheck title
+    AnamnesisCheckTitle anamnesisCheckTitle
+
+    static mappedBy = [title: 'id',
+                       anamnesisCheckTitle: 'id']
 
     static constraints = {
         sortOrder nullable: true
@@ -29,5 +30,6 @@ AnamnesisCheck title;
         version nullable: true
         title nullable: true
         userSpecifiedOrder nullable: true
+        anamnesisCheckTitle nullable:true
     }
 }

@@ -31,8 +31,8 @@
         <g:message code="standardizedPatient.gender.label" default="Gender" />
  
     </label>
-    <g:radio name="gender" value="0" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("0")}"/>&nbsp;&nbsp;male&nbsp;&nbsp;&nbsp;&nbsp;
-	<g:radio name="gender" value="1" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("1")}"/>&nbsp;&nbsp;female
+    <g:radio name="gender" value="0" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("0")}"/>&nbsp;&nbsp;${message(code: 'default.gender.male')}&nbsp;&nbsp;&nbsp;&nbsp;
+	<g:radio name="gender" value="1" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("1")}"/>&nbsp;&nbsp;${message(code: 'default.gender.female')}
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'height', 'error')} ">
