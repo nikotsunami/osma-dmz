@@ -84,7 +84,7 @@ class CheckQuestionsController  extends MainController {
 							questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
 				        	checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
 				        					       
-			        }
+			        }					
 			        if(checkValue!=null){
 			        		[title: currentTitle , questions: questions,titleSize: titles.size,checkValue: checkValue]
 			        
