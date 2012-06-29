@@ -51,10 +51,9 @@
 					<g:actionSubmit action="showFirst"  name="First" value="${message(code: 'default.button.first')}" />
 					<g:actionSubmit action="showPreviou"  name="Previous" value="${message(code: 'default.button.previous')}" />
 				</g:if>
-				<g:if test="${params.int('index') != (titleSize-1)}">
 					<g:actionSubmit action="showNext" name="Previous" value="${message(code: 'default.button.next')}" />
 					<g:actionSubmit action="showEnd"  name="End" value="${message(code: 'default.button.end')}" />
-				</g:if>
+				
 			</fieldset>
 	</g:form>
 	</body>
