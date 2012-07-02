@@ -22,9 +22,9 @@ class AnamnesisCheck {
     static mappedBy = [title: 'id',
                        anamnesisCheckTitle: 'id']
                        
-    static hasMany = [anamnesisChecksValues: AnamnesisChecksValue
+  /*  static hasMany = [anamnesisChecksValues: AnamnesisChecksValue
     ]
-   
+   */
     static constraints = {
         sortOrder nullable: true
         text nullable: true

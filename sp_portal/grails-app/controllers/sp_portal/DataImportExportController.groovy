@@ -14,7 +14,7 @@ class DataImportExportController extends MainController {
     //def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
 
 
-    //static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     static finders = [ "StandardizedPatient": { id ->local.StandardizedPatient.findByOrigId(id)},
                        "StandardizedPatient.bankaccount":{ id ->local.Bankaccount.findByOrigId(id)},
@@ -25,11 +25,11 @@ class DataImportExportController extends MainController {
 					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},                       
 					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisForm":{ id ->local.AnamnesisForm.findByOrigId(id)},
+                       
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
-					  						
+
                        ]
     static creators = [ "StandardizedPatient": { id,jsonData,context->
                                                             def x = new local.StandardizedPatient();
@@ -44,27 +44,21 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.nationality":{ id,jsonData,context -> def x = new local.Nationality(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData,context -> def x = new local.AnamnesisChecksValue();
                                                                                                             x.origId = id;
-
                                                                                                             println(" adding post hooks ")
                                                                                                             context.postHooks << {
-
                                                                                                                     def form = finders["StandardizedPatient.anamnesisForm"](context["StandardizedPatient.anamnesisForm"]);
                                                                                                                     x.anamnesisForm = form;
-
                                                                                                                 }
-
-
-
                                                                                                             return x},
+                      
 					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},                    
 					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
-                       
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
-					    ]
+                        ]
     static def createUser(standardizedPatient,jsonData){
          def x =new User();
-         x.userName= jsonData.email;
+         x.userName= jsonData.email; 
          x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
          x.userEmail=jsonData.email;
          x.standardizedPatient=standardizedPatient;
@@ -91,12 +85,12 @@ class DataImportExportController extends MainController {
            if (params.id){
               local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
-				if (patient){
-					render patient as JSON;
-				} else {
-					render params.id +"not found"
-				}
-			}
+                if (patient){
+                    render patient as JSON;
+                } else {
+                    render params.id +"not found"
+                }
+            }
     }
 
 
@@ -104,14 +98,11 @@ class DataImportExportController extends MainController {
 
 
     def importSP(){
-println("--------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (params.data){
             String data = params.data;
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
             preProcessData(jsonObject);
-
-println(jsonObject);
 
             syncData(new JSONObject(jsonObject));
             render jsonObject.email;
@@ -129,8 +120,8 @@ println(jsonObject);
             data = data.replaceAll("anamnesischecksvalues", "anamnesisChecksValues");
             data = data.replaceAll("anamnesischeck", "anamnesisCheck");
             data = data.replaceAll("anamnesisform", "anamnesisForm");
-			data = data.replaceAll("sort_order", "sortOrder");
-			data = data.replaceAll("descriptions", "description");
+            data = data.replaceAll("sort_order", "sortOrder");
+            data = data.replaceAll("descriptions", "description");
 
 
             return data;
@@ -149,7 +140,7 @@ println(jsonObject);
                     }
                 }
             }
-		    
+
             String maritalStatus = jsonObject.get("maritalStatus");
             if(jsonObject.containsKey("maritalStatus")){
                     if(maritalStatus){
@@ -168,12 +159,12 @@ println(jsonObject);
                             } else if(maritalStatus.toUpperCase().equals("WIDOWED")){
                                 status = 5;
                             }
-	
-							if (status == -1){
-								jsonObject.put("maritalStatus",null);
-							} else {
-								jsonObject.put("maritalStatus",status);
-							}
+
+                            if (status == -1){
+                                jsonObject.put("maritalStatus",null);
+                            } else {
+                                jsonObject.put("maritalStatus",status);
+                            }
                     }
              }
 
@@ -182,19 +173,19 @@ println(jsonObject);
                     if(workPermission){
                         jsonObject.remove("workPermission");
                       int status = -1;
-						if (workPermission.toUpperCase().equals("B")) {
-									status = 0;
-						} else if(workPermission.toUpperCase().equals("L")){
-							status = 1;
-						} else if(workPermission.toUpperCase().equals("C")){
-							status = 2;
-						}
-                        
-						if (status == -1){
-							jsonObject.put("workPermission",null);
-						} else {
-							jsonObject.put("workPermission",status);
-						}
+                        if (workPermission.toUpperCase().equals("B")) {
+                                    status = 0;
+                        } else if(workPermission.toUpperCase().equals("L")){
+                            status = 1;
+                        } else if(workPermission.toUpperCase().equals("C")){
+                            status = 2;
+                        }
+
+                        if (status == -1){
+                            jsonObject.put("workPermission",null);
+                        } else {
+                            jsonObject.put("workPermission",status);
+                        }
                     }
              }
 
@@ -217,38 +208,38 @@ println(jsonObject);
 
     }
 
-	private int anamnesisChecksTypeTransformet(String type){
+    private int anamnesisChecksTypeTransformet(String type){
 
-			if (type.toUpperCase().equals("QUESTION_OPEN")) {
-				return 0;
-			} else if(type.toUpperCase().equals("QUESTION_YES_NO")){
-				return 1;
-			} else if(type.toUpperCase().equals("QUESTION_MULT_S")){
-				return 2;
-			} else if(type.toUpperCase().equals("QUESTION_MULT_M")){
-				return 3;
-			} else if(type.toUpperCase().equals("QUESTION_TITLE")){
-				return 4;
-			}  else {
-				return -1;
-			}
-	}
-	private int traitTypeTransformet(String type){
+            if (type.toUpperCase().equals("QUESTION_OPEN")) {
+                return 0;
+            } else if(type.toUpperCase().equals("QUESTION_YES_NO")){
+                return 1;
+            } else if(type.toUpperCase().equals("QUESTION_MULT_S")){
+                return 2;
+            } else if(type.toUpperCase().equals("QUESTION_MULT_M")){
+                return 3;
+            } else if(type.toUpperCase().equals("QUESTION_TITLE")){
+                return 4;
+            }  else {
+                return -1;
+            }
+    }
+    private int traitTypeTransformet(String type){
 
-			if(type.toUpperCase().equals("SCAR")){
-				return 0;
-			}else if(type.toUpperCase().equals("TATTOO")){
-				return 1;
-			}else if(type.toUpperCase().equals("NOT_TO_EXAMINE")){
-				return 2;
-			}else{
-				return -1;
-			}
+            if(type.toUpperCase().equals("SCAR")){
+                return 0;
+            }else if(type.toUpperCase().equals("TATTOO")){
+                return 1;
+            }else if(type.toUpperCase().equals("NOT_TO_EXAMINE")){
+                return 2;
+            }else{
+                return -1;
+            }
 
-	}
+    }
 
     private def syncOneClass(jsonObject, datapath, contextIds ){
-	
+
 
 
         if (!jsonObject || (jsonObject == JSONObject.NULL)  || !jsonObject.id){
@@ -275,7 +266,6 @@ println(jsonObject);
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-	def debugContition = {return datapath.contains("StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle")}
 
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
@@ -283,10 +273,8 @@ println(jsonObject);
 
                 // if it is a basic type
                 if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
-logIf(debugContition(), "" + datapath + " " +   prop.name  );
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
-logIf(debugContition(), " A "  );
 
                         if(prop.name.toUpperCase().equals("TRAITTYPE")){
                              int type = traitTypeTransformet(jsonObject.get(prop.name));
@@ -300,32 +288,26 @@ logIf(debugContition(), " A "  );
                              }
                         }else{
 
-logIf(debugContition(), " B " );
-
                             // set the value to the one from JSON
                             if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
-logIf(debugContition(), " C " +"  "+prop.name+"  "+sp[prop.name]);								
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
-logIf(debugContition(), " D " );																
 
                                 }
 
                             }
-logIf(debugContition(), " E " );																
                             if (sp[prop.name].equals(jsonObject[prop])){
 
                             }else{
- 
+
                             }
                         }
                   }
 
                 } else {
 
-logIf(debugContition(), " F " );	
                    // not a basic type
                    if (Date != prop.type){
 
@@ -388,29 +370,30 @@ logIf(debugContition(), " F " );
                                 }
                             }
 
-                        } 
+                        }
                     } else {
 
-							if(jsonObject.get(prop.name).getClass() == Date){
-									sp[prop.name] = jsonObject.get(prop.name);
-							}else{
-								DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-	
-								Date date=null;
-								try {
-									date = sdf.parse(jsonObject.get(prop.name));
-	
-									sp[prop.name] = date;
-								} catch (ParseException e) {
-										e.printStackTrace();
-								}
-							}	
+                            if(jsonObject.get(prop.name).getClass() == Date){
+                                    sp[prop.name] = jsonObject.get(prop.name);
+                            }else{
+                                DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+                                Date date=null;
+                                try {
+                                    date = sdf.parse(jsonObject.get(prop.name));
+
+                                    sp[prop.name] = date;
+                                } catch (ParseException e) {
+                                        e.printStackTrace();
+                                }
+                            }
 
                     }
 
                 }
 
         }    // end loop over all the proerties in the class
+
         sp.save();
         return sp;
 

@@ -68,34 +68,36 @@ class CheckQuestionsController  extends MainController {
 
 
     def showPage() {
-   		 def patient = getCurrentPatient();
-	     int index =  Math.min(params.index ? params.int('index') : 0, 100);
-	        def currentTitle = null;
-	       if(params.index == null){
-	       		params.index = 0;
-	       }
-	       currentTitle = titles[index];
-	        if(currentTitle){
-	              
-			        def questions = [];
-			        def validValue = [];
-			        def checkValue = [];
-			        if (currentTitle != null){
-							questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
-				        	checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
-				        					       
-			        }					
-			        if(checkValue!=null){
-			        		[title: currentTitle , questions: questions,titleSize: titles.size,checkValue: checkValue]
-			        
-			        }
-			        
-			        
-	        }else{
-				render "no questions";
-	            //redirect(action: "showPage")
-	        }
-              
+         def patient = getCurrentPatient();
+         int index =  Math.min(params.index ? params.int('index') : 0, 100);
+            def currentTitle = null;
+           if(params.index == null){
+                params.index = 0;
+           }
+
+           currentTitle = titles[index];
+
+            if(currentTitle){
+
+                    def questions = [];
+                    def validValue = [];
+                    def checkValue = [];
+                    if (currentTitle != null){
+			        		questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
+                              checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
+
+                    }
+                    if(checkValue!=null){
+
+                            [title: currentTitle , questions: questions,titleSize: titles.size,checkValue: checkValue]
+
+                    }
+
+
+            }else{
+                render message(code: 'checkquestion.noneavailable');
+            }
+
     }
 
     static int titleIndex = 0;
