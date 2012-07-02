@@ -42,7 +42,6 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.nationality":{ id,jsonData,context -> def x = new local.Nationality(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData,context -> def x = new local.AnamnesisChecksValue();
                                                                                                             x.origId = id;
-                                                                                                            println(" adding post hooks ")
                                                                                                             context.postHooks << {
                                                                                                                     def form = finders["StandardizedPatient.anamnesisForm"](context["StandardizedPatient.anamnesisForm"]);
                                                                                                                     x.anamnesisForm = form;
@@ -96,14 +95,12 @@ class DataImportExportController extends MainController {
 
 
     def importSP(){
-println("--------------------------------------------------------------------------------------------------------------------------------------------------------");
+
         if (params.data){
             String data = params.data;
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
             preProcessData(jsonObject);
-
-println(jsonObject);
 
             syncData(new JSONObject(jsonObject));
             render jsonObject.email;
@@ -199,13 +196,13 @@ println(jsonObject);
      * Syncs the data for everything below SP
      */
     private boolean syncData(jsonObject){
-        println( "syncData()");
+
         def context = [:] ;
         context.postHooks = [];
 
         syncOneClass(jsonObject, "StandardizedPatient", context);
 
-         context.postHooks.each{ hook -> hook() ; println("called") }
+         context.postHooks.each{ hook -> hook() ;  }
 
     }
 
@@ -267,18 +264,18 @@ println(jsonObject);
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-    def debugContition = {return datapath.contains("StandardizedPatient") && prop.name == "socialInsuranceNo" }
-
+//    def debugContition = {return datapath.contains("StandardizedPatient") && prop.name == "socialInsuranceNo" }
+      def debugContition = {return false }
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
 
 
                 // if it is a basic type
                 if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
-logIf(debugContition(), "" + datapath + " " +   prop.name  );
+
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
-logIf(debugContition(), " A "  );
+
 
                         if(prop.name.toUpperCase().equals("TRAITTYPE")){
                              int type = traitTypeTransformet(jsonObject.get(prop.name));
@@ -292,21 +289,21 @@ logIf(debugContition(), " A "  );
                              }
                         }else{
 
-logIf(debugContition(), " B " );
+
 
                             // set the value to the one from JSON
                             if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
-logIf(debugContition(), " C " +"  "+prop.name+"  "+sp[prop.name]);
+
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
-logIf(debugContition(), " D " );
+
 
                                 }
 
                             }
-logIf(debugContition(), " E " );
+
                             if (sp[prop.name].equals(jsonObject[prop])){
 
                             }else{
@@ -317,7 +314,7 @@ logIf(debugContition(), " E " );
 
                 } else {
 
-logIf(debugContition(), " F " );
+
                    // not a basic type
                    if (Date != prop.type){
 
@@ -403,7 +400,6 @@ logIf(debugContition(), " F " );
                 }
 
         }    // end loop over all the proerties in the class
-        println("****************************************************  sp.errors() "+ sp.errors);
 
         sp.save();
         return sp;
