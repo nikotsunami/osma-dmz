@@ -182,7 +182,23 @@ class CheckQuestionsController  extends MainController {
 						checkValue.anamnesisChecksValue=valueStr;
 						
 						checkValue.comment = null;
-						checkValue.truth = null;
+						System.out.println("????????????text = "+checkInstance.getText());
+						System.out.println("????????????type = "+checkInstance.getType());
+						System.out.println("????????????valueStr = "+valueStr);
+						if(checkInstance.getType()==1){
+							System.out.println("type == 1");
+							if(valueStr.equals("0")){
+								checkValue.truth = false;
+							}else if(valueStr.equals("1")){
+								checkValue.truth = true;
+							}else{
+								System.out.println("????????????");
+								checkValue.truth = null;
+							}
+						}else{
+							System.out.println("type != 1");
+							checkValue.truth = null;
+						}
 
 						checkValue.save();
                    }else{
@@ -195,7 +211,22 @@ class CheckQuestionsController  extends MainController {
 						checkValueInstance.anamnesisChecksValue=valueStr;
 						
 						checkValueInstance.comment = null;
-						checkValueInstance.truth = null;
+						System.out.println("????????????text = "+checkInstance.getText());
+						System.out.println("????????????type = "+checkInstance.getType());
+						System.out.println("????????????valueStr = "+valueStr);
+						if(checkInstance.getType()==1){
+							if(valueStr.equals("0")){
+								checkValueInstance.truth = false;
+							}else if(valueStr.equals("1")){
+								checkValueInstance.truth = true;
+							}else{
+								System.out.println("????????????");
+								checkValueInstance.truth = null;
+							}
+						}else{
+							checkValueInstance.truth = null;
+						}
+						//checkValueInstance.truth = null;
 
 						checkValueInstance.save();
                          }
