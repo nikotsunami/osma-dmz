@@ -131,7 +131,9 @@ class MainController {
     private void handleOutboundPassword(user){
         user.passwordHash = null;
     }
-	 private void setupDefaultData(){
+
+
+    private void setupDefaultData(){
            if (Role.list().size() == 0){
                 log("setup Default Data ")
                 Role adminRole = new Role();
