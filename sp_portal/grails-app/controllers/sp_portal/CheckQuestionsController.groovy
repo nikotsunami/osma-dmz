@@ -199,8 +199,9 @@ class CheckQuestionsController  extends MainController {
 							System.out.println("type != 1");
 							checkValue.truth = null;
 						}
-
-						checkValue.save();
+						if(!valueStr.equals("")){
+							checkValue.save();
+						}
                    }else{
 
 						local.AnamnesisChecksValue checkValueInstance = new local.AnamnesisChecksValue();
@@ -226,9 +227,10 @@ class CheckQuestionsController  extends MainController {
 						}else{
 							checkValueInstance.truth = null;
 						}
-						//checkValueInstance.truth = null;
-
-						checkValueInstance.save();
+						
+						if(!valueStr.equals("")){
+							checkValueInstance.save();
+						 }
                          }
                      }
 
