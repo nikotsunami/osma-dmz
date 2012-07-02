@@ -22,10 +22,9 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.description":{ id ->local.Description.findByOrigId(id)},
                        "StandardizedPatient.profession":{ id ->local.Profession.findByOrigId(id)},
                        "StandardizedPatient.nationality":{ id ->local.Nationality.findByOrigId(id)},
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},                       
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
-                       
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id ->local.AnamnesisChecksValue.findByOrigId(id)},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
@@ -44,7 +43,6 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.nationality":{ id,jsonData,context -> def x = new local.Nationality(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues":{ id,jsonData,context -> def x = new local.AnamnesisChecksValue();
                                                                                                             x.origId = id;
-                                                                                                            println(" adding post hooks ")
                                                                                                             context.postHooks << {
                                                                                                                     def form = finders["StandardizedPatient.anamnesisForm"](context["StandardizedPatient.anamnesisForm"]);
                                                                                                                     x.anamnesisForm = form;
@@ -98,6 +96,7 @@ class DataImportExportController extends MainController {
 
 
     def importSP(){
+
         if (params.data){
             String data = params.data;
             data = preProcessData(data);
@@ -198,13 +197,13 @@ class DataImportExportController extends MainController {
      * Syncs the data for everything below SP
      */
     private boolean syncData(jsonObject){
-        println( "syncData()");
+
         def context = [:] ;
         context.postHooks = [];
 
         syncOneClass(jsonObject, "StandardizedPatient", context);
 
-         context.postHooks.each{ hook -> hook() ; println("called") }
+         context.postHooks.each{ hook -> hook() ;  }
 
     }
 
@@ -276,6 +275,7 @@ class DataImportExportController extends MainController {
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
 
+
                         if(prop.name.toUpperCase().equals("TRAITTYPE")){
                              int type = traitTypeTransformet(jsonObject.get(prop.name));
                              if(type!=-1){
@@ -288,12 +288,14 @@ class DataImportExportController extends MainController {
                              }
                         }else{
 
+
                             // set the value to the one from JSON
                             if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
+
 
                                 }
 
