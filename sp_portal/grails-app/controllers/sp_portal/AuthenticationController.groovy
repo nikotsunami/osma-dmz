@@ -68,52 +68,6 @@ class AuthenticationController extends MainController {
      }
      
 
-
-
-
-
-
-
-
-    private void setupDefaultData(){
-           if (Role.list().size() == 0){
-                log("setup Default Data ")
-                Role adminRole = new Role();
-                adminRole.roleName = ADMIN_ROLE;
-                adminRole.roleDescription = "Administrate Users";
-                adminRole.save();
-
-                Role userRole = new Role();
-                userRole.roleName = USER_ROLE;
-                userRole.roleDescription = "Normal Users";
-                userRole.save();
-
-                User admin = new User();
-
-                log("1 " + admin);
-
-                admin.userName = grailsApplication.config.sp_portal.admin.username;
-                admin.userEmail = grailsApplication.config.sp_portal.admin.email;
-                admin.passwordHash = hashPassword(""+grailsApplication.config.sp_portal.admin.password,admin.userName);
-                admin.isActive = true;
-
-                log("2 " + admin);
-                log("2 " + admin.userEmail);
-
-                def roles = [];
-                roles.add(Role.findByRoleName(ADMIN_ROLE));
-
-                admin.roles = roles;
-
-                admin.save();
-                log("setup Default Data over" + admin)
-
-           }
-    }
-
-
-
-
     private boolean comparePasswords(String p1,String p2){
         log("Comparing passwords " + p1 + "  and " + p2  );
         if ( p1 != p2) {
