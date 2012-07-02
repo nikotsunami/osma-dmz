@@ -22,18 +22,18 @@ class BankaccountController extends sp_portal.MainController{
     def save() {
         def bankaccountInstance = new Bankaccount(params)
         if (!bankaccountInstance.save(flush: true)) {
-println("BA Errors " + bankaccountInstance?.errors);
             render(view: "create", model: [bankaccountInstance: bankaccountInstance])
             return
         }
-println("BA2 Errors " + bankaccountInstance?.errors);
         flash.message = message(code: 'default.created.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), bankaccountInstance.id])
         redirect(action: "show", id: bankaccountInstance.id)
     }
 
     def show() {
         def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
+
         if (!bankaccountInstance) {
+
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
             return
         }

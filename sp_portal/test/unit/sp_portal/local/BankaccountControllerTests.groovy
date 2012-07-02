@@ -4,10 +4,44 @@ package sp_portal.local
 
 import org.junit.*
 import grails.test.mixin.*
+import grails.test.mixin.TestFor
+import sp_portal.DataSetupHelper;
 
 @TestFor(BankaccountController)
-@Mock(Bankaccount)
-class BankaccountControllerTests {
+@Mock([Bankaccount,sp_portal.User,sp_portal.Role,StandardizedPatient])
+class BankaccountControllerTests  {
+
+    def datasetup = new DataSetupHelper()
+
+    @Before
+    void setUp(){
+        datasetup.getDataSetA()
+
+        session.user = datasetup.normalUser;
+    }
+
+    @After
+    void tearDown(){
+
+      datasetup = null;
+
+    }
+
+
+
+    void setupData(){
+        def user = new sp_portal.User();
+        user.save()
+
+        def bankaccount = new Bankaccount();
+        def standardizedPatient = new StandardizedPatient();
+
+        user.standardizedPatient = standardizedPatient;
+
+        user.standardizedPatient.bankaccount = bankaccount;
+
+    }
+
     void testSomething() {
         assert true
     }
@@ -35,8 +69,8 @@ class BankaccountControllerTests {
 
         def model = controller.list()
 
-        assert model.bankaccountInstanceList.size() == 0
-        assert model.bankaccountInstanceTotal == 0
+        assert model.bankaccountInstanceList.size() == 1
+        assert model.bankaccountInstanceTotal == 1
     }
 
     void testCreate() {
@@ -46,53 +80,58 @@ class BankaccountControllerTests {
     }
 
     /**
-     *
-     *
+     * save a valid bank account
      */
-    void testSave() {
-
-        // empty params so the save should forward to create
-        controller.save()
-println("" +  controller.response.redirectedUrl)
-        assert model.bankaccountInstance == null
-        assert response.redirectedUrl == '/bankaccount/show/1'
-
-
-        response.reset()
+    void testSaveValid() {
 
         populateValidParams(params)
+
         controller.save()
 
-        assert controller.modelAndView.model.bankaccountInstance != null
-        assert controller.response.redirectedUrl == '/bankaccount/show/1'
-        assert controller.flash.message != null
-        assert Bankaccount.count() == 1
-    }
-/*
-    void testShow() {
-        controller.show()
-
+        assert response.redirectedUrl == '/bankaccount/show/2'
         assert flash.message != null
-        assert response.redirectedUrl == '/bankaccount/list'
+        assert Bankaccount.count() == 2
+    }
+
+    /**
+     * save an invalid bank account
+     */
+    void testSaveInvalid() {
+        params["bic"] = 'A2345678901234567890123456789012345678901'
+        params["iban"] = 'B2345678901234567890123456789012345678901'
+        params["bankName"] = 'C2345678901234567890123456789012345678901'
+        params["city"] = 'D2345678901234567890123456789012345678901'
+        params["country"] = 'E2345678901234567890123456789012345678901'
+        params["ownerName"] = 'F2345678901234567890123456789012345678901'
+        params["postalCode"] = '123456789'
+        params["origId"] = 5
+
+        controller.save()
 
 
-        populateValidParams(params)
-        def bankaccount = new Bankaccount(params)
+        assert view == "/bankaccount/create"
+        assert model.bankaccountInstance.bic == 'A2345678901234567890123456789012345678901'
+        assert flash.message == null
+        assert Bankaccount.count() == 1
 
-        assert bankaccount.save() != null
+    }
 
-        params.id = bankaccount.id
 
-        def model = controller.show()
+    void testShow() {
 
-        assert model.bankaccountInstance == bankaccount
+        def retModel = controller.show()
+
+        assert retModel.bankaccountInstance == session.user.standardizedPatient.bankaccount
+        assertNotNull retModel.bankaccountInstance
+
     }
 
     void testEdit() {
-        controller.edit()
+        def retModel = controller.edit()
 
-        assert flash.message != null
-        assert response.redirectedUrl == '/bankaccount/list'
+        assert flash.message == null
+        assert retModel.bankaccountInstance == session.user.standardizedPatient.bankaccount
+        assertNotNull retModel.bankaccountInstance
 
 
         populateValidParams(params)
@@ -104,9 +143,9 @@ println("" +  controller.response.redirectedUrl)
 
         def model = controller.edit()
 
-        assert model.bankaccountInstance == bankaccount
+        assert model.bankaccountInstance == session.user.standardizedPatient.bankaccount
     }
-
+/*
     void testUpdate() {
         controller.update()
 
