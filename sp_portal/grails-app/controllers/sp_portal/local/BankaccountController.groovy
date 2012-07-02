@@ -3,7 +3,7 @@ import sp_portal.User;
 import org.springframework.dao.DataIntegrityViolationException
 
 class BankaccountController extends sp_portal.MainController{
-	def beforeInterceptor = [action:this.&isLoggedInAsUser]
+    def beforeInterceptor = [action:this.&isLoggedInAsUser]
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -25,16 +25,17 @@ class BankaccountController extends sp_portal.MainController{
             render(view: "create", model: [bankaccountInstance: bankaccountInstance])
             return
         }
-
         flash.message = message(code: 'default.created.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), bankaccountInstance.id])
         redirect(action: "show", id: bankaccountInstance.id)
     }
 
     def show() {
         def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
+
         if (!bankaccountInstance) {
+
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
-       	    return
+            return
         }
         [bankaccountInstance: bankaccountInstance]
     }
