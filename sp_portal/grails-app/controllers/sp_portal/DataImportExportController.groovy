@@ -26,6 +26,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
+                       
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
 
                        ]
@@ -47,15 +48,15 @@ class DataImportExportController extends MainController {
                                                                                                                     x.anamnesisForm = form;
                                                                                                                 }
                                                                                                             return x},
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
-
-                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+                      
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},                    
+					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
                         ]
     static def createUser(standardizedPatient,jsonData){
          def x =new User();
-         x.userName= jsonData.email;
+         x.userName= jsonData.email; 
          x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
          x.userEmail=jsonData.email;
          x.standardizedPatient=standardizedPatient;
@@ -264,15 +265,13 @@ class DataImportExportController extends MainController {
 
         // loop over all the proerties in the class
         sp.metaPropertyValues.each{ prop ->
-//    def debugContition = {return datapath.contains("StandardizedPatient") && prop.name == "socialInsuranceNo" }
-      def debugContition = {return false }
+
             // avoid the read only properties
             if(exclusions.find {it == prop.name}) return
 
 
                 // if it is a basic type
                 if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
-
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
 
@@ -290,11 +289,9 @@ class DataImportExportController extends MainController {
                         }else{
 
 
-
                             // set the value to the one from JSON
                             if ( (jsonObject[prop.name] != JSONObject.NULL)){
                                 sp[prop.name] = jsonObject.get(prop.name);
-
                             } else {
 
                                 if (sp[prop.name]  && !jsonObject[prop.name]){
@@ -303,7 +300,6 @@ class DataImportExportController extends MainController {
                                 }
 
                             }
-
                             if (sp[prop.name].equals(jsonObject[prop])){
 
                             }else{
@@ -313,7 +309,6 @@ class DataImportExportController extends MainController {
                   }
 
                 } else {
-
 
                    // not a basic type
                    if (Date != prop.type){

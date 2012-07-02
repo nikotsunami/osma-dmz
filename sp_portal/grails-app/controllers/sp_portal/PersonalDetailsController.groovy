@@ -58,6 +58,7 @@ class PersonalDetailsController  extends MainController {
     }
 
     def update() {
+		println("params:"+params);
         def standardizedPatientInstance = User.findById(session.user.id).standardizedPatient;
         if (!standardizedPatientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])

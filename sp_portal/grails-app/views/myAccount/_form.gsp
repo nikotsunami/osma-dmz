@@ -12,7 +12,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordHash', 'error')} ">
     <label for="passwordHash">
-        <g:message code="user.passwordHash.label" default="Confirm Password" />
+        <g:message code="user.confirmPasswordHash.label" default="Confirm Password" />
 
     </label>
     <g:passwordField name="confirmPassword" value="${userInstance?.passwordHash}"/>

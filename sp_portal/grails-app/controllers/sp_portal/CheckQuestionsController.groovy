@@ -55,7 +55,7 @@ class CheckQuestionsController  extends MainController {
     def index() {
         redirect(action: "show", params: params)
     }
-
+    
     def titles = local.AnamnesisCheckTitle.findAll() 
     
 
@@ -153,8 +153,8 @@ class CheckQuestionsController  extends MainController {
     private void saveData(){
         def patient = getCurrentPatient();
         def questionIdStrings = params.findAll({ key, value ->
-                                                                                                        key.startsWith("question")
-                                                                                                        });
+													key.startsWith("question")
+													});
 
         def questionIds = questionIdStrings.each({ key, value ->
 

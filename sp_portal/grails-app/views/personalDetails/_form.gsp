@@ -1,5 +1,5 @@
 <%@ page import="sp_portal.local.StandardizedPatient" %>
-
+<%@ page import="ch.unibas.medizin.osce.shared.*" %>
 
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'birthday', 'error')} ">
@@ -29,9 +29,10 @@
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'gender', 'error')} ">
     <label for="gender">
         <g:message code="standardizedPatient.gender.label" default="Gender" />
-
+ 
     </label>
-    <g:field type="number" name="gender" value="${fieldValue(bean: standardizedPatientInstance, field: 'gender')}"/>
+    <g:radio name="gender" value="0" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("0")}"/>&nbsp;&nbsp;${message(code: 'default.gender.male')}&nbsp;&nbsp;&nbsp;&nbsp;
+	<g:radio name="gender" value="1" checked="${fieldValue(bean: standardizedPatientInstance, field: 'gender').equals("1")}"/>&nbsp;&nbsp;${message(code: 'default.gender.female')}
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'height', 'error')} ">
@@ -55,7 +56,9 @@
         <g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" />
 
     </label>
-    <g:field type="number" name="maritalStatus" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}"/>
+	<g:select name="maritalStatus" from="${MaritalStatus?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}" optionKey="value"/>
+	
+    <!--<g:field type="number" name="maritalStatus" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}"/>-->
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'mobile', 'error')} ">
@@ -143,7 +146,8 @@
         <g:message code="standardizedPatient.workPermission.label" default="Work Permission" />
 
     </label>
-    <g:field type="number" name="workPermission" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}"/>
+	<g:select name="workPermission" from="${WorkPermission?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}" optionKey="key"/>
+<!-- <g:field type="number" name="workPermission" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}"/>-->
 </div>
 
 
