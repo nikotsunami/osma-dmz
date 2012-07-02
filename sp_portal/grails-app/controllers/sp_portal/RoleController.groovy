@@ -2,7 +2,7 @@ package sp_portal
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class RoleController extends MainController {
+class RoleController{
 
 		def beforeInterceptor = [action:this.&isLoggedInAsAdmin]    
     
