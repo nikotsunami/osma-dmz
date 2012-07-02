@@ -62,8 +62,8 @@ class DataImportExportController extends MainController {
          x.standardizedPatient=standardizedPatient;
          x.isActive=true;
          def roles = [];
-       roles.add(Role.findByRoleName("USER_ROLE"));
-       x.roles = roles;
+	   roles.add(Role.findByRoleName("USER_ROLE"));
+	   x.roles = roles;
          x.save();
          //return x;
 
