@@ -94,7 +94,7 @@ class CheckQuestionsController  extends MainController {
 
 
             }else{
-                redirect(action: "showPage")
+                render message(code: 'checkquestion.noneavailable');
             }
 
     }
