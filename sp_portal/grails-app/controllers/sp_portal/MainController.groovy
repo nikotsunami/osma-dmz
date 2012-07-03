@@ -133,19 +133,8 @@ class MainController {
     }
 
 
-    private void setupDefaultData(){
-           if (Role.list().size() == 0){
-                log("setup Default Data ")
-                Role adminRole = new Role();
-                adminRole.roleName = ADMIN_ROLE;
-                adminRole.roleDescription = "Administrate Users";
-                adminRole.save();
-
-                Role userRole = new Role();
-                userRole.roleName = USER_ROLE;
-                userRole.roleDescription = "Normal Users";
-                userRole.save();
-
+  	private void setupDefaultData(){
+           
                 User admin = new User();
 
                 log("1 " + admin);
@@ -166,8 +155,9 @@ class MainController {
                 admin.save();
                 log("setup Default Data over" + admin)
 
-           }
+           
     }
+	
 
 
 
