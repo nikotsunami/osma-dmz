@@ -4,8 +4,9 @@
     <h1><%= question.text %></h1>
      <g:each var="check" status="i" in="${checkValue}">
 				<g:if test="${check.anamnesisCheck == question}">
-				 <g:set var="validValue" value="${check.anamnesisChecksValue.equals("1") ? true: false}" />
-				  <g:set var="valid" value="${check.anamnesisChecksValue.equals("0") ? true: false}" />
+				<g:set var="validValue" value="${check.truth==true ? true: false}" />
+				<g:set var="valid" value="${check.truth==false ? true: false}" />
+				  
 		    </g:if>
     </g:each>
     <g:radio name="question.${question.id}" value="true" checked="${validValue}"/>&nbsp;&nbspYes&nbsp;&nbsp;&nbsp;&nbsp;
