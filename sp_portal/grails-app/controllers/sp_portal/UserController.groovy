@@ -115,8 +115,8 @@ class UserController extends MainController {
 
         }
 
-				def anamnesisCheckTitleList = remote.AnamnesisCheckTitle.list();
-				for (remote.AnamnesisCheckTitle anamnesisCheckTitle : anamnesisCheckTitleList ){
+		def anamnesisCheckTitleList = remote.AnamnesisCheckTitle.list();
+		for (remote.AnamnesisCheckTitle anamnesisCheckTitle : anamnesisCheckTitleList ){
           if(!(local.AnamnesisCheckTitle.findByOrigId(anamnesisCheckTitle.id))){
 
              local.AnamnesisCheckTitle newAnamnesisCheckTitle= new local.AnamnesisCheckTitle();
@@ -125,9 +125,9 @@ class UserController extends MainController {
              newAnamnesisCheckTitle.text = anamnesisCheckTitle.text;
              newAnamnesisCheckTitle.save();
 
-             importMessage(messages,"${message(code: 'default.Nationality.message')}", ""+anamnesisCheckTitle.id);
+             importMessage(messages,"${message(code: 'default.AnamnesisCheckTitle.message')}", ""+anamnesisCheckTitle.id);
                     }else {
-            existsMessage(messages,"${message(code: 'default.Nationality.message')}", ""+anamnesisCheckTitle.id);
+            existsMessage(messages,"${message(code: 'default.AnamnesisCheckTitle.message')}", ""+anamnesisCheckTitle.id);
           }
         }
         
