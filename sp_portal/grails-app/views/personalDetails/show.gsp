@@ -1,5 +1,6 @@
 
 <%@ page import="sp_portal.local.StandardizedPatient" %>
+<%@ page import="ch.unibas.medizin.osce.shared.*" %>
 <!doctype html>
 <html>
     <head>
@@ -44,11 +45,12 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.gender}">
+                <g:if test="${standardizedPatientInstance?.gender != null}">
                 <li class="fieldcontain">
                     <span id="gender-label" class="property-label"><g:message code="standardizedPatient.gender.label" default="Gender" /></span>
 
-                        <span class="property-value" aria-labelledby="gender-label"><g:fieldValue bean="${standardizedPatientInstance}" field="gender"/></span>
+                        <span class="property-value" aria-labelledby="gender-label">${standardizedPatientInstance?.gender == 0 ? message(code: 'default.gender.male') : message(code: 'default.gender.female')}
+						<!--<g:fieldValue bean="${standardizedPatientInstance}" field="gender"/>--></span>
 
                 </li>
                 </g:if>
@@ -71,11 +73,17 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.maritalStatus}">
-                <li class="fieldcontain">
+                <g:if test="${standardizedPatientInstance?.maritalStatus != null}">			  
+				<g:each var="mStatus" status="i" in="${MaritalStatus?.values()}">
+					<g:if test="${mStatus.getValue() == standardizedPatientInstance?.maritalStatus}">
+						<g:set var="value" value="${mStatus.name()}" />
+					</g:if>
+				 </g:each>
+				<li class="fieldcontain">
                     <span id="maritalStatus-label" class="property-label"><g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" /></span>
-
-                        <span class="property-value" aria-labelledby="maritalStatus-label"><g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/></span>
+					
+				    <span class="property-value" aria-labelledby="maritalStatus-label">${value}
+					<!--<g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/>--></span>
 
                 </li>
                 </g:if>
@@ -170,11 +178,17 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.workPermission}">
-                <li class="fieldcontain">
+                <g:if test="${standardizedPatientInstance?.workPermission != null}">
+                <g:each var="permission" status="i" in="${WorkPermission?.values()}">
+					<g:if test="${permission.getKey() == standardizedPatientInstance?.workPermission}">
+						<g:set var="value" value="${permission.name()}" />
+					</g:if>
+				 </g:each>
+				<li class="fieldcontain">
                     <span id="workPermission-label" class="property-label"><g:message code="standardizedPatient.workPermission.label" default="Work Permission" /></span>
 
-                        <span class="property-value" aria-labelledby="workPermission-label"><g:fieldValue bean="${standardizedPatientInstance}" field="workPermission"/></span>
+                        <span class="property-value" aria-labelledby="workPermission-label">${value}
+						<!--<g:fieldValue bean="${standardizedPatientInstance}" field="workPermission"/>--></span>
 
                 </li>
                 </g:if>
