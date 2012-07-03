@@ -13,9 +13,6 @@
 								</g:if>      
 							</g:each>
 						</g:if>
-						<g:else>
-							 <g:set var="validValue" value="false" />
-						</g:else>
 				</g:if>
 	   </g:each>
    <g:radio name="question.${question.id}" value="${value}" checked="${validValue}"/>&nbsp;&nbsp;<%= value %>&nbsp;&nbsp;

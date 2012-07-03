@@ -57,7 +57,7 @@
         <g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" />
 
     </label>
-	<g:select name="maritalStatus" from="${MaritalStatus?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}" optionKey="value"/>
+	<g:select name="maritalStatus" from="${MaritalStatus?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}" noSelection="['': '']" optionKey="value"/>
 	
     <!--<g:field type="number" name="maritalStatus" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}"/>-->
 </div>
@@ -147,7 +147,7 @@
         <g:message code="standardizedPatient.workPermission.label" default="Work Permission" />
 
     </label>
-	<g:select name="workPermission" from="${WorkPermission?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}" optionKey="key"/>
+	<g:select name="workPermission" from="${WorkPermission?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}" noSelection="['': '']" optionKey="key"/>
 <!-- <g:field type="number" name="workPermission" value="${fieldValue(bean: standardizedPatientInstance, field: 'workPermission')}"/>-->
 </div>
 

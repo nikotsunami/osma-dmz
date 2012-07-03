@@ -88,22 +88,4 @@ class PersonalDetailsController  extends MainController {
         redirect(action: "show", id: standardizedPatientInstance.id)
     }
 
-   /* def delete() {
-        def standardizedPatientInstance = StandardizedPatient.get(params.id)
-        if (!standardizedPatientInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            standardizedPatientInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'standardizedPatient.label', default: 'StandardizedPatient'), params.id])
-            redirect(action: "show", id: params.id)
-        }
-    }*/
 }
