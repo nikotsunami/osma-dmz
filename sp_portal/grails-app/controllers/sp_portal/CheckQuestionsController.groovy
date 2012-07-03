@@ -146,8 +146,13 @@ class CheckQuestionsController  extends MainController {
 
 
     def save(){
-                saveData();
-                redirect(action: "showPage",params: [index: titleIndex])
+		 if(titleIndex >= titles.size -1){
+			saveData();
+			redirect(controller:"thank", action:"thank")
+		 }else{
+			saveData();
+			redirect(action: "showPage",params: [index: titleIndex])
+		 }
     }
 
     private void saveData(){
