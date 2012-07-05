@@ -39,7 +39,6 @@ class UserController extends MainController {
 
     def create() {
           params.isActive=true
-					println("create the user ");
           def standardizedPatient = new local.StandardizedPatient();
 
 
@@ -400,8 +399,6 @@ class UserController extends MainController {
 
 
     def save() {
-
-				println("*******save the new user params: " + params);
 
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
 

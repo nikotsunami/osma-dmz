@@ -80,6 +80,7 @@ class DataImportExportController extends MainController {
 
 
     def exportSP(){
+		
            if (params.id){
               local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
@@ -96,7 +97,6 @@ class DataImportExportController extends MainController {
 
 
     def importSP(){
-
         if (params.data){
             String data = params.data;
             data = preProcessData(data);
@@ -404,7 +404,6 @@ class DataImportExportController extends MainController {
 
     private def logIf(condition, message){
         if (condition){
-            println(">" + message );
         }
     }
 

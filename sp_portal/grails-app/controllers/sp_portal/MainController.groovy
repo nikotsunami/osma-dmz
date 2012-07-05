@@ -95,7 +95,7 @@ class MainController {
 
 
     private void log(String msg){
-        println(msg);
+     
     }
 
 
