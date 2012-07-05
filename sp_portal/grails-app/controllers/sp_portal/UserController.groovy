@@ -25,7 +25,7 @@ class UserController extends MainController {
 
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: "Welcome", params: params)
     }
 
     def list() {
@@ -434,13 +434,15 @@ class UserController extends MainController {
 
     def show() {
         def userInstance = User.get(params.id)
-        if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+		if (!userInstance) {
+           // flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "list")
             return
         }
-        handleOutboundPassword(userInstance);
-        [userInstance: userInstance]
+		
+          handleOutboundPassword(userInstance);
+          [userInstance: userInstance]
+		
     }
 
     def edit() {
@@ -614,6 +616,11 @@ class UserController extends MainController {
         log(" returning true");
         return true;
     }
+	
+	def Welcome(){
+	
+	
+	}
 
 
  }

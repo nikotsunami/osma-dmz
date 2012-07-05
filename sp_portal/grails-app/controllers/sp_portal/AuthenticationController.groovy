@@ -26,6 +26,7 @@ class AuthenticationController extends MainController {
 
     def login(){
       setupDefaultData();
+	 
     }
 
     def authenticate(){
@@ -53,7 +54,7 @@ class AuthenticationController extends MainController {
         log("In applyPermissions  " + result);
         if ( result.size() > 0 ){
             log("redirectING TO ACTION LIST");
-            redirect(controller:"user", action: "list")
+            redirect(controller:"user", action: "index")
         } else {
           redirect(controller:"StdPnt", action:"index")
         }
@@ -83,7 +84,7 @@ class AuthenticationController extends MainController {
     private void handleOutboundPassword(user){
         user.passwordHash = null;
     }
-
+	
 
 
 }
