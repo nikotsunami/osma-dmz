@@ -12,11 +12,25 @@ class DataSetupHelper {
 
     def standardizedPatient1
     def bankaccount1
+	
+	def anamnesisForm1	
+	def anamnesisCheckTitle1	
+	def anamnesisCheck1
+	def anamnesisCheck2
+	def anamnesisChecksValue1
+	def anamnesisCheck3
 
     def getDataSetA(){
         setupRoles()
         setupUsers()
         setupStandardizedPatients()
+		setupAnamnesisCheckTitle()
+		setupAnamnesisCheck1()
+		setupAnamnesisCheck2()
+		setupAnamnesisCheck3()
+		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
+		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
+		setupAnamnesisForm()
 
         assertNotNull normalUser
 
@@ -29,7 +43,10 @@ class DataSetupHelper {
         setupBankAccounts()
 
         standardizedPatient1.bankaccount = bankaccount1
+		standardizedPatient1.anamnesisForm = anamnesisForm1
         standardizedPatient1.save()
+		
+		setupAnamnesisCheckValue1()
 
         assertNotNull normalUser.standardizedPatient.bankaccount
 
@@ -154,6 +171,83 @@ class DataSetupHelper {
 
     }
 
+	def setupAnamnesisForm(){
+		def anamnesisForm = new AnamnesisForm()
+		anamnesisForm.createDate = new Date()
+		anamnesisForm.origId = 2
+		
+		anamnesisForm.save();
+		
+		anamnesisForm1 = anamnesisForm;
+	}
+	
+	def setupAnamnesisCheckTitle(){
+		def anamnesisCheckTitle = new AnamnesisCheckTitle();
+		anamnesisCheckTitle.text = 'title1'
+		anamnesisCheckTitle.sortOrder = 1
+		
+		anamnesisCheckTitle.save();
+		
+		anamnesisCheckTitle1 = anamnesisCheckTitle;
+	}
+	
+	def setupAnamnesisCheck1(){
+		def anamnesisCheck = new AnamnesisCheck();
+		anamnesisCheck.text = 'Rauchen Sie?'
+		anamnesisCheck.value = ''
+		anamnesisCheck.sortOrder = 1
+		anamnesisCheck.type = 1   // should be a boolean type
+		anamnesisCheck.anamnesisCheckTitle = null
+		anamnesisCheck.origId = 2
+		
+		anamnesisCheck.save();
+		
+		anamnesisCheck1 = anamnesisCheck;
 
+	}
+	
+	def setupAnamnesisCheck2(){
+		def anamnesisCheck = new AnamnesisCheck();
+		anamnesisCheck.text = 'Leiden Sie unter Diabetes?'
+		anamnesisCheck.value = ''
+		anamnesisCheck.sortOrder = 1
+		anamnesisCheck.type = 1
+		anamnesisCheck.anamnesisCheckTitle = null
+		anamnesisCheck.origId = 2
+		
+		anamnesisCheck.save();
+		
+		anamnesisCheck2 = anamnesisCheck;
+
+	}
+	
+	def setupAnamnesisCheck3(){
+		def anamnesisCheck = new AnamnesisCheck();
+		anamnesisCheck.text = 'Describe your best ever holiday'
+		anamnesisCheck.value = ''
+		anamnesisCheck.sortOrder = 1
+		anamnesisCheck.type = 0 // should be a string type according to yyb
+		anamnesisCheck.anamnesisCheckTitle = null
+		anamnesisCheck.origId = 2
+		
+		anamnesisCheck.save();
+		
+		anamnesisCheck3 = anamnesisCheck;
+
+	}
+	
+	
+	def setupAnamnesisCheckValue1(){
+		def anamnesisChecksValue = new AnamnesisChecksValue();
+		anamnesisChecksValue.origId = 5
+		anamnesisChecksValue.comment = null;
+		anamnesisChecksValue.truth = false
+		anamnesisChecksValue.anamnesisForm = anamnesisForm1
+		anamnesisChecksValue.anamnesisCheck = anamnesisCheck1
+		
+		anamnesisChecksValue.save()
+		
+		anamnesisChecksValue1 = anamnesisChecksValue;
+	}
 
 }

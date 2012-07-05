@@ -56,7 +56,16 @@ class CheckQuestionsController  extends MainController {
         redirect(action: "show", params: params)
     }
     
-    def titles = local.AnamnesisCheckTitle.findAll() 
+	
+	def titlesValues = []
+	
+   def titles() {
+		 if (titlesValues.size() == 0){
+			titlesValues = local.AnamnesisCheckTitle.findAll() 
+		 } 
+		  return titlesValues
+	
+	}
     
 
     def show() {
@@ -75,7 +84,7 @@ class CheckQuestionsController  extends MainController {
                 params.index = 0;
            }
 
-           currentTitle = titles[index];
+           currentTitle = titles()[index];
 
             if(currentTitle){
 
@@ -89,7 +98,7 @@ class CheckQuestionsController  extends MainController {
                     }
                     if(checkValue!=null){
 
-                            [title: currentTitle , questions: questions,titleSize: titles.size,checkValue: checkValue]
+                            [title: currentTitle , questions: questions,titleSize: titles().size(),checkValue: checkValue]
 
                     }
 
@@ -108,8 +117,8 @@ class CheckQuestionsController  extends MainController {
 
     def showNext(){
             titleIndex++;
-            if(titleIndex >= titles.size){
-                //titleIndex = titles.size-1;
+            if(titleIndex >= titles().size()){
+                //titleIndex = titles().size()-1;
                 saveData();
                 redirect(controller:"thank", action:"thank")
         }else{
@@ -138,7 +147,7 @@ class CheckQuestionsController  extends MainController {
     }
 
     def showEnd(){
-            titleIndex = titles.size-1;
+            titleIndex = titles().size()-1;
             setSessionTitleIndex();
             saveData();
         redirect(action: "showPage", params: [index: titleIndex])
@@ -146,7 +155,7 @@ class CheckQuestionsController  extends MainController {
 
 
     def save(){
-		 if(titleIndex >= titles.size -1){
+		 if(titleIndex >= titles().size()-1){
 			saveData();
 			redirect(controller:"thank", action:"thank")
 		 }else{
@@ -160,10 +169,11 @@ class CheckQuestionsController  extends MainController {
         def questionIdStrings = params.findAll({ key, value ->
 													key.startsWith("question")
 													});
-
+													
+		
         def questionIds = questionIdStrings.each({ key, value ->
 
-
+			
             def components = key.split("\\.");
 
 
@@ -187,21 +197,21 @@ class CheckQuestionsController  extends MainController {
 						checkValue.anamnesisChecksValue=valueStr;
 						
 						checkValue.comment = null;
-						if(checkInstance.getType()==1){
-							System.out.println("type == 1");
+						
+						if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
 							if(valueStr.equals("0")){
 								checkValue.truth = false;
 							}else if(valueStr.equals("1")){
 								checkValue.truth = true;
-							}else{
+							}else{														
 								checkValue.truth = null;
 							}
 						}else{
 							checkValue.truth = null;
-						}
-						if(!valueStr.equals("")){
-							checkValue.save();
-						}
+						}						
+							
+						checkValue.save();
+						
                    }else{
 
 						local.AnamnesisChecksValue checkValueInstance = new local.AnamnesisChecksValue();
@@ -212,12 +222,14 @@ class CheckQuestionsController  extends MainController {
 						checkValueInstance.anamnesisChecksValue=valueStr;
 						
 						checkValueInstance.comment = null;
-						if(checkInstance.getType()==1){
+						
+						if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
 							if(valueStr.equals("0")){
 								checkValueInstance.truth = false;
 							}else if(valueStr.equals("1")){
 								checkValueInstance.truth = true;
 							}else{
+								
 								checkValueInstance.truth = null;
 							}
 						}else{
@@ -227,8 +239,8 @@ class CheckQuestionsController  extends MainController {
 						if(!valueStr.equals("")){
 							checkValueInstance.save();
 						 }
-                         }
-                     }
+                    }
+                }
 
            }
 
@@ -239,11 +251,8 @@ class CheckQuestionsController  extends MainController {
 
     static String valueStr =" ";
 
-    /*
-     * set the submit answer
-     */
+    //  set the submit answer
     def setValueStr(checkInstance,questionId,value){
-
 
           boolean isTrue = false;
           String [] possibleValues = checkInstance.value.split("\\|");
