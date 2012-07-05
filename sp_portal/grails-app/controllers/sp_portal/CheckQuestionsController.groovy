@@ -187,9 +187,6 @@ class CheckQuestionsController  extends MainController {
 						checkValue.anamnesisChecksValue=valueStr;
 						
 						checkValue.comment = null;
-						System.out.println("????????????text = "+checkInstance.getText());
-						System.out.println("????????????type = "+checkInstance.getType());
-						System.out.println("????????????valueStr = "+valueStr);
 						if(checkInstance.getType()==1){
 							System.out.println("type == 1");
 							if(valueStr.equals("0")){
@@ -197,11 +194,9 @@ class CheckQuestionsController  extends MainController {
 							}else if(valueStr.equals("1")){
 								checkValue.truth = true;
 							}else{
-								System.out.println("????????????");
 								checkValue.truth = null;
 							}
 						}else{
-							System.out.println("type != 1");
 							checkValue.truth = null;
 						}
 						if(!valueStr.equals("")){
@@ -217,16 +212,12 @@ class CheckQuestionsController  extends MainController {
 						checkValueInstance.anamnesisChecksValue=valueStr;
 						
 						checkValueInstance.comment = null;
-						System.out.println("????????????text = "+checkInstance.getText());
-						System.out.println("????????????type = "+checkInstance.getType());
-						System.out.println("????????????valueStr = "+valueStr);
 						if(checkInstance.getType()==1){
 							if(valueStr.equals("0")){
 								checkValueInstance.truth = false;
 							}else if(valueStr.equals("1")){
 								checkValueInstance.truth = true;
 							}else{
-								System.out.println("????????????");
 								checkValueInstance.truth = null;
 							}
 						}else{

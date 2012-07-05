@@ -18,7 +18,7 @@ class StdPntController  extends MainController {
     def welcome() {
 
 //      def checkList = local.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId());
-//        println(" in welcome action");
+
     }
 
     def showQuestion(){
