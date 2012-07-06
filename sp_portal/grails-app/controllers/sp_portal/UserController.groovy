@@ -25,7 +25,7 @@ class UserController extends MainController {
 
 
     def index() {
-        redirect(action: "Welcome", params: params)
+        redirect(action: "welcome", params: params)
     }
 
     def list() {
@@ -114,8 +114,8 @@ class UserController extends MainController {
 
         }
 
-		def anamnesisCheckTitleList = remote.AnamnesisCheckTitle.list();
-		for (remote.AnamnesisCheckTitle anamnesisCheckTitle : anamnesisCheckTitleList ){
+        def anamnesisCheckTitleList = remote.AnamnesisCheckTitle.list();
+        for (remote.AnamnesisCheckTitle anamnesisCheckTitle : anamnesisCheckTitleList ){
           if(!(local.AnamnesisCheckTitle.findByOrigId(anamnesisCheckTitle.id))){
 
              local.AnamnesisCheckTitle newAnamnesisCheckTitle= new local.AnamnesisCheckTitle();
@@ -129,7 +129,7 @@ class UserController extends MainController {
             existsMessage(messages,"${message(code: 'default.AnamnesisCheckTitle.message')}", ""+anamnesisCheckTitle.id);
           }
         }
-        
+
         for (remote.AnamnesisCheck check : anamnesisCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(check.id))){
 
@@ -151,19 +151,19 @@ class UserController extends MainController {
                     newCheck.anamnesisCheckTitle=local.AnamnesisCheckTitle.findByOrigId(check.anamnesisCheckTitle.id)
                       log(" title = " + newCheck.anamnesisCheckTitle.text);
                    }
-                    
-                   
-                 
+
+
+
                  newCheck.save();
 
-             
-                 
+
+
                  importMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
               }
           }else {
             existsMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+check.id);
           }
-           
+
         }
 
 
@@ -404,9 +404,9 @@ class UserController extends MainController {
 
 
         if(passwordsMatch){
-               
+
              def userInstance = new User(params)
-             
+
              handleInboundPassword(userInstance);
 
                 def standardizedPatient = new local.StandardizedPatient();
@@ -431,15 +431,15 @@ class UserController extends MainController {
 
     def show() {
         def userInstance = User.get(params.id)
-		if (!userInstance) {
+        if (!userInstance) {
            // flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "list")
             return
         }
-		
+
           handleOutboundPassword(userInstance);
           [userInstance: userInstance]
-		
+
     }
 
     def edit() {
@@ -613,11 +613,11 @@ class UserController extends MainController {
         log(" returning true");
         return true;
     }
-	
-	def Welcome(){
-	
-	
-	}
+
+    def welcome(){
+
+
+    }
 
 
  }
