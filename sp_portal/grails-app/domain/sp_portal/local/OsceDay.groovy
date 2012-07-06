@@ -9,8 +9,6 @@ class OsceDay {
     Long id
     Integer version
     Date osceDate
-    Date timeStart
-    Date timeEnd
 
 
     static constraints = {
