@@ -45,7 +45,6 @@ class SendEmailController extends MainController {
 			redirect(action: "show")
 		}catch(Exception e){
 		    redirect(action: "sendFailure")
-			//render message(code: 'user.sendEmail.failure')
 		}finally{
 			session.sendPatients=null;
 		}
@@ -83,8 +82,7 @@ class SendEmailController extends MainController {
 		if(session.sendPatients){
 			["defaultEmail" : grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.defaultText ,"defaultSubject": grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject]
 		}else{
-			
-			//render message(code: 'user.selectPatient.message')
+			redirect(action: "alertWindow");
 		}
 	}
 	
@@ -95,7 +93,10 @@ class SendEmailController extends MainController {
 	def sendFailure(){
 	
 	}
-
+	
+	def alertWindow(){
+	
+	}
 	
 
 }
