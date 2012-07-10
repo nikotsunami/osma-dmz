@@ -35,9 +35,6 @@ grails.project.dependency.resolution = {
 
          runtime 'mysql:mysql-connector-java:5.1.16'
         // runtime 'mysql:mysql-connector-java:5.1.16'
-//		compile ":greenmail:1.3.2"
-        test 'org.gmock:gmock:0.8.0'
-        test 'org.hamcrest:hamcrest-library:1.1' // Optionally, you can use hamcrest matchers
 
     }
 
