@@ -12,6 +12,6 @@ class OsceDay {
 
 
     static constraints = {
-		osceDate nullable: false, min: new Date()
+		osceDate nullable: false
     }
 }

@@ -19,6 +19,6 @@ class Training {
 		timeEnd nullable: false, validator: { val, obj ->
         val?.after(obj.timeStart)
 		}	
-		trainingDate nullable: false, min: new Date()
+		trainingDate nullable: false
     }
 }
