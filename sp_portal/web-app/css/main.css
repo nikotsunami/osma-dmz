@@ -601,3 +601,14 @@ a.skip {
 a.right {
   float: right;	
 }
+
+.editEmailSubject
+{
+	width: 588px;
+}
+
+.editEmailBody
+{
+  width: 588px;
+  height: 345px;
+}

@@ -12,10 +12,10 @@ import sp_portal.DataSetupHelper;
 @TestFor(CheckQuestionsController)
 @Mock([User,Role,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue,local.Bankaccount])
 class CheckQuestionsControllerTests {
-    def datasetup = new DataSetupHelper()
-
+    def datasetup = null;
 	@Before
     void setUp() {
+		datasetup = new DataSetupHelper()
         datasetup.getDataSetA()
 
         session.user = datasetup.normalUser;

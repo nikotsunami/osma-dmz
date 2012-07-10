@@ -63,11 +63,17 @@ grails.hibernate.cache.queries = true
 environments {
     development {
         grails.logging.jul.usebridge = true
+		grails.mail.port = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
+        grails.serverURL = "http://localhost:8090/${appName}"
     }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
+	test {
+		grails.mail.port = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
+        grails.serverURL = "http://localhost:8090/${appName}"
+	}
 }
 
 // log4j configuration
@@ -100,4 +106,30 @@ log4j = {
 sp_portal.admin.username = "admin"
 sp_portal.admin.password = "123"
 sp_portal.admin.email = "paul@jserver"
+sp_portal.mail.inviteStandardizedPatients.defaultText = """
+Dear #preName #name 
+
+The University of Basel would like to invite you to attend our medical examinations as a paid actor/ress. Select dates that you can attend by logging into our
+site at www.xxxxx with you username which is this email address and pasword which is your health insurace number. 
+
+
+Yours sincerely
+
+paul
+
+"""
+
+sp_portal.mail.inviteStandardizedPatients.subject = "UNIBAS Osce Examinations"
+
+
+
+grails {
+   mail {
+     host = "192.168.2.2"
+     port = 25
+     username = "marvin@jserver"
+     password = "marvin_123"
+     props = ["mail.smtp.auth":"false"]
+
+} }
 

@@ -11,6 +11,7 @@ class DataSetupHelper {
     def normalUser
 
     def standardizedPatient1
+	def standardizedPatient2
     def bankaccount1
 	
 	def anamnesisForm1	
@@ -23,7 +24,7 @@ class DataSetupHelper {
     def getDataSetA(){
         setupRoles()
         setupUsers()
-        setupStandardizedPatients()
+        standardizedPatient1 =  setupStandardizedPatients("")
 		setupAnamnesisCheckTitle()
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
@@ -45,6 +46,7 @@ class DataSetupHelper {
         standardizedPatient1.bankaccount = bankaccount1
 		standardizedPatient1.anamnesisForm = anamnesisForm1
         standardizedPatient1.save()
+
 		
 		setupAnamnesisCheckValue1()
 
@@ -54,6 +56,51 @@ class DataSetupHelper {
 
     }
 
+
+
+	/**
+	 * Data set B has 2 setupStandardizedPatients, they currently both share a bank account and 
+	 * anamnesisForm but you can change this if you need to.
+	 */
+   def getDataSetB(){
+        setupRoles()
+        setupUsers()
+        standardizedPatient1 =  setupStandardizedPatients("")
+		standardizedPatient2 =  setupStandardizedPatients("B")
+		setupAnamnesisCheckTitle()
+		setupAnamnesisCheck1()
+		setupAnamnesisCheck2()
+		setupAnamnesisCheck3()
+		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
+		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
+		setupAnamnesisForm()
+
+        assertNotNull normalUser
+
+        normalUser.standardizedPatient = standardizedPatient1
+
+        normalUser.save()
+
+        assertNotNull normalUser.standardizedPatient
+
+        setupBankAccounts()
+
+        standardizedPatient1.bankaccount = bankaccount1
+		standardizedPatient1.anamnesisForm = anamnesisForm1
+        standardizedPatient1.save()
+
+        standardizedPatient2.bankaccount = bankaccount1
+		standardizedPatient2.anamnesisForm = anamnesisForm1
+        standardizedPatient2.save()
+
+		
+		setupAnamnesisCheckValue1()
+
+        assertNotNull normalUser.standardizedPatient.bankaccount
+
+
+
+    }
 
 
 
@@ -73,7 +120,6 @@ class DataSetupHelper {
             userRole.roleDescription = "Normal Users";
 
             userRole.save();
-
        }
     }
 
@@ -81,7 +127,6 @@ class DataSetupHelper {
 
 
     def setupUsers(){
-
 
         User admin = new User();
 
@@ -94,9 +139,9 @@ class DataSetupHelper {
         def roles0 = [];
         roles0.add(Role.findByRoleName("ADMIN_ROLE"));
 
-        admin.roles = roles0;
+		admin.roles = roles0;
 
-        admin.save();
+		admin.save();
 
         adminUser = admin
 
@@ -116,25 +161,24 @@ class DataSetupHelper {
         user1.save();
 
         normalUser = user1
-
     }
 
-    def setupStandardizedPatients(){
+    def setupStandardizedPatients(def prefix){
         StandardizedPatient standardizedPatient = new StandardizedPatient();
         standardizedPatient.origId = 1;
         standardizedPatient.birthday = new Date();
-        standardizedPatient.city = "Wuhu"
-        standardizedPatient.email = "sp1@test.com"
+        standardizedPatient.city = "${prefix}Wuhu"
+        standardizedPatient.email = "${prefix}sp1@test.com"
         standardizedPatient.gender = 1
         standardizedPatient.height = 81
-        standardizedPatient.immagePath = "/aa/bb"
+        standardizedPatient.immagePath = "${prefix}/aa/bb"
         standardizedPatient.maritalStatus = 1
         standardizedPatient.mobile = "123454567"
         standardizedPatient.name = "smith"
         standardizedPatient.postalCode = 123456789
         standardizedPatient.preName = "bob"
-        standardizedPatient.socialInsuranceNo = "1234567890"
-        standardizedPatient.street = "a street"
+        standardizedPatient.socialInsuranceNo = "1234567890123"
+        standardizedPatient.street = "${prefix}a street"
         standardizedPatient.telephone = "123454567"
         standardizedPatient.telephone2 = "123454567"
         standardizedPatient.videoPath = "123454567"
@@ -146,12 +190,10 @@ class DataSetupHelper {
         standardizedPatient.nationality  = null
         standardizedPatient.bankaccount  = null
 
-
-
-
         standardizedPatient.save();
-
-        standardizedPatient1 = standardizedPatient
+		
+		return standardizedPatient
+        
 
     }
 

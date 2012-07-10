@@ -23,24 +23,31 @@ grails.project.dependency.resolution = {
         mavenCentral()
 
         // uncomment these to enable remote dependency resolution from public Maven repositories
-        //mavenCentral()
-        //mavenLocal()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenCentral()
+        mavenLocal()
+        mavenRepo "http://snapshots.repository.codehaus.org"
+        mavenRepo "http://repository.codehaus.org"
+        mavenRepo "http://download.java.net/maven/2/"
+        mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
          runtime 'mysql:mysql-connector-java:5.1.16'
         // runtime 'mysql:mysql-connector-java:5.1.16'
+//		compile ":greenmail:1.3.2"
+        test 'org.gmock:gmock:0.8.0'
+        test 'org.hamcrest:hamcrest-library:1.1' // Optionally, you can use hamcrest matchers
+
     }
 
     plugins {
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.7.1"
         runtime ":resources:1.1.6"
+		
+		
+		
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"

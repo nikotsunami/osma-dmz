@@ -35,7 +35,7 @@
           <td><g:link controller="user" action="show" ><li><g:message code="default.managerUser.link"/></li></g:link></td>
           <td><g:link><li><g:message code="default.managerOsceDays.link"/></li></g:link></td>
           <td><g:link><li><g:message code="default.managerTrainingDay.link"/></li></g:link></td>
-          <td><g:link><li><g:message code="default.sendEmail.link"/></li></g:link></td>
+          <td><g:link controller="sendEmail" action="show" ><li><g:message code="default.sendEmail.link"/></li></g:link></td>
    
         
         </ul>
