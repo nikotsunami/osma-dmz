@@ -32,18 +32,23 @@ class SendEmailController extends MainController {
 		String body="";
 		try{
 			for(local.StandardizedPatient patient: patients){
-				
 					to = patient.email;
 					//to = "marvin@jserver"
 					subject= params.editedEmailSubject;
 					body = params.editedEmailText;
-					body = body.replaceAll("#preName",patient.preName);
-					body = body.replaceAll("#name",patient.name);
+					if(patient.preName){
+						body = body.replaceAll("#preName",patient.preName);
+					}
+					
+					if(patient.name){
+						body = body.replaceAll("#name",patient.name);
+					}
 					DMZMailService.sendMails(to,subject,body);
 			}
-			render message(code: 'user.sendEmail.successful')
+			flash.message = message(code: 'user.sendEmail.successful')
 		}catch(Exception e){
-			render message(code: 'user.sendEmail.failure')
+		e.printStackTrace();
+			redirect(action: "sendFailure")
 		}finally{
 			session.sendPatients=null;
 		}
@@ -81,15 +86,21 @@ class SendEmailController extends MainController {
 		if(session.sendPatients){
 			["defaultEmail" : grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.defaultText ,"defaultSubject": grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject]
 		}else{
-			Alert.show("sssss");
-			//render message(code: 'user.selectPatient.message')
+			redirect(action: "alertWindow");
 		}
 	}
 	
 	def cancel(){
 		redirect(action: "show")
 	}
-
+	
+	def sendFailure(){
+	
+	}
+	
+	def alertWindow(){
+	
+	}
 	
 
 }
