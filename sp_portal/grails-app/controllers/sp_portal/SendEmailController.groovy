@@ -46,6 +46,7 @@ class SendEmailController extends MainController {
 					DMZMailService.sendMails(to,subject,body);
 			}
 			flash.message = message(code: 'user.sendEmail.successful')
+			redirect(action: "show")
 		}catch(Exception e){
 		e.printStackTrace();
 			redirect(action: "sendFailure")
