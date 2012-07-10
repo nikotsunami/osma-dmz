@@ -4,7 +4,6 @@ package sp_portal
 
 import org.junit.*
 import grails.test.mixin.*
-import com.icegreen.greenmail.util.*
 import sp_portal.local.StandardizedPatient;
 import sp_portal.*;
 import sp_portal.local.*;
@@ -13,7 +12,6 @@ import sp_portal.local.*;
 @Mock([Role,User,local.Bankaccount,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue])
 class SendEmailControllerTests{
 
-	def greenMail
 
     def datasetup = null;
 

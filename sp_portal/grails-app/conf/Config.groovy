@@ -63,7 +63,6 @@ grails.hibernate.cache.queries = true
 environments {
     development {
         grails.logging.jul.usebridge = true
-		grails.mail.port = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
         grails.serverURL = "http://localhost:8090/${appName}"
     }
     production {
@@ -71,7 +70,6 @@ environments {
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 	test {
-		grails.mail.port = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
         grails.serverURL = "http://localhost:8090/${appName}"
 	}
 }
@@ -115,7 +113,7 @@ site at www.xxxxx with you username which is this email address and pasword whic
 
 Yours sincerely
 
-paul
+
 
 """
 
