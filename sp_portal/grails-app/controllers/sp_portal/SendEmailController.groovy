@@ -32,19 +32,23 @@ class SendEmailController extends MainController {
 		String body="";
 		try{
 			for(local.StandardizedPatient patient: patients){
-				
 					to = patient.email;
 					//to = "marvin@jserver"
 					subject= params.editedEmailSubject;
 					body = params.editedEmailText;
-					body = body.replaceAll("#preName",patient.preName);
-					body = body.replaceAll("#name",patient.name);
+					if(patient.preName){
+						body = body.replaceAll("#preName",patient.preName);
+					}
+					
+					if(patient.name){
+						body = body.replaceAll("#name",patient.name);
+					}
 					DMZMailService.sendMails(to,subject,body);
 			}
 			flash.message = message(code: 'user.sendEmail.successful')
-			redirect(action: "show")
 		}catch(Exception e){
-		    redirect(action: "sendFailure")
+		e.printStackTrace();
+			redirect(action: "sendFailure")
 		}finally{
 			session.sendPatients=null;
 		}
