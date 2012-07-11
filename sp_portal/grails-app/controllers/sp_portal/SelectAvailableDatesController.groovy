@@ -36,10 +36,6 @@ class SelectAvailableDatesController extends MainController{
 				
 				acceptedOsceDays = acceptedPatinetln.acceptedOsceDay
 				acceptedTrainingDays = acceptedPatinetln.acceptedTraining;
-			}else{
-				//render message(code: 'checkquestion.noneavailable');
-	
-			
 			}
 
 		}
@@ -49,15 +45,13 @@ class SelectAvailableDatesController extends MainController{
 	
 	}
 
+
 	def update(){
 		def acceptedPatinetln;
 		def availableOsceDays =[]; 
 		def availableTrainingDays= [];
 		def acceptedTrainingDays = [];
 		def acceptedOsceDays = [];
-
-	
-		println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 		
 		def training = params.findAll({ key, value ->
 													key.startsWith("training")
@@ -68,10 +62,10 @@ class SelectAvailableDatesController extends MainController{
 				def components = key.split("\\.");
 		
 				if(value.equals("on")){
+				
 					
 					def trainingDay = local.Training.findById(components[1]);
 					acceptedTrainingDays.add(trainingDay);
-					println("acceptedTrainingDays" +acceptedTrainingDays);
 				}
 			});	
 											
@@ -89,25 +83,51 @@ class SelectAvailableDatesController extends MainController{
 					
 					def osceDay = local.OsceDay.findById(component[1]);
 					acceptedOsceDays.add(osceDay);
-					println("acceptedOsceDays" +acceptedOsceDays);
 				}
 			});	
 				
+		boolean accpted ;
+		
 		def currentUser = User.findById(session.user.id);
-			
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
-			if(acceptedPatinetln!=null){		
-					acceptedPatinetln.acceptedOsceDay.clear();
-					acceptedPatinetln.acceptedTraining.clear();
-					acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
-					acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
-				acceptedPatinetln.save();
-				redirect(action: "show");
+			if(acceptedPatinetln!=null){
+					if(acceptedOsceDays.size()!=0 || acceptedTrainingDays.size()!=0){
+						accpted=false;
+						
+					}
+					if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
+						accpted=true;
+					}
+					
+					if(acceptedOsceDays.size()==0 && acceptedTrainingDays.size()==0){
+						accpted=true
+						
+					}
+				if(accpted==true){
+						acceptedPatinetln.acceptedOsceDay.clear();
+						acceptedPatinetln.acceptedTraining.clear();
+						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
+						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						acceptedPatinetln.save()
+						redirect(controller:"thank", action:"thankPatientInSemester");
+
+				}else{
+					  flash.message = message(code: 'patientInSemester.error.message');
+					  redirect(action: "show",params: params);
 				
+				}
 				
 			}else{
-				println("acceptedPatinetln is null");
+						def patient =new local.PatientlnSemester();
+						patient.standardizedPatient=currentUser.standardizedPatient
+						if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
+							patient.acceptedOsceDay=[acceptedOsceDays]
+							patient.acceptedTraining=[acceptedTrainingDays];
+						}
+						
+						patient.save();
+						redirect(controller:"thank", action:"thankPatientInSemester");
 							
 			
 			}
