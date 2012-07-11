@@ -27,7 +27,6 @@ class DataSetupHelper {
 	def osce2
 	def osce3
 	
-	def training1
 	def osceDay1
 
     def getDataSetA(){
@@ -38,8 +37,8 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
-		setUpTraining1()
-		setUpOsceDay1()
+//		setUpTraining1()
+//		setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
@@ -345,22 +344,23 @@ class DataSetupHelper {
 	
 		training1=new Training();
 		training1.name="1231"
-		training1.timeStart=new Date();
-		training1.timeEnd=new Date();
-		training1.trainingDate=new Date();
+		training1.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training1.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training1.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		
+
 		training2=new Training();
 		training2.name="bbbbb"
-		training2.timeStart=new Date();
-		training2.timeEnd=new Date();
-		training2.trainingDate=new Date();
+		training2.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training2.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		
+
 		training3=new Training();
 		training3.name="ccc"
-		training3.timeStart=new Date();
-		training3.timeEnd=new Date();
-		training3.trainingDate=new Date();
-		
+		training3.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		
 		training1.save();
 		training2.save();
