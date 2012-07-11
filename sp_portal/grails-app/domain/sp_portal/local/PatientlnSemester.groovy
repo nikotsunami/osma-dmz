@@ -11,6 +11,7 @@ class PatientlnSemester {
     Long id
     Integer version
     StandardizedPatient standardizedPatient
+	boolean accepted 
 
 
     static constraints = {

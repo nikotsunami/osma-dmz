@@ -86,25 +86,28 @@ class SelectAvailableDatesController extends MainController{
 				}
 			});	
 				
-		boolean accpted ;
+		boolean accepted ;
 		
 		def currentUser = User.findById(session.user.id);
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
 			if(acceptedPatinetln!=null){
 					if(acceptedOsceDays.size()!=0 || acceptedTrainingDays.size()!=0){
-						accpted=false;
+						acceptedPatinetln.accepted=false;
+						accepted=false
 						
 					}
 					if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
-						accpted=true;
+						acceptedPatinetln.accepted=true;
+						accepted=true
 					}
 					
 					if(acceptedOsceDays.size()==0 && acceptedTrainingDays.size()==0){
-						accpted=true
+						acceptedPatinetln.accepted=false
+						accepted=true
 						
 					}
-				if(accpted==true){
+				if(accepted==true){
 						acceptedPatinetln.acceptedOsceDay.clear();
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
@@ -124,6 +127,11 @@ class SelectAvailableDatesController extends MainController{
 						if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
 							patient.acceptedOsceDay=[acceptedOsceDays]
 							patient.acceptedTraining=[acceptedTrainingDays];
+							patient.accepted=true
+							
+						}else{
+						
+							patient.accepted=false
 						}
 						
 						patient.save();

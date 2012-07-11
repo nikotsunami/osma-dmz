@@ -27,7 +27,7 @@
 							<g:sortableColumn property="trainingDate" title="${message(code: 'training.date',default: 'Date')}" />
 							<g:sortableColumn property="timeStart" title="${message(code: 'training.startTime', default: 'StartTime')}" />
 							<g:sortableColumn property="timeEnd" title="${message(code: 'trining.endTime', default: 'EndTime')}" />
-							<g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'IsAccepted')}" />
+							<g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'Accepted')}" />
 					</tr>
   			<g:each in="${availableTrainingDays}" status="i" var="availableTrainingDay">
     				<tr>
@@ -58,7 +58,7 @@
   		<div id="Layer6">
     		<table>
 				<tr>
-					<g:sortableColumn property="osceDate" title="${message(code: 'osce.date', default: 'Date')}"/><g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'IsAccepted')}"/></tr>
+					<g:sortableColumn property="osceDate" title="${message(code: 'osce.date', default: 'Date')}"/><g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'Accepted')}"/></tr>
 					
 					<g:if test="${availableOsceDays!=null}">
 						<g:each in="${availableOsceDays}" status="i" var="availableOsceDay">
