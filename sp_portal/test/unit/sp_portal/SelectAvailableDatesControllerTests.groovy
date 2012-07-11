@@ -77,13 +77,13 @@ class SelectAvailableDatesControllerTests {
 	
 	void testupdate(){
 	
-		params["osce.1.accepted"] = true
-		params["osce.2.accepted"] = false
-		params["osce.1.accepted"] = true
+		params["osce.1"] = true
+		params["osce.2"] = false
+		params["osce.3"] = true
 	
-		params["training.1.accepted"] = true
-		params["training.2.accepted"] = false
-		params["training.1.accepted"] = true
+		params["training.1"] = true
+		params["training.2"] = false
+		params["training.3"] = true
 
 	
 	
@@ -94,9 +94,23 @@ class SelectAvailableDatesControllerTests {
 		
 		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 1}
 		assertNull  currentPatInsem.acceptedOsceDay.find{  day -> day.id == 2}
-		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 3}
+		 currentPatInsem.acceptedOsceDay.find{  day -> day.id == 3}
 		
-		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 1}
+		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.1"]);
+		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.2"]);
+		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.3"]);
+		
+	
+		
+		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 1}
+		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 2}
+		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 3}
+		
+		
+		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.1"]);
+		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.2"]);
+		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.3"]);
+		
 		
 		
 		
