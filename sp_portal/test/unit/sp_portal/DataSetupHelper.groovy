@@ -29,6 +29,9 @@ class DataSetupHelper {
 	
 	def osceDay1
 
+	def email1
+	def email2
+	
     def getDataSetA(){
         setupRoles()
         setupUsers()
@@ -108,8 +111,8 @@ class DataSetupHelper {
 
         assertNotNull normalUser.standardizedPatient.bankaccount
 
-
-
+		email1 = setupEmail("1")
+		email2 = setupEmail("2")
     }
 
 
@@ -382,4 +385,14 @@ class DataSetupHelper {
 	
 	
 
+	def setupEmail(def prefix){
+		def email = new Emails();
+		email.sendDate = new Date();
+		email.receiver = "${prefix}marvin@jserver";
+		email.content = "${prefix} this comment is for test";
+		email.subject = "${prefix} subject";
+		email.sent = "${prefix}sqq@jserver";
+		email.save();
+		return email;
+	}
 }
