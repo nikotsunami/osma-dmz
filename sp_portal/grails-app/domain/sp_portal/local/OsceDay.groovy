@@ -12,5 +12,12 @@ class OsceDay {
 
 
     static constraints = {
+		osceDate nullable: false
     }
+	
+	public String toString(){
+		
+		return osceDate.format("yyyy-MM-dd");
+	}
+	
 }

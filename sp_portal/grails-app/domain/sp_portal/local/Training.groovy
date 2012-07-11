@@ -14,5 +14,15 @@ class Training {
     Date timeEnd
 
     static constraints = {
+		name nullable: false, validator: {val,obj -> !val?.equals("")}
+		timeStart nullable: false
+		timeEnd nullable: false, validator: { val, obj ->
+        val?.after(obj.timeStart)
+		}	
+		trainingDate nullable: false
     }
+	
+	public String toString(){
+		return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
+	}
 }
