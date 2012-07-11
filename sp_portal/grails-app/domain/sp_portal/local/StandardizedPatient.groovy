@@ -92,6 +92,8 @@ class StandardizedPatient {
    }
 */
 
-
+	  String toString(){
+		return email
+	  }
 
 }

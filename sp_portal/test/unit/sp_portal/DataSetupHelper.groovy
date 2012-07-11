@@ -20,6 +20,14 @@ class DataSetupHelper {
 	def anamnesisCheck2
 	def anamnesisChecksValue1
 	def anamnesisCheck3
+	def training1
+	def training2
+	def training3
+	def osce1
+	def osce2
+	def osce3
+	
+	def osceDay1
 
 	def email1
 	def email2
@@ -32,6 +40,8 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
+//		setUpTraining1()
+//		setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
@@ -294,6 +304,86 @@ class DataSetupHelper {
 		
 		anamnesisChecksValue1 = anamnesisChecksValue;
 	}
+	
+	def setUpTraining1(){
+		def training = new Training()
+		training.name = 'traning1'
+		training.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		training.save()
+		training1 = training;
+	}
+	
+	def setUpOsceDay1(){
+		def osceDay = new OsceDay()
+		osceDay.osceDate = new Date(new Date().getTime()+24*60*60*1000)
+		osceDay.save()
+		osceDay1 = osceDay;
+		
+	}
+	def setUpOsceDays(){
+		osce1=new OsceDay();
+		osce1.osceDate=new Date();
+		
+		osce2=new OsceDay();
+		osce2.osceDate=new Date();
+		
+		osce3=new OsceDay();
+		osce3.osceDate=new Date();
+		osce1.save();
+		osce2.save();
+		osce3.save();
+		
+		assertTrue 3 == local.OsceDay.findAll().size();
+		
+		
+		
+	
+	
+	}
+	def setUpTrainingDays(){
+	println("Setup training");
+	
+		training1=new Training();
+		training1.name="1231"
+		training1.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training1.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training1.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		
+
+		training2=new Training();
+		training2.name="bbbbb"
+		training2.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training2.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		
+
+		training3=new Training();
+		training3.name="ccc"
+		training3.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		
+		training1.save();
+		training2.save();
+		training3.save();
+		
+		
+		assertTrue 3 == local.Training.findAll().size();
+	
+	}
+	def setUpPatientLnSemester(){
+		def patient =new PatientlnSemester();
+		patient.standardizedPatient =standardizedPatient1;
+		patient.acceptedOsceDay=[osce1,osce2]
+		patient.acceptedTraining=[training1]
+		patient.save();
+	
+	
+	}
+	
+	
 
 	def setupEmail(def prefix){
 		def email = new Emails();

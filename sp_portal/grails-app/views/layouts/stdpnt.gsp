@@ -38,6 +38,7 @@
           <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
           <td><g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
           <td><g:link controller="checkQuestions" action="index" ><li><g:message code="default.questions.message"/></li></g:link></td>
+		  <td><g:link controller="selectAvailableDates" action="show" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link></td>
    
         
         </ul>
