@@ -8,7 +8,7 @@ import grails.test.mixin.TestFor
 import sp_portal.DataSetupHelper;
 
 @TestFor(BankaccountController)
-@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue])
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay])
 class BankaccountControllerTests  {
 
     def datasetup = new DataSetupHelper()

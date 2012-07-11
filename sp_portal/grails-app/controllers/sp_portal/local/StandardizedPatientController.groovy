@@ -101,4 +101,15 @@ class StandardizedPatientController  extends sp_portal.MainController {
             redirect(action: "show", id: params.id)
         }
     }
+	
+	def cancel(){
+		def standardizedPatientInstance = StandardizedPatient.get(params.id)
+        if (!standardizedPatientInstance) {
+            redirect(action: "list")
+            
+        }else{
+		    redirect(action: "show", id: standardizedPatientInstance.id)
+		}
+		
+	}
 }

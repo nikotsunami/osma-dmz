@@ -26,6 +26,9 @@ class DataSetupHelper {
 	def osce1
 	def osce2
 	def osce3
+	
+	def training1
+	def osceDay1
 
     def getDataSetA(){
         setupRoles()
@@ -35,6 +38,8 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
+		setUpTraining1()
+		setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
@@ -296,6 +301,24 @@ class DataSetupHelper {
 		anamnesisChecksValue.save()
 		
 		anamnesisChecksValue1 = anamnesisChecksValue;
+	}
+	
+	def setUpTraining1(){
+		def training = new Training()
+		training.name = 'traning1'
+		training.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		training.save()
+		training1 = training;
+	}
+	
+	def setUpOsceDay1(){
+		def osceDay = new OsceDay()
+		osceDay.osceDate = new Date(new Date().getTime()+24*60*60*1000)
+		osceDay.save()
+		osceDay1 = osceDay;
+		
 	}
 	def setUpOsceDays(){
 		osce1=new OsceDay();
