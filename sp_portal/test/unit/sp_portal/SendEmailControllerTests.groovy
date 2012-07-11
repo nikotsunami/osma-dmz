@@ -9,7 +9,7 @@ import sp_portal.*;
 import sp_portal.local.*;
 
 @TestFor(SendEmailController)
-@Mock([Role,User,local.Bankaccount,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue])
+@Mock([Role,User,local.Emails,local.Bankaccount,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue])
 class SendEmailControllerTests{
 
 
@@ -119,8 +119,7 @@ class SendEmailControllerTests{
 		def sentEmails = [];
 		
 		controller.DMZMailService = [
-			sendMails: { eTo, eSubject, eBody ->
-				
+			sendMails: { eTo, eFrom, eSubject, eBody ->
 				def email = ["to":eTo,"subject":eSubject,"body":eBody ]
 				sentEmails << email;
 				
@@ -159,8 +158,7 @@ class SendEmailControllerTests{
 		def sentEmails = [];
 		
 		controller.DMZMailService = [
-			sendMails: { eTo, eSubject, eBody ->
-				
+			sendMails: { eTo,eFrom,eSubject, eBody ->
 				def email = ["to":eTo,"subject":eSubject,"body":eBody ]
 				sentEmails << email;
 				
@@ -209,6 +207,23 @@ class SendEmailControllerTests{
 		assertEquals expectedEmailText, sentEmails[1].body;
 		
 	}
+	
+	
+	void testShowSentEmail() {	
+		def model =controller.showSentEmail();
+		
+		assertEquals 2,model.emailTotal
+		assertNotNull model.emailList
+    }
 
+	void testShowEmailDetails() {	
+		def email = local.Emails.list();
+		params.id = email[0].id;
+		def model =controller.showEmailDetails();
+		
+		assertNotNull model.emailInstance
+		
+		assertEquals email[0],model.emailInstance
+    }
 
 }
