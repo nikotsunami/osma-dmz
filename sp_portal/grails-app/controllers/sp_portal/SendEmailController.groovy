@@ -30,12 +30,15 @@ class SendEmailController extends MainController {
 		String to="";
 		String subject="";
 		String body="";
+		String from = "";
 		try{
 			for(local.StandardizedPatient patient: patients){
+			
 					to = patient.email;
 					//to = "marvin@jserver"
 					subject= params.editedEmailSubject;
 					body = params.editedEmailText;
+					from = grailsApplication.config.grails.mail.username
 					if(patient.preName){
 						body = body.replaceAll("#preName",patient.preName);
 					}
@@ -43,12 +46,13 @@ class SendEmailController extends MainController {
 					if(patient.name){
 						body = body.replaceAll("#name",patient.name);
 					}
-					DMZMailService.sendMails(to,subject,body);
+					DMZMailService.sendMails(to,from,subject,body);
 			}
 			flash.message = message(code: 'user.sendEmail.successful')
 			redirect(action: "show")
 		}catch(Exception e){
-		e.printStackTrace();
+			e.printStackTrace();
+			println("exception: "+e.getMessage())
 			redirect(action: "sendFailure")
 		}finally{
 			session.sendPatients=null;
@@ -57,11 +61,13 @@ class SendEmailController extends MainController {
 	}
 	
 	def selectAll(){
+	
 		redirect(action: "show", params: [isSend: true])
 	}
 	
-	def showPreviewEmail(){
-		
+	def showPreviewEmail(){   
+       
+	
 	  def patientIdToString = params.findAll({ key, value ->
 													key.startsWith("patient")
 													});
@@ -103,5 +109,17 @@ class SendEmailController extends MainController {
 	
 	}
 	
+	
+	def showSentEmail(){
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		def emailList = local.Emails.list(params);
+		[emailList: emailList,emailTotal: local.Emails.count()]
+	}
+	
+	def showEmailDetails(){
+		
+		def email = local.Emails.get(params.id);
+		[emailInstance: email];
+	}
 
 }

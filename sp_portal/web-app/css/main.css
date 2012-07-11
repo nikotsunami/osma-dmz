@@ -221,9 +221,10 @@ fieldset,
 	border: none;
 }
 
+/*I have delete this attributes 'overflow: hidden;'*/
 .property-list .fieldcontain {
 	list-style: none;
-	overflow: hidden;
+	
 	zoom: 1;
 }
 
