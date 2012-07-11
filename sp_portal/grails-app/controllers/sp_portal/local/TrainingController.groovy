@@ -2,9 +2,10 @@ package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class TrainingController {
+class TrainingController extends sp_portal.MainController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
+
 
     def index() {
         redirect(action: "list", params: params)
@@ -67,6 +68,15 @@ class TrainingController {
             redirect(action: "list")
             return
         }
+		
+		def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
+			
+		if(!standardizedPatients.equals('')){
+			flash.message = message(code: 'default.training.is.accepted', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
+			redirect(action: "show", id: params.id)
+			return
+		}
+			
 		setStartAndEndTime(trainingInstance)
 		println("params.version = "+params.version);
         if (params.version) {
@@ -100,6 +110,15 @@ class TrainingController {
         }
 
         try {
+		
+			def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
+			
+			if(!standardizedPatients.equals('')){
+				flash.message = message(code: 'default.training.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
+				redirect(action: "show", id: params.id)
+				return
+			}
+			
             trainingInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'training.label', default: 'Training'), params.id])
             redirect(action: "list")
@@ -147,5 +166,22 @@ class TrainingController {
 		}else{
 			trainingInstance.timeEnd = null
 		}
+	}
+	
+	def getStandardizedPatientsStr(trainingInstanceId){
+		def allPatientlnSemesters = PatientlnSemester.list()
+		def standardizedPatients = ''
+			for(PatientlnSemester patientlnSemester : allPatientlnSemesters){
+				for(Training training : patientlnSemester.acceptedTraining){
+					if(training.id == trainingInstanceId){
+						if(!standardizedPatients.equals('')){
+							standardizedPatients = standardizedPatients + ','
+						}
+						standardizedPatients = standardizedPatients + patientlnSemester.standardizedPatient.email 
+						
+					}
+				}
+			}
+		return standardizedPatients;
 	}
 }

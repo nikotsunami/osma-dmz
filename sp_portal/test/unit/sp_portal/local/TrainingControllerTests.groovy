@@ -8,7 +8,7 @@ import grails.test.mixin.TestFor
 import sp_portal.DataSetupHelper;
 
 @TestFor(TrainingController)
-@Mock(Training)
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
 class TrainingControllerTests {
 	def datasetup = new DataSetupHelper()
 	
@@ -17,7 +17,10 @@ class TrainingControllerTests {
 	@Before
 	void setUp() {
         // Setup logic here
+
 		datasetup.setUpTraining1()
+		datasetup.setUpOsceDay1()
+		datasetup.getDataSetA()
 		baseTime = GregorianCalendar.getInstance();
 		baseTime.setTime(new Date());
     }
@@ -202,6 +205,41 @@ class TrainingControllerTests {
         assert flash.message != null
     }
 	
+	void testUpdateNotAllowed(){
+		def training = new Training(params)
+		setTrainingParams(training)
+        assert training.save() != null
+		params["standardizedPatient"] = datasetup.standardizedPatient1
+	    params["acceptedOsceDay"] = datasetup.osceDay1
+	    params["acceptedTraining"] = training
+	    def patientlnSemester = new PatientlnSemester(params)
+        assert patientlnSemester.save() != null
+	  
+		params.id = training.id
+		populateValidParams(params)
+		controller.update()
+		def training_update = Training.findById(training.id)
+		assert training_update.name == 'traning_2'
+		
+		def expectedTrainingDate = baseTime.clone()
+		
+		expectedTrainingDate.add(Calendar.DAY_OF_MONTH,2)
+		expectedTrainingDate.set(Calendar.HOUR_OF_DAY,0)
+		expectedTrainingDate.set(Calendar.MINUTE,0)
+		
+		assertEquals expectedTrainingDate.getTime() , training_update.trainingDate ;
+		assert training_update.trainingDate.getHours() == 0;
+		
+		assert training_update.timeStart.getHours() == 6 ;
+		assert training_update.timeStart.getMinutes() == 0 ;
+		assert training_update.trainingDate.getTime() + 6*60*60*1000 == training_update.timeStart.getTime()
+		
+		assert training_update.timeEnd.getHours() == 10 ;
+		assert training_update.timeEnd.getMinutes() == 0 ;
+		assert training_update.trainingDate.getTime() + 10*60*60*1000 == training_update.timeEnd.getTime()
+		
+	}
+	
 	void testIndex() {
         controller.index()
         assert "/training/list" == response.redirectedUrl
@@ -266,6 +304,19 @@ class TrainingControllerTests {
         assert response.redirectedUrl == '/training/list'
 		
     }
+	
+	void testDeleteNotAllowed(){
+		params["standardizedPatient"] = datasetup.standardizedPatient1
+	    params["acceptedOsceDay"] = datasetup.osceDay1
+	    params["acceptedTraining"] = datasetup.training1
+	    def patientlnSemester = new PatientlnSemester(params)
+        assert patientlnSemester.save() != null
+	  
+		params.id = datasetup.training1.id
+
+        controller.delete()
+		assert OsceDay.count() == 1
+	}
 
 	void testUpdateCancel(){
 		params["id"] = 1

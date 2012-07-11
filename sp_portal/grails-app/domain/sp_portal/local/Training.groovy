@@ -21,4 +21,8 @@ class Training {
 		}	
 		trainingDate nullable: false
     }
+	
+	public String toString(){
+		return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
+	}
 }

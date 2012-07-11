@@ -2,9 +2,9 @@ package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class PatientlnSemesterController {
+class PatientlnSemesterController extends sp_portal.MainController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
 
     def index() {
         redirect(action: "list", params: params)
@@ -100,4 +100,15 @@ class PatientlnSemesterController {
             redirect(action: "show", id: params.id)
         }
     }
+	
+	def cancel(){
+		def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+        if (!patientlnSemesterInstance) {
+            redirect(action: "list")
+            
+        }else{
+		    redirect(action: "show", id: patientlnSemesterInstance.id)
+		}
+		
+	}
 }

@@ -2,9 +2,9 @@ package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class OsceDayController {
+class OsceDayController extends sp_portal.MainController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+  def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
 
     def index() {
         redirect(action: "list", params: params)
@@ -59,6 +59,12 @@ class OsceDayController {
             redirect(action: "list")
             return
         }
+		def standardizedPatients = getStandardizedPatientsStr(osceDayInstance.id)
+		if(!standardizedPatients.equals('')){
+			flash.message = message(code: 'default.osceday.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id]) + standardizedPatients
+			redirect(action: "show", id: params.id)
+			return
+		}
         if (params.version) {
             def version = params.version.toLong()
             if (osceDayInstance.version > version) {
@@ -89,12 +95,19 @@ class OsceDayController {
             return
         }
 
-        try {
+        try {			
+			def standardizedPatients = getStandardizedPatientsStr(osceDayInstance.id)
+			if(!standardizedPatients.equals('')){
+				flash.message = message(code: 'default.osceday.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id]) + standardizedPatients
+				redirect(action: "show", id: params.id)
+				return
+			}
             osceDayInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
+			
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "show", id: params.id)
         }
@@ -109,5 +122,22 @@ class OsceDayController {
 		    redirect(action: "show", id: osceDayInstance.id)
 		}
 		
+	}
+	
+	def getStandardizedPatientsStr(osceDayInstanceId){
+		def allPatientlnSemesters = PatientlnSemester.list()
+		def standardizedPatients = ''
+			for(PatientlnSemester patientlnSemester : allPatientlnSemesters){
+				for(OsceDay osceDay : patientlnSemester.acceptedOsceDay){
+					if(osceDay.id == osceDayInstanceId){
+						if(!standardizedPatients.equals('')){
+							standardizedPatients = standardizedPatients + ','
+						}
+						standardizedPatients = standardizedPatients + patientlnSemester.standardizedPatient.email 
+						
+					}
+				}
+			}
+		return standardizedPatients;
 	}
 }
