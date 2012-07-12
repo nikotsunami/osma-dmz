@@ -9,6 +9,7 @@ class DataSetupHelper {
 
     def adminUser
     def normalUser
+	def normalUser2
 
     def standardizedPatient1
 	def standardizedPatient2
@@ -32,6 +33,13 @@ class DataSetupHelper {
 	def email1
 	def email2
 	
+	
+	// is standardizedPatient2 has no osces or trainings
+	def emptyPatientInSemester 
+	
+	// is standardizedPatient1 has one osce and one training
+	def patientInSemester
+	
     def getDataSetA(){
         setupRoles()
         setupUsers()
@@ -49,6 +57,7 @@ class DataSetupHelper {
         assertNotNull normalUser
 
         normalUser.standardizedPatient = standardizedPatient1
+
 
         normalUser.save()
 
@@ -91,6 +100,7 @@ class DataSetupHelper {
         assertNotNull normalUser
 
         normalUser.standardizedPatient = standardizedPatient1
+		normalUser2.standardizedPatient = standardizedPatient2
 
         normalUser.save()
 
@@ -174,6 +184,23 @@ class DataSetupHelper {
         user1.save();
 
         normalUser = user1
+//////////////////////////////////////////////////////////////////		
+		
+		User user2 = new User();
+
+        user2.userName = "NormalUser2";
+        user2.userEmail = "Normal2@user";
+        user2.passwordHash = "not hashed2";
+        user2.isActive = true;
+
+        roles1 = [];
+        roles1.add(Role.findByRoleName("USER_ROLE"));
+
+        user2.roles = roles1;
+
+        user2.save();
+println("user2 " + user2.errors)
+        normalUser2 = user2
     }
 
     def setupStandardizedPatients(def prefix){
@@ -380,12 +407,23 @@ class DataSetupHelper {
 	
 	}
 	def setUpPatientLnSemester(){
-		def patient =new PatientlnSemester();
-		patient.standardizedPatient =standardizedPatient1;
-		patient.acceptedOsceDay=[osce1]
-		patient.acceptedTraining=[training1]
-		patient.accepted=true;
-		patient.save();
+		patientInSemester =new PatientlnSemester();
+		patientInSemester.standardizedPatient =standardizedPatient1;
+		patientInSemester.acceptedOsceDay=[osce1]
+		patientInSemester.acceptedTraining=[training1]
+		patientInSemester.accepted=true;
+		patientInSemester.save();
+	
+	
+	}
+	
+	def setUpEmptyPatientLnSemester(){
+		emptyPatientInSemester =new PatientlnSemester();
+		emptyPatientInSemester.standardizedPatient =standardizedPatient2;
+		emptyPatientInSemester.acceptedOsceDay=[]
+		emptyPatientInSemester.acceptedTraining=[]
+		emptyPatientInSemester.accepted=false;
+		emptyPatientInSemester.save();
 	
 	
 	}
