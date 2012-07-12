@@ -12,6 +12,6 @@ class UrlMappings {
                     action = "login"
                   }
 		"500"(view:'/error')
-	       
+		
 	}
 }
