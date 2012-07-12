@@ -324,12 +324,15 @@ class DataSetupHelper {
 	}
 	def setUpOsceDays(){
 		osce1=new OsceDay();
+		osce1.id=1L
 		osce1.osceDate=new Date();
 		
 		osce2=new OsceDay();
+		osce2.id=2L
 		osce2.osceDate=new Date();
 		
 		osce3=new OsceDay();
+		osce3.id=3L
 		osce3.osceDate=new Date();
 		osce1.save();
 		osce2.save();
@@ -346,6 +349,7 @@ class DataSetupHelper {
 	println("Setup training");
 	
 		training1=new Training();
+		training1.id=1L
 		training1.name="1231"
 		training1.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
 		training1.timeStart = new Date(new Date().getTime()+24*60*60*1000)
@@ -353,6 +357,7 @@ class DataSetupHelper {
 		
 
 		training2=new Training();
+		training2.id=2L
 		training2.name="bbbbb"
 		training2.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
 		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
@@ -360,6 +365,7 @@ class DataSetupHelper {
 		
 
 		training3=new Training();
+		training3.id=3L
 		training3.name="ccc"
 		training3.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
 		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
@@ -376,8 +382,9 @@ class DataSetupHelper {
 	def setUpPatientLnSemester(){
 		def patient =new PatientlnSemester();
 		patient.standardizedPatient =standardizedPatient1;
-		patient.acceptedOsceDay=[osce1,osce2]
+		patient.acceptedOsceDay=[osce1]
 		patient.acceptedTraining=[training1]
+		patient.accepted=true;
 		patient.save();
 	
 	

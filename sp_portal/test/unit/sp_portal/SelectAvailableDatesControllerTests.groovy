@@ -66,24 +66,23 @@ class SelectAvailableDatesControllerTests {
         assertEquals 1, mod.acceptedTrainingDays.size()
 		
 		assertNotNull	mod.acceptedOsceDays
-        assertEquals 2, mod.acceptedOsceDays.size()
+        assertEquals 1, mod.acceptedOsceDays.size()
 		
-		
-	
 
-	
 		
     }
 	
+	
+	
 	void testupdate(){
 	
-		params["osce.1"] = true
-		params["osce.2"] = false
-		params["osce.3"] = true
+		params["osce.1.id"] = "on"
+		params["osce.2.id"] = [:]
+		params["osce.3.id"] = "on"
 	
-		params["training.1"] = true
-		params["training.2"] = false
-		params["training.3"] = true
+		params["training.1.id"] = "on"
+		params["training.2.id"] = [:]
+		params["training.3.id"] = "on"
 
 	
 	
@@ -92,24 +91,62 @@ class SelectAvailableDatesControllerTests {
 		def currentSP = datasetup.normalUser.standardizedPatient
 		def currentPatInsem =local.PatientlnSemester.findByStandardizedPatient(currentSP);
 		
-		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 1}
-		assertNull  currentPatInsem.acceptedOsceDay.find{  day -> day.id == 2}
-		 currentPatInsem.acceptedOsceDay.find{  day -> day.id == 3}
+	
 		
-		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.1"]);
-		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.2"]);
-		assertNotNull currentPatInsem.acceptedOsceDay.addAll(params["osce.3"]);
+		assertNotNull currentPatInsem.acceptedOsceDay
+		assertNotNull currentPatInsem.acceptedTraining
+		
+		assertNotNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 1}
+		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 2}
+		assertNotNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 3}
+		assertNotNull currentPatInsem.acceptedTraining.find{  train -> train.id == 1}
+		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 2}
+		assertNotNull currentPatInsem.acceptedTraining.find{  train -> train.id == 3}
+				
+	}
+	
+	
+	void testAccepted(){
+				
+		def mod=controller.update();
+
+		def currentSP = datasetup.normalUser.standardizedPatient
+		def currentPatInsem =local.PatientlnSemester.findByStandardizedPatient(currentSP);
+		
+		assertNotNull currentPatInsem
+		if(currentPatInsem!=null){
+			params["osce.1.id"] = "on"
+			params["training.2.id"] = [:]
+			assertEquals (currentPatInsem.accepted,false) 
+		
+		
+		}
+		if(currentPatInsem!=null){
+			params["osce.2.id"] = [:]
+			params["training.2.id"] = [:]
+			assertEquals (currentPatInsem.accepted,false) 
+		
+		
+		}
+		
+		if(currentPatInsem!=null){
+			params["osce.2.id"] = [:]
+			params["training.3.id"] = "on"
+			assertEquals (currentPatInsem.accepted,false) 
+	
+		
+		}
+		
+		if(currentPatInsem!=null){
+			params["osce.2.id"] = "on"
+			params["training.3.id"] = "on"
+			assertEquals (currentPatInsem.accepted,false) 
+	
+		
+		}
 		
 	
 		
-		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 1}
-		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 2}
-		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 3}
-		
-		
-		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.1"]);
-		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.2"]);
-		assertNotNull currentPatInsem.acceptedTraining.addAll(params["osce.3"]);
 		
 		
 		
@@ -118,9 +155,6 @@ class SelectAvailableDatesControllerTests {
 		
 		
 		
-		
-		
-		
-		
+	
 	}
 }
