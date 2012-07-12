@@ -125,23 +125,29 @@ class SelectAvailableDatesController extends MainController{
 				}
 				
 			}else{
-						def patient =new local.PatientlnSemester();
-						patient.standardizedPatient=currentUser.standardizedPatient
-						if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
-							patient.acceptedOsceDay=acceptedOsceDays;
-							patient.acceptedTraining=acceptedTrainingDays;
-							patient.accepted=true
+				def patient =new local.PatientlnSemester();
+				patient.standardizedPatient=currentUser.standardizedPatient						
+								
+				if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
+								
+						patient.accepted=true
+									
+									
+				}else{
+						patient.accepted=false
 							
-						}else{
-						
-							patient.accepted=false
-						}
-						
-						patient.save();
-						sendEmail(currentUser);
-						redirect(controller:"thank", action:"thankPatientInSemester");
 							
-			
+				}				
+				patient.acceptedOsceDay=acceptedOsceDays;
+					
+				patient.acceptedTraining=acceptedTrainingDays;
+					
+				patient.save();
+				
+				sendEmail(currentUser);
+				redirect(controller:"thank", action:"thankPatientInSemester");
+									
+							
 			}
 					
 													
