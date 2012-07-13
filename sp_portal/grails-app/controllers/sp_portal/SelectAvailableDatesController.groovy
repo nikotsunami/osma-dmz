@@ -89,6 +89,8 @@ class SelectAvailableDatesController extends MainController{
 		boolean accepted ;
 		
 		def currentUser = User.findById(session.user.id);
+		
+	
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
 			if(acceptedPatinetln!=null){
@@ -113,6 +115,7 @@ class SelectAvailableDatesController extends MainController{
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
 						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
 						acceptedPatinetln.save()
+						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
 
 				}else{
@@ -130,27 +133,60 @@ class SelectAvailableDatesController extends MainController{
 						patient.accepted=true
 									
 									
-						}else{
-								patient.accepted=false
-									
-									
-						}
-								patient.acceptedOsceDay=acceptedOsceDays;
-									
-								patient.acceptedTraining=acceptedTrainingDays;
-									
-								patient.save();
-								
+				}else{
+						patient.accepted=false
 							
-								redirect(controller:"thank", action:"thankPatientInSemester");
+							
+				}				
+				patient.acceptedOsceDay=acceptedOsceDays;
+					
+				patient.acceptedTraining=acceptedTrainingDays;
+					
+				patient.save();
+				
+				sendEmail(currentUser);
+				redirect(controller:"thank", action:"thankPatientInSemester");
 									
 							
 			}
 					
-		
 													
 	
 		}		
 	}
+
+
+	DMZMailService DMZMailService =null;
+	
+	private void sendEmail(def currentUser){
+		
+		def patient = currentUser.standardizedPatient;
+		try{
+			
+			
+			String to = grailsApplication.config.grails.mail.username;
+			String subject= grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject;
+			String body = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
+			String from = patient.email;
+			//TODO Used for testing whether can send email
+			//String from = "paul@jserver";
+			if(patient.preName){
+				body = body.replaceAll("#preName",patient.preName);
+			}
+			
+			if(patient.name){
+				body = body.replaceAll("#name",patient.name);
+			}
+			DMZMailService.sendMails(to,from,subject,body);
+			
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+			println(">>>>>>>>>>>exception: "+e.getMessage());
+		}
+		
+	}			
+	
 }
 

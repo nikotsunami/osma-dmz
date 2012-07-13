@@ -243,5 +243,42 @@ class SelectAvailableDatesControllerTests {
 
 	}
 	
+		
+	void testHasSendEmailToAdmin(){
+	
+	
+		params["osce.1.id"] = "on"
+		params["osce.2.id"] = [:]
+		params["osce.3.id"] = "on"
+	
+		params["training.1.id"] = "on"
+		params["training.2.id"] = [:]
+		params["training.3.id"] = "on"
+
+		def sentEmails = [];
+
+		controller.DMZMailService = [
+			sendMails: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sentEmails << email;
+				
+			}
+		] as DMZMailService;
+		
+		def mod=controller.update();
+
+		def currentSP = datasetup.normalUser.standardizedPatient
+		String excptedFrom = currentSP.email;
+		String excptedTo = grailsApplication.config.grails.mail.username;
+		String excptedSubject = grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject;
+		String excptedBody = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
+		excptedBody = excptedBody.replaceAll("#preName",currentSP.preName);
+		excptedBody = excptedBody.replaceAll("#name",currentSP.name);
+		
+		assertEquals excptedTo, sentEmails[0].to;
+		assertEquals excptedSubject, sentEmails[0].subject;
+		assertEquals excptedBody, sentEmails[0].body;
+		assertEquals excptedFrom, sentEmails[0].from;
+	}
 	
 }
