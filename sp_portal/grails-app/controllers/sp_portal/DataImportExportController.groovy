@@ -26,7 +26,7 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
-                       
+
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
 
                        ]
@@ -48,24 +48,24 @@ class DataImportExportController extends MainController {
                                                                                                                     x.anamnesisForm = form;
                                                                                                                 }
                                                                                                             return x},
-                      
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},                    
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
                         ]
     static def createUser(standardizedPatient,jsonData){
          def x =new User();
-         x.userName= jsonData.email; 
+         x.userName= jsonData.email;
          x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
+println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
          x.userEmail=jsonData.email;
          x.standardizedPatient=standardizedPatient;
          x.isActive=true;
          def roles = [];
-	   roles.add(Role.findByRoleName("USER_ROLE"));
-	   x.roles = roles;
-         x.save();
-         //return x;
+         roles.add(Role.findByRoleName("USER_ROLE"));
+         x.roles = roles;
+         x.save(flush:true);
 
 
     }
