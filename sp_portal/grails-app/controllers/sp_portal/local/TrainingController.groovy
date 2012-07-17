@@ -78,7 +78,6 @@ class TrainingController extends sp_portal.MainController {
 			return
 		}
 			
-		setStartAndEndTime(trainingInstance)
 		println("params.version = "+params.version);
         if (params.version) {
             def version = params.version.toLong()
