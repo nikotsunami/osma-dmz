@@ -352,15 +352,15 @@ println("user2 " + user2.errors)
 	def setUpOsceDays(){
 		osce1=new OsceDay();
 		osce1.id=1L
-		osce1.osceDate=new Date();
+		osce1.osceDate=new Date(new Date().getTime()+8*60*60*1000);
 		
 		osce2=new OsceDay();
 		osce2.id=2L
-		osce2.osceDate=new Date();
+		osce2.osceDate=new Date(new Date().getTime()+12*60*60*1000);
 		
 		osce3=new OsceDay();
 		osce3.id=3L
-		osce3.osceDate=new Date();
+		osce3.osceDate=new Date(new Date().getTime()+15*60*60*1000);
 		osce1.save();
 		osce2.save();
 		osce3.save();
@@ -386,7 +386,7 @@ println("user2 " + user2.errors)
 		training2=new Training();
 		training2.id=2L
 		training2.name="bbbbb"
-		training2.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training2.trainingDate = new Date(new Date().getTime()+12*60*60*1000)
 		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
 		training2.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		
@@ -394,7 +394,7 @@ println("user2 " + user2.errors)
 		training3=new Training();
 		training3.id=3L
 		training3.name="ccc"
-		training3.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
+		training3.trainingDate = new Date(new Date().getTime()+8*60*60*1000)
 		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
 		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		

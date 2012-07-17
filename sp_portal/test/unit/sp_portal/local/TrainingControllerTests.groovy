@@ -183,13 +183,13 @@ class TrainingControllerTests {
 		assertEquals expectedTrainingDate.getTime() , training_checkout.trainingDate ;
 		assert training_checkout.trainingDate.getHours() == 0;
 		
-		assert training_checkout.timeStart.getHours() == 8 ;
-		assert training_checkout.timeStart.getMinutes() == 30 ;
-		assert training_checkout.trainingDate.getTime() + 8*60*60*1000 + 30*60*1000 == training_checkout.timeStart.getTime()
+		assert training_checkout.timeStart.getHours() == 6 ;
+		assert training_checkout.timeStart.getMinutes() == 0 ;
+		assert training_checkout.trainingDate.getTime() + 6*60*60*1000 + 0*60*1000 == training_checkout.timeStart.getTime()
 		
 		assert training_checkout.timeEnd.getHours() == 10 ;
-		assert training_checkout.timeEnd.getMinutes() == 30 ;
-		assert training_checkout.trainingDate.getTime() + 10*60*60*1000 + 30*60*1000 == training_checkout.timeEnd.getTime()
+		assert training_checkout.timeEnd.getMinutes() == 0 ;
+		assert training_checkout.trainingDate.getTime() + 10*60*60*1000 + 0*60*1000 == training_checkout.timeEnd.getTime()
 
         response.reset()
         training.clearErrors()
