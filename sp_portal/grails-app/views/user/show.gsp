@@ -72,7 +72,7 @@
 
                 <g:if test="${userInstance?.standardizedPatient}">
                 <li class="fieldcontain">
-                    <span id="userName-label" class="property-label"><g:message code="user.userName.label" default="User Name" /></span>
+                    <span id="userName-label" class="property-label"><g:message code="user.origId.labell" default="OrigId" /></span>
 
                         <span class="property-value" aria-labelledby="userName-label"><g:fieldValue bean="${userInstance.standardizedPatient}" field="origId"/></span>
 

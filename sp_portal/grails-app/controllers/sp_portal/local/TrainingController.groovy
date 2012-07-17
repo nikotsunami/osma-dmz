@@ -27,6 +27,7 @@ class TrainingController extends sp_portal.MainController {
 		String trainingDateParam = params.trainingDate
 		setStartAndEndTime(trainingInstance)
 		
+		
         if (!trainingInstance.save(flush: true)) {
             render(view: "create", model: [trainingInstance: trainingInstance])
             return
@@ -154,18 +155,22 @@ class TrainingController extends sp_portal.MainController {
 
 			Long timeStart = trainingDate.getTime()+startMin*60*1000+startHour*60*60*1000
 			trainingInstance.timeStart = new Date(timeStart)
+			
+			if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
+				Long endHour = Long.valueOf(endHourPrame)
+				Long endMin = Long.valueOf(endMinPrame)
+				Long timeEnd = trainingDate.getTime()+endMin*60*1000+endHour*60*60*1000
+				trainingInstance.timeEnd = new Date(timeEnd)	
+			}else{
+				trainingInstance.timeEnd = null
+			}
 		}else{
 			trainingInstance.timeStart = null
+			flash.message = message(code: 'dafault.training.is.timeStart', args: [message(code: 'training.label', default: 'Training')])
+			redirect(action: "create", id: trainingInstance.id)
 		}
 		
-		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
-			Long endHour = Long.valueOf(endHourPrame)
-			Long endMin = Long.valueOf(endMinPrame)
-			Long timeEnd = trainingDate.getTime()+endMin*60*1000+endHour*60*60*1000
-			trainingInstance.timeEnd = new Date(timeEnd)	
-		}else{
-			trainingInstance.timeEnd = null
-		}
+		
 	}
 	
 	def getStandardizedPatientsStr(trainingInstanceId){
