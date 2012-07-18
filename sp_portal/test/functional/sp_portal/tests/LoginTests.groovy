@@ -9,7 +9,7 @@ class LoginTests {
     @Rule
     public WebDriverHelper webdriver = new WebDriverHelper()
 
-    @Test
+   @Test
     public void test001LoginAdmin() {
         LoginPage loginPage = webdriver.open('/', LoginPage)
         def adminPage = loginPage.loginAdmin();
@@ -43,6 +43,18 @@ class LoginTests {
         userHomePage.clickQuestions()
         userHomePage.clickSelectAvailableDates()
         userHomePage.clickLogout()
+
+    }
+
+
+    @Test
+    public void test003ForBug659(){
+        LoginPage loginPage = webdriver.open('/', LoginPage)
+        def adminPage = loginPage.loginAdmin();
+        def manageTrainingPage = adminPage.clickManageTrainingDays();
+        def newTrainingPage = manageTrainingPage.clickNewTraining();
+
+        newTrainingPage.createTraining( "", "", "", "", "", "", "", "")
 
     }
 
