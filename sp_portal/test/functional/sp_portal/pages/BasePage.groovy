@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Action;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.support.ui.Select;
 
 abstract class BasePage extends WebDriverPage {
     def baseUrl = "http://localhost:8090/sp_portal"
@@ -65,42 +66,53 @@ abstract class BasePage extends WebDriverPage {
     def selectDateFromCalendar(id, year, month, day){
         // first press the calendar button
         driver.findElement(By.xpath("//*[@id='" + id + "']")).click();
-Thread.sleep(1000);
-        screenshot("CalendarOpened");
 
         // next press the year drop down
-        def yearSelector = driver.findElement(By.xpath("div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][1]"))
-        def yearLabel = driver.findElement(By.xpath("div[@class='label' and .=" + year +"]"))
+        def yearSelectorBK = driver.findElement(By.xpath("//div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][1]"))
+        def yearSelectorFWD = driver.findElement(By.xpath("//div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][4]"))
+        def monthSelectorBK = driver.findElement(By.xpath("//div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][2]"))
+        def monthSelectorFWD = driver.findElement(By.xpath("//div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][3]"))
+
+        int currentYear = getYear();
+        int currentMonth = getMonth();
 
 
-        Actions builder = new Actions(driver);
+        if (year < currentYear){
 
-        Action choseYear = builder.clickAndHold(yearSelector)
-           .moveToElement(yearLabel)
-           .release(yearLabel)
-           .build();
+            for (int i = year; i < currentYear; i++){
 
-        choseYear.perform();
+                yearSelectorBK.click();
+            }
 
-        // next press the year drop down
-        def monthSelector = driver.findElement(By.xpath("div[@class='calendar']//tr[@class='headrow']//td[@class='button nav'][1]"))
-        def monthLabel = driver.findElement(By.xpath("div[@class='label' and .=" + month +"]"))
+        } else {
 
+            for (int i = currentYear; i < year; i++){
+                yearSelectorFWD.click();
+            }
+        }
 
-        Actions builder2 = new Actions(driver);
+        if (month < currentMonth){
+            for (int i = month; i < currentMonth; i++){
+                monthSelectorBK.click();
+            }
 
-        Action choseMonth = builder2.clickAndHold(monthSelector)
-           .moveToElement(monthLabel)
-           .release(monthLabel)
-           .build();
+        } else {
+            for (int i = currentMonth; i < month; i++){
+                monthSelectorFWD.click();
+            }
+        }
 
-        choseMonth.perform();
-
-        driver.findElement(By.xpath("div[@class='day' and .=" + day + "]")).click()
+        driver.findElement(By.xpath("//td[contains(@class ,'day') and .='" + day + "']")).click()
 
 
     }
 
+
+    def selectDropDown(id, test){
+
+        new Select(driver.findElement(By.id(id))).selectByVisibleText(""+test);
+
+    }
 
     def screenshot(name){
 
@@ -111,6 +123,42 @@ Thread.sleep(1000);
 
 
     }
+
+
+    private int getDay(){
+
+        //
+        // Get various information from the Date object.
+        //
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DATE);
+
+        return day;
+    }
+
+
+    private int getMonth(){
+
+        //
+        // Get various information from the Date object.
+        //
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+
+        return month;
+    }
+
+    private int getYear(){
+
+          //
+        // Get various information from the Date object.
+        //
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+
+        return year;
+    }
+
 
 
 }

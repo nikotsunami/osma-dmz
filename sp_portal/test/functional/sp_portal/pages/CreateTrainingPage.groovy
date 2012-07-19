@@ -16,12 +16,18 @@ public class CreateTrainingPage extends BasePage {
 
     def CreateTrainingPage(driver){
         super(driver);
-        assertTextPresent(expectedHeading);
+      //  assertTextPresent(expectedHeading);
     }
 
     def createTraining(name, dateYear,dateMonth,dateDay,timeStartHour,timeStartMinute,timeEndHour,timeEndMinute ){
         enterName(name)
-        selectDateFromCalendar("trainingDate-trigger", "2006", "Dec", "05")
+        selectDateFromCalendar("trainingDate-trigger", dateYear, dateMonth, dateDay)
+
+
+        setStartHour(timeStartHour);
+        setStartMinute(timeStartMinute)
+        setEndHour(timeEndHour)
+        setEndMinute(timeEndMinute)
 
         clickButton("Create");
 
@@ -31,21 +37,25 @@ public class CreateTrainingPage extends BasePage {
         fillOutField("name",str)
     }
 
-    def enterConfirmPassword(str){
-        fillOutField("confirmPassword",str)
+    def setStartHour(int timeStartHour){
+         selectDropDown("timeStartHour", timeStartHour)
     }
 
-    def enterEmail(str){
-        fillOutField("userEmail",str)
+
+    def setStartMinute(int timeStartMinute){
+         selectDropDown("timeStartMin", timeStartMinute)
     }
 
-    def enterUserName(str){
-        fillOutField("userName",str)
+    def setEndHour(int timeEndHour){
+         selectDropDown("timeEndHour", timeEndHour)
     }
 
-    def selectRoleName(str){
-        clickOptionValue(str)
+
+    def setEndMinute(int timeEndMinute){
+         selectDropDown("timeEndMin", timeEndMinute)
     }
+
+
 
 
 }
