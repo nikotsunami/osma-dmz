@@ -37,6 +37,7 @@ public class AdminPage extends BasePage {
     def clickManageTrainingDays(){
         clickLink("Manage Training Days");
         assertTextPresent("Training List");
+        return new ManageTrainingDaysPage(driver);
     }
 
     def clickSendEmails(){

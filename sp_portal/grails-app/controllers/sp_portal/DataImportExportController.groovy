@@ -78,6 +78,11 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
                          "descriptionId", "professionId","bankaccountId","mappedBy","nationalityId","anamnesisFormId","anamnesisCheckId"];
 
 
+    def test(){
+
+    }
+
+
 
     def exportSP(){
            if (params.id){

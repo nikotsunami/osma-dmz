@@ -70,7 +70,7 @@ It can be built as a war file and deployed to any java servlet contained such as
 
 	To run just functional tests 
 		grails test-app -functional
-
+grails test-app -Dserver.port=8090 -functional -Dwebdriver.browser=chrome -Dwebdriver.chrome.driver=/home/paul/Tools/chromedriver
 	To run a single test 
 		grails test-app <test-name>
 

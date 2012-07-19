@@ -36,16 +36,13 @@ class SyncSPTests {
         }
 
 
-        String url = "${baseURL}dataImportExport/importSP?data=" + getTestData();
-        url = url.replaceAll("\n", "")
-        url = url.replaceAll("  ", "")
+        String dataStr = getTestData();
+        dataStr = dataStr.replaceAll("\n", "")
+        dataStr = dataStr.replaceAll("  ", "")
 
-    println(" URl  ${url} ");
+        def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
+        dataImpExpPage.submitData(dataStr);
 
-        webdriver.open(url)
-
-        String pageSource = webdriver.driver.getPageSource()
-        println("page source is  ${pageSource}");
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
