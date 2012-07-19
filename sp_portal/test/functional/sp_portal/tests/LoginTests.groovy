@@ -31,7 +31,7 @@ class LoginTests {
         def userListPage = adminPage.clickManageUsers();
         def createUserPage = userListPage.clickNewUser();
 
-        createUserPage.createUser("user1", "user1@home", "pass123", "pass123", "USER_ROLE")
+        createUserPage.createUser("user1", "user1@home.cn", "pass123", "pass123", "USER_ROLE")
 
         adminPage.clickLogout()
 
@@ -40,9 +40,9 @@ class LoginTests {
         userHomePage.clickMyAccount()
         // userHomePage.clickPersonalDetails()  // Bug
         // userHomePage.clickBanksDetails() // Bug
-        userHomePage.clickQuestions()
-        userHomePage.clickSelectAvailableDates()
-        userHomePage.clickLogout()
+       // userHomePage.clickQuestions()
+        //userHomePage.clickSelectAvailableDates()
+       // userHomePage.clickLogout()
 
     }
 

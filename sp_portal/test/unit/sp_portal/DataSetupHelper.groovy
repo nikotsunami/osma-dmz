@@ -172,7 +172,7 @@ class DataSetupHelper {
         User user1 = new User();
 
         user1.userName = "NormalUser";
-        user1.userEmail = "Normal@user";
+        user1.userEmail = "Normal@user.cn";
         user1.passwordHash = "not hashed";
         user1.isActive = true;
 
@@ -189,7 +189,7 @@ class DataSetupHelper {
 		User user2 = new User();
 
         user2.userName = "NormalUser2";
-        user2.userEmail = "Normal2@user";
+        user2.userEmail = "Normal2@user.cn";
         user2.passwordHash = "not hashed2";
         user2.isActive = true;
 
@@ -199,7 +199,7 @@ class DataSetupHelper {
         user2.roles = roles1;
 
         user2.save();
-println("user2 " + user2.errors)
+		println("user2 " + user2.errors)
         normalUser2 = user2
     }
 
@@ -236,6 +236,7 @@ println("user2 " + user2.errors)
         
 
     }
+	 
 
     def setupBankAccounts(){
         def bankaccount = new Bankaccount()
@@ -334,6 +335,7 @@ println("user2 " + user2.errors)
 	
 	def setUpTraining1(){
 		def training = new Training()
+		training.id=1L;
 		training.name = 'traning1'
 		training.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
 		training.timeStart = new Date(new Date().getTime()+24*60*60*1000)
@@ -352,7 +354,7 @@ println("user2 " + user2.errors)
 	def setUpOsceDays(){
 		osce1=new OsceDay();
 		osce1.id=1L
-		osce1.osceDate=new Date(new Date().getTime()+8*60*60*1000);
+		osce1.osceDate=new Date(new Date().getTime()+24*60*60*1000);
 		
 		osce2=new OsceDay();
 		osce2.id=2L
@@ -361,6 +363,7 @@ println("user2 " + user2.errors)
 		osce3=new OsceDay();
 		osce3.id=3L
 		osce3.osceDate=new Date(new Date().getTime()+15*60*60*1000);
+		
 		osce1.save();
 		osce2.save();
 		osce3.save();
@@ -374,14 +377,6 @@ println("user2 " + user2.errors)
 	}
 	def setUpTrainingDays(){
 	println("Setup training");
-	
-		training1=new Training();
-		training1.id=1L
-		training1.name="1231"
-		training1.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
-		training1.timeStart = new Date(new Date().getTime()+24*60*60*1000)
-		training1.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
-		
 
 		training2=new Training();
 		training2.id=2L
@@ -398,19 +393,18 @@ println("user2 " + user2.errors)
 		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
 		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
 		
-		training1.save();
 		training2.save();
 		training3.save();
 		
 		
-		assertTrue 3 == local.Training.findAll().size();
+		assertTrue 2 == local.Training.findAll().size();
 	
 	}
 	def setUpPatientLnSemester(){
 		patientInSemester =new PatientlnSemester();
 		patientInSemester.standardizedPatient =standardizedPatient1;
 		patientInSemester.acceptedOsceDay=[osce1]
-		patientInSemester.acceptedTraining=[training1]
+		patientInSemester.acceptedTraining=[training2]
 		patientInSemester.accepted=true;
 		patientInSemester.save();
 	
@@ -433,10 +427,10 @@ println("user2 " + user2.errors)
 	def setupEmail(def prefix){
 		def email = new Emails();
 		email.sendDate = new Date();
-		email.receiver = "${prefix}marvin@jserver";
+		email.receiver = "${prefix}marvin@jserver.cn";
 		email.content = "${prefix} this comment is for test";
 		email.subject = "${prefix} subject";
-		email.sent = "${prefix}sqq@jserver";
+		email.sent = "${prefix}sqq@jserver.cn";
 		email.save();
 		return email;
 	}

@@ -78,9 +78,9 @@ class TrainingControllerTests {
 
         controller.save()
 
-        assert response.redirectedUrl == '/training/show/2'
+        assert response.redirectedUrl == '/training/show/1'
         assert controller.flash.message != null
-        assert Training.count() == 2
+        assert Training.count() == 1
 		
 		def training = Training.findByName("checkout")
 		assertNotNull training;
@@ -152,7 +152,7 @@ class TrainingControllerTests {
 		setTrainingParams(training)
 
         assert training.save() != null
-		assert Training.count() == 2
+		assert Training.count() == 1
 
         // test invalid parameters in update
         params.id = training.id
@@ -170,7 +170,7 @@ class TrainingControllerTests {
 
         assert response.redirectedUrl == "/training/show/$training.id"
         assert flash.message != null
-		assert Training.count() == 2
+		assert Training.count() == 1
 
 		def training_checkout = Training.findByName('checkout')
 		assertNotNull training_checkout;
@@ -293,13 +293,13 @@ class TrainingControllerTests {
 		setTrainingParams(training)
 
         assert training.save() != null
-        assert Training.count() == 2
+        assert Training.count() == 1
 
         params.id = training.id
 
         controller.delete()
 
-        assert Training.count() == 1
+        assert Training.count() == 0
         assert Training.get(training.id) == null
         assert response.redirectedUrl == '/training/list'
 		
