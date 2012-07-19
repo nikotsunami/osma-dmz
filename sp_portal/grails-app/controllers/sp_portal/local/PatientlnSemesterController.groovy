@@ -20,14 +20,91 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 
     def save() {
-        def patientlnSemesterInstance = new PatientlnSemester(params)
-        if (!patientlnSemesterInstance.save(flush: true)) {
+		boolean accepted
+		
+		def sp=StandardizedPatient.findById(params.standardizedPatient.id);
+		
+		def patientlnSemesterInstance = PatientlnSemester.findByStandardizedPatient(sp)
+		
+				if(patientlnSemesterInstance!=null){
+		
+					if(params.acceptedOsceDay!=null || params.acceptedTraining!=null){
+						accepted=false
+						
+						
+					}
+					 if(params.acceptedOsceDay!=null && params.acceptedTraining!=null){
+						patientlnSemesterInstance.accepted=true;
+						accepted=true
+					
+					}
+					
+					 if(params.acceptedOsceDay==null && params.acceptedTraining==null){
+						accepted=false
+						
+						
+					}
+				if(accepted==true){
+						def osce=OsceDay.findAllById(params.acceptedOsceDay)
+						def training=Training.findAllById(params.acceptedTraining)
+						patientlnSemesterInstance.acceptedOsceDay.addAll(osce);
+						patientlnSemesterInstance.acceptedTraining.addAll(training);
+						patientlnSemesterInstance.save()
+						redirect(action: "show", id: patientlnSemesterInstance.id)
+
+				}else{
+					  flash.message = message(code: 'patientInSemester.error.message');
+					  redirect(action: "show", id: patientlnSemesterInstance.id)
+				
+				}
+				
+				
+				
+			}else{
+				def patient =new PatientlnSemester(params);
+				patient.standardizedPatient=patient.standardizedPatient						
+								
+				if(patient.acceptedOsceDay!=null || patient.acceptedTraining!=null){
+						accepted=false
+						
+					}
+					if(patient.acceptedOsceDay!=null && patient.acceptedTraining!=null){
+						patient.accepted=true;
+						accepted=true
+					}
+					
+					if(patient.acceptedOsceDay==null && patient.acceptedTraining==null){
+						accepted=false
+						
+					}
+				if(accepted==true){
+						
+						patient.acceptedOsceDay=patient.acceptedOsceDay;
+						patient.acceptedTraining=patient.acceptedTraining;
+						patient.save()
+						
+						redirect(action:"show");
+
+				}else{
+					  flash.message = message(code: 'patientInSemester.error.message');
+					  redirect(action: "create");
+				
+				}
+							
+			}
+			
+			
+		
+		
+        /*if (!patientlnSemesterInstance.save(flush: true)) {
             render(view: "create", model: [patientlnSemesterInstance: patientlnSemesterInstance])
             return
         }
 
 		flash.message = message(code: 'default.created.message', args: [message(code: 'patientlnSemester.label', default: 'PatientlnSemester'), patientlnSemesterInstance.id])
         redirect(action: "show", id: patientlnSemesterInstance.id)
+		
+		*/
     }
 
     def show() {
