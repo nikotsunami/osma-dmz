@@ -103,7 +103,7 @@ log4j = {
 
 sp_portal.admin.username = "admin"
 sp_portal.admin.password = "123"
-sp_portal.admin.email = "paul@jserver"
+sp_portal.admin.email = "paul@jserver.cn"
 sp_portal.mail.inviteStandardizedPatients.defaultText = """
 Dear #preName #name 
 
@@ -114,6 +114,17 @@ site at www.xxxxx with you username which is this email address and pasword whic
 Yours sincerely
 
 
+
+"""
+sp_portal.mail.saveTraningDate.defaultText = """
+Dear marvin 
+
+Hello, administrator, I've logged in and choose the training time.
+
+
+Yours sincerely
+
+#preName #name
 
 """
 
@@ -130,4 +141,5 @@ grails {
      props = ["mail.smtp.auth":"false"]
 
 } }
+
 
