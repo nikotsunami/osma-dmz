@@ -21,8 +21,8 @@ public class CreateTrainingPage extends BasePage {
 
     def createTraining(name, dateYear,dateMonth,dateDay,timeStartHour,timeStartMinute,timeEndHour,timeEndMinute ){
         enterName(name)
-        selectDateFromCalendar("trainingDate-trigger", dateYear, dateMonth, dateDay)
 
+        selectDate(dateYear,dateMonth,dateDay);
 
         setStartHour(timeStartHour);
         setStartMinute(timeStartMinute)
@@ -35,6 +35,11 @@ public class CreateTrainingPage extends BasePage {
 
     def enterName(str){
         fillOutField("name",str)
+    }
+
+    def selectDate(dateYear,dateMonth,dateDay){
+       selectDateFromCalendar("trainingDate-trigger", dateYear, dateMonth, dateDay)
+
     }
 
     def setStartHour(int timeStartHour){
