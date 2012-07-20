@@ -13,7 +13,7 @@
 			<ul>
 				<!-- <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li> -->
 				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="create" action="create"><g:message code="patientlnSemester.create.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="show-patientlnSemester" class="content scaffold-show" role="main">
@@ -28,7 +28,7 @@
 					<span id="acceptedOsceDay-label" class="property-label"><g:message code="patientlnSemester.acceptedOsceDay.label" default="Accepted Osce Day" /></span>
 					
 						<g:each in="${patientlnSemesterInstance.acceptedOsceDay}" var="a">
-						<span class="property-value" aria-labelledby="acceptedOsceDay-label"><g:link controller="osceDay" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="acceptedOsceDay-label">${a?.encodeAsHTML()}</span>
 						</g:each>
 					
 				</li>
@@ -39,7 +39,7 @@
 					<span id="acceptedTraining-label" class="property-label"><g:message code="patientlnSemester.acceptedTraining.label" default="Accepted Training" /></span>
 					
 						<g:each in="${patientlnSemesterInstance.acceptedTraining}" var="a">
-						<span class="property-value" aria-labelledby="acceptedTraining-label"><g:link controller="training" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="acceptedTraining-label">${a?.encodeAsHTML()}</span>
 						</g:each>
 					
 				</li>
@@ -49,7 +49,7 @@
 				<li class="fieldcontain">
 					<span id="standardizedPatient-label" class="property-label"><g:message code="patientlnSemester.standardizedPatient.label" default="Standardized Patient" /></span>
 					
-						<span class="property-value" aria-labelledby="standardizedPatient-label"><g:link controller="standardizedPatient" action="show" id="${patientlnSemesterInstance?.standardizedPatient?.id}">${patientlnSemesterInstance?.standardizedPatient?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="standardizedPatient-label">${patientlnSemesterInstance?.standardizedPatient?.encodeAsHTML()}</span>
 					
 				</li>
 				</g:if>

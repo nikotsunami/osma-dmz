@@ -9,6 +9,7 @@ class DataSetupHelper {
 
     def adminUser
     def normalUser
+	def normalUser2
 
     def standardizedPatient1
 	def standardizedPatient2
@@ -20,10 +21,25 @@ class DataSetupHelper {
 	def anamnesisCheck2
 	def anamnesisChecksValue1
 	def anamnesisCheck3
-	
 	def training1
+	def training2
+	def training3
+	def osce1
+	def osce2
+	def osce3
+	
 	def osceDay1
 
+	def email1
+	def email2
+	
+	
+	// is standardizedPatient2 has no osces or trainings
+	def emptyPatientInSemester 
+	
+	// is standardizedPatient1 has one osce and one training
+	def patientInSemester
+	
     def getDataSetA(){
         setupRoles()
         setupUsers()
@@ -32,8 +48,8 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
-		setUpTraining1()
-		setUpOsceDay1()
+//		setUpTraining1()
+//		setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
@@ -41,6 +57,7 @@ class DataSetupHelper {
         assertNotNull normalUser
 
         normalUser.standardizedPatient = standardizedPatient1
+
 
         normalUser.save()
 
@@ -83,6 +100,7 @@ class DataSetupHelper {
         assertNotNull normalUser
 
         normalUser.standardizedPatient = standardizedPatient1
+		normalUser2.standardizedPatient = standardizedPatient2
 
         normalUser.save()
 
@@ -103,8 +121,8 @@ class DataSetupHelper {
 
         assertNotNull normalUser.standardizedPatient.bankaccount
 
-
-
+		email1 = setupEmail("1")
+		email2 = setupEmail("2")
     }
 
 
@@ -154,7 +172,7 @@ class DataSetupHelper {
         User user1 = new User();
 
         user1.userName = "NormalUser";
-        user1.userEmail = "Normal@user";
+        user1.userEmail = "Normal@user.cn";
         user1.passwordHash = "not hashed";
         user1.isActive = true;
 
@@ -166,6 +184,23 @@ class DataSetupHelper {
         user1.save();
 
         normalUser = user1
+//////////////////////////////////////////////////////////////////		
+		
+		User user2 = new User();
+
+        user2.userName = "NormalUser2";
+        user2.userEmail = "Normal2@user.cn";
+        user2.passwordHash = "not hashed2";
+        user2.isActive = true;
+
+        roles1 = [];
+        roles1.add(Role.findByRoleName("USER_ROLE"));
+
+        user2.roles = roles1;
+
+        user2.save();
+		println("user2 " + user2.errors)
+        normalUser2 = user2
     }
 
     def setupStandardizedPatients(def prefix){
@@ -201,6 +236,7 @@ class DataSetupHelper {
         
 
     }
+	 
 
     def setupBankAccounts(){
         def bankaccount = new Bankaccount()
@@ -299,6 +335,7 @@ class DataSetupHelper {
 	
 	def setUpTraining1(){
 		def training = new Training()
+		training.id=1L;
 		training.name = 'traning1'
 		training.trainingDate = new Date(new Date().getTime()+24*60*60*1000)
 		training.timeStart = new Date(new Date().getTime()+24*60*60*1000)
@@ -314,5 +351,87 @@ class DataSetupHelper {
 		osceDay1 = osceDay;
 		
 	}
+	def setUpOsceDays(){
+		osce1=new OsceDay();
+		osce1.id=1L
+		osce1.osceDate=new Date(new Date().getTime()+24*60*60*1000);
+		
+		osce2=new OsceDay();
+		osce2.id=2L
+		osce2.osceDate=new Date(new Date().getTime()+12*60*60*1000);
+		
+		osce3=new OsceDay();
+		osce3.id=3L
+		osce3.osceDate=new Date(new Date().getTime()+15*60*60*1000);
+		
+		osce1.save();
+		osce2.save();
+		osce3.save();
+		
+		assertTrue 3 == local.OsceDay.findAll().size();
+		
+		
+		
+	
+	
+	}
+	def setUpTrainingDays(){
+	println("Setup training");
 
+		training2=new Training();
+		training2.id=2L
+		training2.name="bbbbb"
+		training2.trainingDate = new Date(new Date().getTime()+12*60*60*1000)
+		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training2.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		
+
+		training3=new Training();
+		training3.id=3L
+		training3.name="ccc"
+		training3.trainingDate = new Date(new Date().getTime()+8*60*60*1000)
+		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
+		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		
+		training2.save();
+		training3.save();
+		
+		
+		assertTrue 2 == local.Training.findAll().size();
+	
+	}
+	def setUpPatientLnSemester(){
+		patientInSemester =new PatientlnSemester();
+		patientInSemester.standardizedPatient =standardizedPatient1;
+		patientInSemester.acceptedOsceDay=[osce1]
+		patientInSemester.acceptedTraining=[training2]
+		patientInSemester.accepted=true;
+		patientInSemester.save();
+	
+	
+	}
+	
+	def setUpEmptyPatientLnSemester(){
+		emptyPatientInSemester =new PatientlnSemester();
+		emptyPatientInSemester.standardizedPatient =standardizedPatient2;
+		emptyPatientInSemester.acceptedOsceDay=[]
+		emptyPatientInSemester.acceptedTraining=[]
+		emptyPatientInSemester.accepted=false;
+		emptyPatientInSemester.save();
+	
+	
+	}
+	
+	
+
+	def setupEmail(def prefix){
+		def email = new Emails();
+		email.sendDate = new Date();
+		email.receiver = "${prefix}marvin@jserver.cn";
+		email.content = "${prefix} this comment is for test";
+		email.subject = "${prefix} subject";
+		email.sent = "${prefix}sqq@jserver.cn";
+		email.save();
+		return email;
+	}
 }

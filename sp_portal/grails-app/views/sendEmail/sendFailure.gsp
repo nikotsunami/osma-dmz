@@ -8,8 +8,7 @@
 
     </head>
     <body>
-
          <h1><g:message code="user.sendEmail.failure"/></h1>
-
+		 <g:link controller="sendEmail" action="show" ><g:message code="default.back.label"/></g:link>
     </body>
 </html>

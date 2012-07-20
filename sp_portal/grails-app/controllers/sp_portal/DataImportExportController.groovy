@@ -26,18 +26,18 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id ->local.AnamnesisCheck.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id ->local.AnamnesisCheckTitle.findByOrigId(id)},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id ->local.AnamnesisCheck.findByOrigId(id)},
-                       
+
                        "StandardizedPatient.anamnesisForm.scars":{ id ->local.Scar.findByOrigId(id)},
 
                        ]
     static creators = [ "StandardizedPatient": { id,jsonData,context->
                                                             def x = new local.StandardizedPatient();
                                                             x.origId = id;
-                                                            x.save();
+                                                            x.save(flush:true);
                                                             createUser(x,jsonData);
                                                             return x},
                        "StandardizedPatient.bankaccount":{ id,jsonData,context -> def x = new local.Bankaccount(); x.origId = id; return x},
-                       "StandardizedPatient.anamnesisForm":{ id,jsonData,context -> def x = new local.AnamnesisForm(); x.origId = id; x.save(); return x},
+                       "StandardizedPatient.anamnesisForm":{ id,jsonData,context -> def x = new local.AnamnesisForm(); x.origId = id; x.save(flush:true); return x},
                        "StandardizedPatient.description":{ id,jsonData,context -> def x = new local.Description(); x.origId = id; return x},
                        "StandardizedPatient.profession":{ id,jsonData,context -> def x = new local.Profession(); x.origId = id; return x},
                        "StandardizedPatient.nationality":{ id,jsonData,context -> def x = new local.Nationality(); x.origId = id; return x},
@@ -48,24 +48,24 @@ class DataImportExportController extends MainController {
                                                                                                                     x.anamnesisForm = form;
                                                                                                                 }
                                                                                                             return x},
-                      
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},                    
-					   "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
+
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.anamnesisCheckTitle":{ id,jsonData,context -> def x = new local.AnamnesisCheckTitle(); x.origId = id; return x},
+                       "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck":{ id,jsonData,context -> def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.anamnesisChecksValues.anamnesisCheck.title":{ id,jsonData,context ->def x = new local.AnamnesisCheck(); x.origId = id; return x},
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
                         ]
     static def createUser(standardizedPatient,jsonData){
          def x =new User();
-         x.userName= jsonData.email; 
+         x.userName= jsonData.email;
          x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
+println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
          x.userEmail=jsonData.email;
          x.standardizedPatient=standardizedPatient;
          x.isActive=true;
          def roles = [];
-	   roles.add(Role.findByRoleName("USER_ROLE"));
-	   x.roles = roles;
-         x.save();
-         //return x;
+         roles.add(Role.findByRoleName("USER_ROLE"));
+         x.roles = roles;
+         x.save(flush:true);
 
 
     }
@@ -76,6 +76,11 @@ class DataImportExportController extends MainController {
                          "count","dirtyPropertyNames","validationErrorsMap","errors", "hasMany","gormDynamicFinders",
                          "all", "attached" ,"domainClass","constraints","mapping","belongsTo",
                          "descriptionId", "professionId","bankaccountId","mappedBy","nationalityId","anamnesisFormId","anamnesisCheckId"];
+
+
+    def test(){
+
+    }
 
 
 
@@ -98,6 +103,7 @@ class DataImportExportController extends MainController {
 
         if (params.data){
             String data = params.data;
+println("${data}")
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
             preProcessData(jsonObject);
@@ -216,9 +222,12 @@ class DataImportExportController extends MainController {
                 return 2;
             } else if(type.toUpperCase().equals("QUESTION_MULT_M")){
                 return 3;
-            } else if(type.toUpperCase().equals("QUESTION_TITLE")){
+            } 
+			/*else if(type.toUpperCase().equals("QUESTION_TITLE")){
                 return 4;
-            }  else {
+            } 
+*/         
+			else {
                 return -1;
             }
     }
@@ -260,7 +269,6 @@ class DataImportExportController extends MainController {
                 return null;
             }
         }
-
 
 
         // loop over all the proerties in the class
@@ -396,7 +404,7 @@ class DataImportExportController extends MainController {
 
         }    // end loop over all the proerties in the class
 
-        sp.save();
+        sp.save(flush:true);
         return sp;
 
     }

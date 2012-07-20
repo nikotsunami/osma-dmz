@@ -33,12 +33,15 @@ class AuthenticationController extends MainController {
         log(" auth " + params);
 
         def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
+		
 
         log(" user " + user);
-        if(user && user.isActive){
-          session.user = user
+          if(user && user.isActive){
+         session.user = user
+		 log("user   " +user.standardizedPatient);
           flash.message = "${message(code: 'default.login.success.message')} ${user.userName}!"
-          applyPermissions(user);
+         applyPermissions(user);
+
 
         }else{
           flash.message = message(code: 'default.lgoin.unsuccess.message',args: [params.userName])
@@ -63,8 +66,8 @@ class AuthenticationController extends MainController {
 
      def logout() {
         flash.message = "${message(code: 'default.logout.message')} ${session.user.userName}"
-        session.user = null
-        session.titleIndex= null;
+        session.user=null
+		session.titleIndex= null;
         redirect(action:"login")
      }
      

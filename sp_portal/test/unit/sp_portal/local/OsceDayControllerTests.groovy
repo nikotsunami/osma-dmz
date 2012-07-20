@@ -8,7 +8,7 @@ import grails.test.mixin.TestFor
 import sp_portal.DataSetupHelper;
 
 @TestFor(OsceDayController)
-@Mock(OsceDay)
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
 class OsceDayControllerTests {
 	def datasetup = new DataSetupHelper()
 	def Calendar baseTime = null;
@@ -16,7 +16,9 @@ class OsceDayControllerTests {
 	@Before
 	void setUp() {
         // Setup logic here
+		datasetup.setUpTraining1()
 		datasetup.setUpOsceDay1()
+		datasetup.getDataSetA()
 		baseTime = GregorianCalendar.getInstance();
 		baseTime.setTime(new Date());
     }
@@ -175,6 +177,31 @@ class OsceDayControllerTests {
         assert model.osceDayInstance.errors.getFieldError('version')
         assert flash.message != null
     }
+	
+	void testUpdateNotAllowed(){
+		populateValidParams(params)
+        def osceDay = new OsceDay(params)
+        assert osceDay.save() != null
+		params["standardizedPatient"] = datasetup.standardizedPatient1
+	    params["acceptedOsceDay"] = osceDay
+	    params["acceptedTraining"] = datasetup.training1
+	    def patientlnSemester = new PatientlnSemester(params)
+        assert patientlnSemester.save() != null
+		
+		params.id = osceDay.id
+		params["osceDate"] = new Date()
+		controller.update()
+		def osceDay_update = OsceDay.findById(osceDay.id)
+		assertNotNull osceDay_update;
+		def expectedOsceDate = baseTime.clone()
+		
+		expectedOsceDate.add(Calendar.DAY_OF_MONTH,2)
+		expectedOsceDate.set(Calendar.HOUR_OF_DAY,0)
+		expectedOsceDate.set(Calendar.MINUTE,0)
+		
+		assertEquals expectedOsceDate.getTime() , osceDay_update.osceDate ;
+		
+	}
 
     void testDelete() {
         controller.delete()
@@ -196,5 +223,20 @@ class OsceDayControllerTests {
         assert OsceDay.count() == 1
         assert OsceDay.get(osceDay.id) == null
         assert response.redirectedUrl == '/osceDay/list'
+		
+	   
     }
+	
+	void testDeleteNotAllowed(){
+		 params["standardizedPatient"] = datasetup.standardizedPatient1
+	    params["acceptedOsceDay"] = datasetup.osceDay1
+	    params["acceptedTraining"] = datasetup.training1
+	    def patientlnSemester = new PatientlnSemester(params)
+        assert patientlnSemester.save() != null
+	  
+		params.id = datasetup.osceDay1.id
+
+        controller.delete()
+		assert OsceDay.count() == 1
+	}
 }

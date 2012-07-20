@@ -1,4 +1,8 @@
 <%@ page import="sp_portal.local.AnamnesisCheck" %>
+<%@ page import="sp_portal.User" %>
+
+
+
 
 <!doctype html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
@@ -30,17 +34,21 @@
            <g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
         </g:if>
         </div>
-    
+		
+
     <div class="stdpnt-menu">
         <ul>
-
           <td><g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link></td>
+		  <g:if test="${session.user.standardizedPatient!=null}">
           <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
           <td><g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
           <td><g:link controller="checkQuestions" action="index" ><li><g:message code="default.questions.message"/></li></g:link></td>
-   
-        
+		  <td><g:link controller="selectAvailableDates" action="show" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link></td> 
+			</g:if>
+ 
         </ul>
+
+		
     </div>
     <div class="stdpnt-main-panel">
         <g:layoutBody/>

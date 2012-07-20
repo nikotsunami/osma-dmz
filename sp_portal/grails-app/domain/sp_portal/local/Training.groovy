@@ -19,6 +19,10 @@ class Training {
 		timeEnd nullable: false, validator: { val, obj ->
         val?.after(obj.timeStart)
 		}	
-		trainingDate nullable: false
+		trainingDate nullable: false,unique:true
     }
+	
+	public String toString(){
+		return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
+	}
 }

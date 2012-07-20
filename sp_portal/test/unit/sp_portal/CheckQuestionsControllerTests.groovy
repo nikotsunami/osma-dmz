@@ -10,7 +10,7 @@ import sp_portal.DataSetupHelper;
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
 @TestFor(CheckQuestionsController)
-@Mock([User,Role,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue,local.Bankaccount,local.Training,local.OsceDay])
+@Mock([User,Role,local.StandardizedPatient,local.AnamnesisForm,local.AnamnesisCheckTitle,local.AnamnesisCheck,local.AnamnesisChecksValue,local.Bankaccount,local.Training,local.OsceDay,local.PatientlnSemester])
 class CheckQuestionsControllerTests {
     def datasetup = null;
 	@Before

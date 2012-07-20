@@ -39,7 +39,7 @@ class UserController extends MainController {
 
     def create() {
           params.isActive=true
-          def standardizedPatient = new local.StandardizedPatient();
+          //def standardizedPatient = new local.StandardizedPatient();
 
 
           User newUser = new User(params);
@@ -408,13 +408,6 @@ class UserController extends MainController {
              def userInstance = new User(params)
 
              handleInboundPassword(userInstance);
-
-                def standardizedPatient = new local.StandardizedPatient();
-
-                standardizedPatient.email = userInstance.userEmail;
-                standardizedPatient.origId = 0;
-
-                userInstance.standardizedPatient = standardizedPatient.save();
 
                     if (!userInstance.save(flush: true)) {
                         render(view: "create", model: [userInstance: userInstance])

@@ -56,6 +56,24 @@ It can be built as a war file and deployed to any java servlet contained such as
 
    For more info checkout the Grails homepage at http://grails.org
 
+ 
+   1.6 Running Tests
+
+	To run all the tests including, unit, integration and functional enter:
+		grails test-app -Dserver.port=8090
+
+	To run just unit tests 
+		grails test-app -unit
+
+	To run just integration tests 
+		grails test-app -integration
+
+	To run just functional tests 
+		grails test-app -functional
+grails test-app -Dserver.port=8090 -functional -Dwebdriver.browser=chrome -Dwebdriver.chrome.driver=/home/paul/Tools/chromedriver
+	To run a single test 
+		grails test-app <test-name>
+
 
 2. LOGIN IN
 =============================================================================

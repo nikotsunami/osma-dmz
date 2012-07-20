@@ -2,9 +2,10 @@ package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class TrainingController {
+class TrainingController extends sp_portal.MainController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
+
 
     def index() {
         redirect(action: "list", params: params)
@@ -25,6 +26,7 @@ class TrainingController {
         def trainingInstance = new Training(params)
 		String trainingDateParam = params.trainingDate
 		setStartAndEndTime(trainingInstance)
+		
 		
         if (!trainingInstance.save(flush: true)) {
             render(view: "create", model: [trainingInstance: trainingInstance])
@@ -67,7 +69,15 @@ class TrainingController {
             redirect(action: "list")
             return
         }
-		setStartAndEndTime(trainingInstance)
+		
+		def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
+			
+		if(!standardizedPatients.equals('')){
+			flash.message = message(code: 'default.training.is.accepted', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
+			redirect(action: "show", id: params.id)
+			return
+		}
+			
 		println("params.version = "+params.version);
         if (params.version) {
             def version = params.version.toLong()
@@ -100,6 +110,15 @@ class TrainingController {
         }
 
         try {
+		
+			def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
+			
+			if(!standardizedPatients.equals('')){
+				flash.message = message(code: 'default.training.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
+				redirect(action: "show", id: params.id)
+				return
+			}
+			
             trainingInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'training.label', default: 'Training'), params.id])
             redirect(action: "list")
@@ -135,17 +154,38 @@ class TrainingController {
 
 			Long timeStart = trainingDate.getTime()+startMin*60*1000+startHour*60*60*1000
 			trainingInstance.timeStart = new Date(timeStart)
+			
+			if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
+				Long endHour = Long.valueOf(endHourPrame)
+				Long endMin = Long.valueOf(endMinPrame)
+				Long timeEnd = trainingDate.getTime()+endMin*60*1000+endHour*60*60*1000
+				trainingInstance.timeEnd = new Date(timeEnd)	
+			}else{
+				trainingInstance.timeEnd = null
+			}
 		}else{
 			trainingInstance.timeStart = null
+			flash.message = message(code: 'dafault.training.is.timeStart', args: [message(code: 'training.label', default: 'Training')])
+			redirect(action: "create", id: trainingInstance.id)
 		}
 		
-		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
-			Long endHour = Long.valueOf(endHourPrame)
-			Long endMin = Long.valueOf(endMinPrame)
-			Long timeEnd = trainingDate.getTime()+endMin*60*1000+endHour*60*60*1000
-			trainingInstance.timeEnd = new Date(timeEnd)	
-		}else{
-			trainingInstance.timeEnd = null
-		}
+		
+	}
+	
+	def getStandardizedPatientsStr(trainingInstanceId){
+		def allPatientlnSemesters = PatientlnSemester.list()
+		def standardizedPatients = ''
+			for(PatientlnSemester patientlnSemester : allPatientlnSemesters){
+				for(Training training : patientlnSemester.acceptedTraining){
+					if(training.id == trainingInstanceId){
+						if(!standardizedPatients.equals('')){
+							standardizedPatients = standardizedPatients + ','
+						}
+						standardizedPatients = standardizedPatients + patientlnSemester.standardizedPatient.email 
+						
+					}
+				}
+			}
+		return standardizedPatients;
 	}
 }
