@@ -47,7 +47,7 @@ class SyncSPTests {
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("qqq@rrr.com", "qqq")
+        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "12345678910123")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
@@ -62,157 +62,137 @@ class SyncSPTests {
    private String getTestData(){
         def ret = $/
                 {
-                       "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
-                       "anamnesisForm":{
-                          "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
-                          "anamnesisChecksValues":[
-                             {
-                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
-                                "anamnesisCheck":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                   "id":3,
-                                   "sortOrder":10,
-                                   "text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":12,
-                                      "sortOrder":9,
-                                      "text":"Treatment history category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
-                                   },
-                                   "type":"QUESTION_YES_NO",
-                                   "userSpecifiedOrder":null,
-                                   "value":""
-                                },
-                                "anamnesisChecksValue":null,
-                                "anamnesisForm":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
-                                },
-                                "comment":"this is a comment 3",
-                                "id":9,
-                                "truth":false
-                             },
-                             {
-                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
-                                "anamnesisCheck":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                   "id":1,
-                                   "sortOrder":2,
-                                   "text":"Rauchen Sie?",
-                                 "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":101,
-                                      "sortOrder":1,
-                                      "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
-                                   },
-                                   "type":"QUESTION_MULT_S",
-                                   "userSpecifiedOrder":null,
-                                   "value":"oft|mittel|selten"
-                                },
-                                "anamnesisChecksValue":"1-0-0",
-                                "anamnesisForm":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
-                                },
-                                "comment":"this is a comment 2",
-                                "id":8,
-                                "truth":true
-                             },
-                             {
-                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
-                                "anamnesisCheck":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                   "id":2,
-                                   "sortOrder":2,
-                                   "text":"Rauchen Sie 222?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":100,
-                                      "sortOrder":1,
-                                      "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
-                                   },
-                                   "type":"QUESTION_OPEN",
-                                   "userSpecifiedOrder":null,
-                                   "value":"JDJDJDDJDJDJ"
-                                },
-                                "anamnesisChecksValue":"1",
-                                "anamnesisForm":{
-                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
-                                },
-                                "comment":"this is a comment 1",
-                                "id":80,
-                                "truth":true
-                             }
-                          ],
-                          "createDate":new Date(1279382400000),
-                          "id":3,
-                          "scars":[{
-                                   "id":9,
-                                   "traitType":"TATTOO",
-                                   "bodypart":"Oberschenkel (links)"}
-                           ],
-                          "standardizedPatients":[
-                             {
-                                "class":"ch.unibas.medizin.osce.domain.StandardizedPatient"
-                             }
-                          ]
-                       },
-                       "bankaccount":{
-                          "class":"ch.unibas.medizin.osce.domain.Bankaccount",
-                          "bankName":"Basler Kantonalbank",
-                          "bic":"GENODEF1JEV",
-                          "city":"SHanghai",
-                          "iban":"CH46 3948 4853 2029 3",
-                          "id":51,
-                          "ownerName":"sqq",
-                          "postalCode":241000,
-                          "standardizedPatients":[
-                             {
-                                "class":"ch.unibas.medizin.osce.domain.StandardizedPatient"
-                             }
-                          ]
-                       },
-                       "birthday":new Date(1279382400000),
-                       "city":"Metz",
-                       "description":{"description":"this is a description", "id":35},
-                       "email":"qqq@rrr.com",
-                       "gender":"FEMALE",
-                       "height":162,
-                       "immagePath": "/image/path",
-                       "maritalStatus":"DIVORCED",
-                       "mobile":"078 427 24 85",
-                       "name":"Lamarie",
-                       "nationality":{
-                          "class":"ch.unibas.medizin.osce.domain.Nationality",
-                          "nationality":"Frankreich",
-                          "id":7
-                       },
-                       "id":5711,
-                       "postalCode":4057,
-                       "preName":"Marianne",
-                       "profession":{
-                          "class":"ch.unibas.medizin.osce.domain.Profession",
-                          "id":3,
-                          "profession":"Bauarbeiter/in"
-                       },
-                       "socialInsuranceNo":"qqq",
-                       "street":"Feldbergstrasse 145",
-                       "telephone":"123456789",
-                       "telephone2":";kjlkjlj",
-                       "videoPath":"hello nick",
-                       "weight":57,
-                       "workPermission":null
-                    }
+                   "anamnesisForm":{
+                      "anamnesischecksvalues":[
+                         {
+                            "anamnesisChecksValue":null,
+                            "anamnesischeck":{
+                               "anamnesisCheckTitle":{
+                                  "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                  "id":1,
+                                  "sort_order":1,
+                                  "text":"Konsumverhalten",
+                                  "version":0
+                               },
+                               "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                               "id":1,
+                               "sort_order":1,
+                               "text":"Rauchen Sie?",
+                               "title":null,
+                               "type":"QUESTION_YES_NO",
+                               "userSpecifiedOrder":null,
+                               "value":"",
+                               "version":0
+                            },
+                            "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
+                            "comment":null,
+                            "id":14,
+                            "truth":false,
+                            "version":0
+                         },
+                         {
+                            "anamnesisChecksValue":null,
+                            "anamnesischeck":{
+                               "anamnesisCheckTitle":{
+                                  "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                  "id":2,
+                                  "sort_order":3,
+                                  "text":"Krankengeschichte",
+                                  "version":0
+                               },
+                               "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                               "id":5,
+                               "sort_order":1,
+                               "text":"Leiden Sie unter Diabetes?",
+                               "title":null,
+                               "type":"QUESTION_YES_NO",
+                               "userSpecifiedOrder":null,
+                               "value":"",
+                               "version":0
+                            },
+                            "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
+                            "comment":null,
+                            "id":15,
+                            "truth":false,
+                            "version":0
+                         }
+                      ],
+                      "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
+                      "createDate":"2009-09-19T00:00:00Z",
+                      "id":6,
+                      "scars":[
+                         {
+                            "bodypart":"Hals",
+                            "class":"ch.unibas.medizin.osce.domain.Scar",
+                            "id":11,
+                            "traitType":"SCAR",
+                            "version":0
+                         }
+                      ],
+                      "version":0
+                   },
+                   "bankAccount":{
+                      "BIC":"BENDSFF1JEV",
+                      "IBAN":"CH78 5685 7565 4364 7",
+                      "bankName":"KTS",
+                      "city":null,
+                      "class":"ch.unibas.medizin.osce.domain.Bankaccount",
+                      "country":null,
+                      "id":31,
+                      "ownerName":null,
+                      "postalCode":null,
+                      "version":0
+                   },
+                   "birthday":"1965-09-24T00:00:00Z",
+                   "city":"Basel",
+                   "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
+                   "descriptions":null,
+                   "email":"beddebu@hss.ch",
+                   "gender":"FEMALE",
+                   "height":182,
+                   "id":23,
+                   "immagePath":null,
+                   "langskills":[
+                      {
+                         "class":"ch.unibas.medizin.osce.domain.LangSkill",
+                         "id":12,
+                         "skill":"NATIVE_SPEAKER",
+                         "spokenlanguage":{
+                            "class":"ch.unibas.medizin.osce.domain.SpokenLanguage",
+                            "id":4,
+                            "languageName":"Deutsch",
+                            "version":0
+                         },
+                         "version":0
+                      }
+                   ],
+                   "maritalStatus":null,
+                   "mobile":"078 586 29 84",
+                   "name":"Buser",
+                   "nationality":{
+                      "class":"ch.unibas.medizin.osce.domain.Nationality",
+                      "id":6,
+                      "nationality":"Deutschland",
+                      "version":0
+                   },
+                   "postalCode":4051,
+                   "preName":"Bettina",
+                   "profession":{
+                      "class":"ch.unibas.medizin.osce.domain.Profession",
+                      "id":6,
+                      "profession":"Florist/in",
+                      "version":0
+                   },
+                   "socialInsuranceNo":"12345678910123",
+                   "status":null,
+                   "street":"Rankenbergweg 1",
+                   "telephone":null,
+                   "telephone2":null,
+                   "version":0,
+                   "videoPath":null,
+                   "weight":82,
+                   "workPermission":null
+                }
                 /$
             return ret.toString();
 

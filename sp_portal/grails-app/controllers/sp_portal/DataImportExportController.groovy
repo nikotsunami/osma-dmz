@@ -33,11 +33,11 @@ class DataImportExportController extends MainController {
     static creators = [ "StandardizedPatient": { id,jsonData,context->
                                                             def x = new local.StandardizedPatient();
                                                             x.origId = id;
-                                                            x.save();
+                                                            x.save(flush:true);
                                                             createUser(x,jsonData);
                                                             return x},
                        "StandardizedPatient.bankaccount":{ id,jsonData,context -> def x = new local.Bankaccount(); x.origId = id; return x},
-                       "StandardizedPatient.anamnesisForm":{ id,jsonData,context -> def x = new local.AnamnesisForm(); x.origId = id; x.save(); return x},
+                       "StandardizedPatient.anamnesisForm":{ id,jsonData,context -> def x = new local.AnamnesisForm(); x.origId = id; x.save(flush:true); return x},
                        "StandardizedPatient.description":{ id,jsonData,context -> def x = new local.Description(); x.origId = id; return x},
                        "StandardizedPatient.profession":{ id,jsonData,context -> def x = new local.Profession(); x.origId = id; return x},
                        "StandardizedPatient.nationality":{ id,jsonData,context -> def x = new local.Nationality(); x.origId = id; return x},
@@ -103,6 +103,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
         if (params.data){
             String data = params.data;
+println("${data}")
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
             preProcessData(jsonObject);
@@ -401,7 +402,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
         }    // end loop over all the proerties in the class
 
-        sp.save();
+        sp.save(flush:true);
         return sp;
 
     }
