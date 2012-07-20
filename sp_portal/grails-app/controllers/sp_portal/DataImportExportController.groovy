@@ -216,9 +216,12 @@ class DataImportExportController extends MainController {
                 return 2;
             } else if(type.toUpperCase().equals("QUESTION_MULT_M")){
                 return 3;
-            } else if(type.toUpperCase().equals("QUESTION_TITLE")){
+            } 
+			/*else if(type.toUpperCase().equals("QUESTION_TITLE")){
                 return 4;
-            }  else {
+            } 
+*/         
+			else {
                 return -1;
             }
     }
@@ -260,7 +263,6 @@ class DataImportExportController extends MainController {
                 return null;
             }
         }
-
 
 
         // loop over all the proerties in the class
