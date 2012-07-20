@@ -105,7 +105,7 @@ class OsceSyncControllerTests extends GroovyTestCase{
 	private String getTestData(){
 	 def json  = """
 		{
-
+			  languages :[{language: "English"}],
 			  osceDay : [ {osceDate: "2010-07-18T16:00:00Z"},
 							{osceDate: "2010-07-12T16:00:00Z"}, //Test database data does not exist
 							{osceDate: "2010-07-10T16:00:00Z"}
