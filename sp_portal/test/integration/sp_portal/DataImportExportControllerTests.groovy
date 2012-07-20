@@ -40,15 +40,15 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                     def anamnesisChecksValue1 = local.AnamnesisChecksValue.findByOrigId(9);
                     def anamnesisCheck1 = local.AnamnesisCheck.findByOrigId(3);
-                    def anamnesisChecksTitle1 = local.AnamnesisCheck.findByOrigId(12);
+                    def anamnesisChecksTitle1 =  anamnesisCheck1.anamnesisCheckTitle
 
                     def anamnesisChecksValue2 = local.AnamnesisChecksValue.findByOrigId(8);
                     def anamnesisCheck2 = local.AnamnesisCheck.findByOrigId(1);
-                    def anamnesisChecksTitle2 = local.AnamnesisCheck.findByOrigId(101);
+                    def anamnesisChecksTitle2 = anamnesisCheck2.anamnesisCheckTitle
 
                     def anamnesisChecksValue3 = local.AnamnesisChecksValue.findByOrigId(80);
                     def anamnesisCheck3 = local.AnamnesisCheck.findByOrigId(2);
-                    def anamnesisChecksTitle3 = local.AnamnesisCheck.findByOrigId(100);
+                    def anamnesisChecksTitle3 = anamnesisCheck3.anamnesisCheckTitle
 
                     def bankaccount = local.Bankaccount.findByOrigId(51);
 
@@ -113,9 +113,9 @@ class DataImportExportControllerTests extends GroovyTestCase{
                     assertEquals anamnesisForm, anamnesisChecksValue1.anamnesisForm;
 
                     //-------------verify anamnesisChecksValue1's anamnesisCheck1-----------------
-                    assertEquals 10, anamnesisCheck1.sortOrder;
+                    assertEquals 11, anamnesisCheck1.sortOrder;
                     assertEquals "Nehmen Sie zurzeit regelmässig Medikamente ein?", anamnesisCheck1.text;
-                    assertEquals anamnesisChecksTitle1, anamnesisCheck1.title;
+                    assertEquals anamnesisChecksTitle1, anamnesisCheck1.anamnesisCheckTitle;
                     assertEquals 1, anamnesisCheck1.type;
                     assertEquals null, anamnesisCheck1.userSpecifiedOrder;
                     assertEquals "", anamnesisCheck1.value;
@@ -124,10 +124,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                     //-------------verify anamnesisChecksValue1's anamnesisCheck1's title-----------------
                     assertEquals 9, anamnesisChecksTitle1.sortOrder;
                     assertEquals "Treatment history category", anamnesisChecksTitle1.text;
-                    assertEquals null, anamnesisChecksTitle1.title;
-                    assertEquals 4, anamnesisChecksTitle1.type;
-                    assertEquals null, anamnesisChecksTitle1.userSpecifiedOrder;
-                    assertEquals "", anamnesisChecksTitle1.value;
+
 
                     //--------------verify anamnesisCheckVlaue2------------------
                     assertEquals null, anamnesisChecksValue2.comment;
@@ -139,19 +136,16 @@ class DataImportExportControllerTests extends GroovyTestCase{
                     //-------------verify anamnesisChecksValue2's anamnesisCheck2-----------------
                     assertEquals 2, anamnesisCheck2.sortOrder;
                     assertEquals "Rauchen Sie?", anamnesisCheck2.text;
-                    assertEquals anamnesisChecksTitle2, anamnesisCheck2.title;
+                    assertEquals anamnesisChecksTitle2, anamnesisCheck2.anamnesisCheckTitle;
                     assertEquals 2, anamnesisCheck2.type;
                     assertEquals null, anamnesisCheck2.userSpecifiedOrder;
                     assertEquals "oft|mittel|selten", anamnesisCheck2.value;
 
 
                     //-------------verify anamnesisChecksValue2's anamnesisCheck2's title-----------------
-                    assertEquals 1, anamnesisChecksTitle2.sortOrder;
+                    assertEquals 2, anamnesisChecksTitle2.sortOrder;
                     assertEquals "Personal lifestyle category", anamnesisChecksTitle2.text;
-                    assertEquals null, anamnesisChecksTitle2.title;
-                    assertEquals 4, anamnesisChecksTitle2.type;
-                    assertEquals null, anamnesisChecksTitle2.userSpecifiedOrder;
-                    assertEquals "", anamnesisChecksTitle2.value;
+
 
                     //---------------verify anamnesisCheckValue3------------------
                     assertEquals null, anamnesisChecksValue3.comment;
@@ -163,19 +157,15 @@ class DataImportExportControllerTests extends GroovyTestCase{
                     //-------------verify anamnesisChecksValue3's anamnesisCheck3-----------------
                     assertEquals 2, anamnesisCheck3.sortOrder;
                     assertEquals "Rauchen Sie 222?", anamnesisCheck3.text;
-                    assertEquals anamnesisChecksTitle3, anamnesisCheck3.title;
+                    assertEquals anamnesisChecksTitle3, anamnesisCheck3.anamnesisCheckTitle;
                     assertEquals 0, anamnesisCheck3.type;
                     assertEquals null, anamnesisCheck3.userSpecifiedOrder;
                     assertEquals "JDJDJDDJDJDJ", anamnesisCheck3.value;
 
 
                     //-------------verify anamnesisChecksValue3's anamnesisCheck3's title-----------------
-                    assertEquals 1, anamnesisChecksTitle3.sortOrder;
+                    assertEquals 3, anamnesisChecksTitle3.sortOrder;
                     assertEquals "Personal lifestyle category", anamnesisChecksTitle3.text;
-                    assertEquals null, anamnesisChecksTitle3.title;
-                    assertEquals 4, anamnesisChecksTitle3.type;
-                    assertEquals null, anamnesisChecksTitle3.userSpecifiedOrder;
-                    assertEquals "", anamnesisChecksTitle3.value;
 
 
                     //-------------verify scar-----------------
@@ -210,15 +200,15 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                 def anamnesisChecksValue1 = local.AnamnesisChecksValue.findByOrigId(9);
                 def anamnesisCheck1 = local.AnamnesisCheck.findByOrigId(3);
-                def anamnesisChecksTitle1 = local.AnamnesisCheck.findByOrigId(12);
+                def anamnesisChecksTitle1 = anamnesisCheck1.anamnesisCheckTitle
 
                 def anamnesisChecksValue2 = local.AnamnesisChecksValue.findByOrigId(8);
                 def anamnesisCheck2 = local.AnamnesisCheck.findByOrigId(1);
-                def anamnesisChecksTitle2 = local.AnamnesisCheck.findByOrigId(101);
+                def anamnesisChecksTitle2 = anamnesisCheck2.anamnesisCheckTitle
 
                 def anamnesisChecksValue3 = local.AnamnesisChecksValue.findByOrigId(80);
                 def anamnesisCheck3 = local.AnamnesisCheck.findByOrigId(2);
-                def anamnesisChecksTitle3 = local.AnamnesisCheck.findByOrigId(100);
+                def anamnesisChecksTitle3 = anamnesisCheck3.anamnesisCheckTitle
 
                 def bankaccount = local.Bankaccount.findByOrigId(51);
 
@@ -288,7 +278,6 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue1's anamnesisCheck1-----------------
                 assertEquals 10, anamnesisCheck1.sortOrder;
                 assertEquals "Nehmen Sie zurzeit regelmässig Medikamente ein?", anamnesisCheck1.text;
-                assertEquals anamnesisChecksTitle1, anamnesisCheck1.title;
                 assertEquals 1, anamnesisCheck1.type;
                 assertEquals null, anamnesisCheck1.userSpecifiedOrder;
                 assertEquals "", anamnesisCheck1.value;
@@ -297,10 +286,6 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue1's anamnesisCheck1's title-----------------
                 assertEquals 9, anamnesisChecksTitle1.sortOrder;
                 assertEquals "Treatment history category", anamnesisChecksTitle1.text;
-                assertEquals null, anamnesisChecksTitle1.title;
-                assertEquals 4, anamnesisChecksTitle1.type;
-                assertEquals null, anamnesisChecksTitle1.userSpecifiedOrder;
-                assertEquals "", anamnesisChecksTitle1.value;
 
                 //--------------verify anamnesisCheckVlaue2------------------
                 assertEquals "this is a comment 2", anamnesisChecksValue2.comment;
@@ -312,7 +297,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue2's anamnesisCheck2-----------------
                 assertEquals 2, anamnesisCheck2.sortOrder;
                 assertEquals "Rauchen Sie?", anamnesisCheck2.text;
-                assertEquals anamnesisChecksTitle2, anamnesisCheck2.title;
+                assertEquals anamnesisChecksTitle2, anamnesisCheck2.anamnesisCheckTitle;
                 assertEquals 2, anamnesisCheck2.type;
                 assertEquals null, anamnesisCheck2.userSpecifiedOrder;
                 assertEquals "oft|mittel|selten", anamnesisCheck2.value;
@@ -322,10 +307,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue2's anamnesisCheck2's title-----------------
                 assertEquals 1, anamnesisChecksTitle2.sortOrder;
                 assertEquals "Personal lifestyle category", anamnesisChecksTitle2.text;
-                assertEquals null, anamnesisChecksTitle2.title;
-                assertEquals 4, anamnesisChecksTitle2.type;
-                assertEquals null, anamnesisChecksTitle2.userSpecifiedOrder;
-                assertEquals "", anamnesisChecksTitle2.value;
+
 
                 //---------------verify anamnesisCheckValue3------------------
                 assertEquals "this is a comment 1", anamnesisChecksValue3.comment;
@@ -337,7 +319,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue3's anamnesisCheck3-----------------
                 assertEquals 2, anamnesisCheck3.sortOrder;
                 assertEquals "Rauchen Sie 222?", anamnesisCheck3.text;
-                assertEquals anamnesisChecksTitle3, anamnesisCheck3.title;
+                assertEquals anamnesisChecksTitle3, anamnesisCheck3.anamnesisCheckTitle;
                 assertEquals 0, anamnesisCheck3.type;
                 assertEquals null, anamnesisCheck3.userSpecifiedOrder;
                 assertEquals "JDJDJDDJDJDJ", anamnesisCheck3.value;
@@ -346,10 +328,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 //-------------verify anamnesisChecksValue3's anamnesisCheck3's title-----------------
                 assertEquals 1, anamnesisChecksTitle3.sortOrder;
                 assertEquals "Personal lifestyle category", anamnesisChecksTitle3.text;
-                assertEquals null, anamnesisChecksTitle3.title;
-                assertEquals 4, anamnesisChecksTitle3.type;
-                assertEquals null, anamnesisChecksTitle3.userSpecifiedOrder;
-                assertEquals "", anamnesisChecksTitle3.value;
+
 
 
                 //-------------verify scar-----------------
@@ -408,17 +387,15 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                 "anamnesisCheck":{
                                    "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
                                    "id":3,
-                                   "sortOrder":10,
+                                   "sortOrder":11,
                                    "text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":12,
-                                      "sortOrder":9,
+
+                                    "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":1,
+                                      "sort_order":9,
                                       "text":"Treatment history category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_YES_NO",
                                    "userSpecifiedOrder":null,
@@ -439,15 +416,13 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                    "id":1,
                                    "sortOrder":2,
                                    "text":"Rauchen Sie?",
-                                 "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":101,
-                                      "sortOrder":1,
+
+                                   "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":2,
+                                      "sort_order":2,
                                       "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_MULT_S",
                                    "userSpecifiedOrder":null,
@@ -468,15 +443,12 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                    "id":2,
                                    "sortOrder":2,
                                    "text":"Rauchen Sie 222?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
-                                      "id":100,
-                                      "sortOrder":1,
+                                    "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":3,
+                                      "sort_order":3,
                                       "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_OPEN",
                                    "userSpecifiedOrder":null,
@@ -569,15 +541,13 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                    "id":3,
                                    "sortOrder":10,
                                    "text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+
+                                   "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
                                       "id":12,
-                                      "sortOrder":9,
+                                      "sort_order":9,
                                       "text":"Treatment history category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_YES_NO",
                                    "userSpecifiedOrder":null,
@@ -598,15 +568,12 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                    "id":1,
                                    "sortOrder":2,
                                    "text":"Rauchen Sie?",
-                                 "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
                                       "id":101,
-                                      "sortOrder":1,
+                                      "sort_order":1,
                                       "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_MULT_S",
                                    "userSpecifiedOrder":null,
@@ -627,15 +594,12 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                    "id":2,
                                    "sortOrder":2,
                                    "text":"Rauchen Sie 222?",
-                                   "title":{
-                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
                                       "id":100,
-                                      "sortOrder":1,
+                                      "sort_order":1,
                                       "text":"Personal lifestyle category",
-                                      "title":null,
-                                      "type":"QUESTION_TITLE",
-                                      "userSpecifiedOrder":null,
-                                      "value":""
+                                      "version":0
                                    },
                                    "type":"QUESTION_OPEN",
                                    "userSpecifiedOrder":null,
