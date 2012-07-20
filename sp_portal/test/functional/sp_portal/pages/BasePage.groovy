@@ -35,6 +35,9 @@ abstract class BasePage extends WebDriverPage {
         confirmNoErrors()
     }
 
+    /**
+     *
+     */
     def clickOptionValue(text){
         driver.findElement(By.xpath("//select/option[.='" + text + "']")).click();
 
@@ -107,7 +110,9 @@ abstract class BasePage extends WebDriverPage {
 
     }
 
-
+    /**
+     * Select from drop down
+     */
     def selectDropDown(id, test){
 
         new Select(driver.findElement(By.id(id))).selectByVisibleText(""+test);
