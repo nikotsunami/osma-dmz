@@ -21,7 +21,7 @@ environments {
 
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "validate"
+            dbCreate = "create"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
             username = "root"
