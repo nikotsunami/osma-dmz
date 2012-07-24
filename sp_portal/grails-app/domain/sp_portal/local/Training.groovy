@@ -2,7 +2,7 @@ package sp_portal.local
 import local.*;
 
 class Training {
- static mapping = {
+   static mapping = {
       datasources(['DEFAULT'])
 
    }
@@ -14,15 +14,15 @@ class Training {
     Date timeEnd
 
     static constraints = {
-		name nullable: false, validator: {val,obj -> !val?.equals("")}
-		timeStart nullable: false
-		timeEnd nullable: false, validator: { val, obj ->
+        name nullable: false, validator: {val,obj -> !val?.equals("")}
+        timeStart nullable: false
+        timeEnd nullable: false, validator: { val, obj ->
         val?.after(obj.timeStart)
-		}	
-		trainingDate nullable: false,unique:true
+        }
+        trainingDate nullable: false,unique:true
     }
-	
-	public String toString(){
-		return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
-	}
+
+    public String toString(){
+        return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
+    }
 }

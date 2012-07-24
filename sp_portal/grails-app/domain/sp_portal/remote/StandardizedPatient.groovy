@@ -1,5 +1,7 @@
 package sp_portal.remote
 import remote.*;
+import org.joda.time.LocalDate;
+
 class StandardizedPatient {
 
    static mapping = {
@@ -16,7 +18,7 @@ class StandardizedPatient {
     Integer version
     Long id
 
-    Date birthday
+    LocalDate birthday
     String city
     String email
     Integer gender

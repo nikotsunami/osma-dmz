@@ -5,6 +5,7 @@ import org.junit.*
 import grails.test.mixin.*
 import org.codehaus.groovy.grails.web.json.*;
 import grails.converters.deep.JSON
+import org.joda.time.LocalDate;
 
 class DataImportExportControllerTests extends GroovyTestCase{
 
@@ -64,7 +65,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                     //-------------verify standardizedPatient-----------------
                     assertEquals "qqq@rrr.com", standardizedPatient.email;
-                    assert standardizedPatient.birthday == new Date(1279382400000);
+                    assert standardizedPatient.birthday == new LocalDate(1279382400000);
                     assertEquals 1,standardizedPatient.gender
                     assertEquals 162,standardizedPatient.height
                     assertEquals null,standardizedPatient.immagePath
@@ -224,7 +225,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                 //-------------verify standardizedPatient-----------------
                 assertEquals "qqq@rrr.com", standardizedPatient.email;
-                assert standardizedPatient.birthday == new Date(1279382400000);
+                assert standardizedPatient.birthday == new LocalDate(1279382400000);
                 assertEquals 1,standardizedPatient.gender
                 assertEquals 162,standardizedPatient.height
                 assertEquals "/image/path",standardizedPatient.immagePath
@@ -245,6 +246,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 assertEquals anamnesisForm,standardizedPatient.anamnesisForm
                 assertEquals bankaccount,standardizedPatient.bankaccount
                 assertNotNull standardizedPatient.description
+calDate
                 assertEquals "this is a description", standardizedPatient?.description?.description
                 assertEquals 35, standardizedPatient?.description?.origId
                 assertEquals nationality,standardizedPatient.nationality

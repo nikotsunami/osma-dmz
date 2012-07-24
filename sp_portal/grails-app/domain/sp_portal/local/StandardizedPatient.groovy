@@ -1,6 +1,6 @@
 package sp_portal.local
 import local.*;
-
+import org.joda.time.LocalDate
 class StandardizedPatient {
 
    static mapping = {
@@ -17,7 +17,7 @@ class StandardizedPatient {
     Integer version
     Long id
     Long origId
-    Date birthday
+    LocalDate birthday
     String city
     String email
     Integer gender
