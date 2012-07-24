@@ -19,7 +19,7 @@ class Training {
 		timeEnd nullable: false, validator: { val, obj ->
         val?.after(obj.timeStart)
 		}	
-		trainingDate nullable: false
+		trainingDate nullable: false,unique:true
     }
 	
 	public String toString(){

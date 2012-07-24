@@ -3,6 +3,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
 
 
+
 class SelectAvailableDatesController extends MainController{
 
 
@@ -126,27 +127,36 @@ class SelectAvailableDatesController extends MainController{
 				
 			}else{
 				def patient =new local.PatientlnSemester();
-				patient.standardizedPatient=currentUser.standardizedPatient						
-								
-				if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
-								
-						patient.accepted=true
-									
-									
-				}else{
+				patient.standardizedPatient=currentUser.standardizedPatient	
+				if(acceptedOsceDays.size()!=0 || acceptedTrainingDays.size()!=0){
+						patient.accepted=false;
+						accepted=false
+						
+					}
+					if(acceptedOsceDays.size()!=0 && acceptedTrainingDays.size()!=0){
+						patient.accepted=true;
+						accepted=true
+					}
+					
+					if(acceptedOsceDays.size()==0 && acceptedTrainingDays.size()==0){
 						patient.accepted=false
-							
-							
-				}				
-				patient.acceptedOsceDay=acceptedOsceDays;
-					
-				patient.acceptedTraining=acceptedTrainingDays;
-					
-				patient.save();
+						accepted=true
+						
+					}
+				if(accepted==true){
+						
+						patient.acceptedOsceDay=acceptedOsceDays;
+						patient.acceptedTraining=acceptedTrainingDays;
+						patient.save()
+						sendEmail(currentUser);
+						redirect(controller:"thank", action:"thankPatientInSemester");
+
+				}else{
+					  flash.message = message(code: 'patientInSemester.error.message');
+					  redirect(action: "show",params: params);
 				
-				sendEmail(currentUser);
-				redirect(controller:"thank", action:"thankPatientInSemester");
-									
+				}
+																	
 							
 			}
 					
@@ -165,9 +175,12 @@ class SelectAvailableDatesController extends MainController{
 			
 			
 			String to = grailsApplication.config.grails.mail.username;
+
 			String subject= grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject;
 			String body = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
+		
 			String from = patient.email;
+
 			//TODO Used for testing whether can send email
 			//String from = "paul@jserver";
 			if(patient.preName){

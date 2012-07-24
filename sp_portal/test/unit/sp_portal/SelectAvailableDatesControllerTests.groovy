@@ -52,7 +52,7 @@ class SelectAvailableDatesControllerTests {
 	 *Unit test the contents of these lists. both empty and full and when PatientInSemester does not exist.
 	 */
 	@Test
-    void xtestShow() {
+    void testShow() {
 		def mod = controller.show();
 
 
@@ -62,7 +62,7 @@ class SelectAvailableDatesControllerTests {
         assertEquals 3, mod.availableOsceDays.size()
 
 		assertNotNull	mod.availableTrainingDays
-        assertEquals 3, mod.availableTrainingDays.size()
+        assertEquals 2, mod.availableTrainingDays.size()
 		
 		assertNotNull	mod.acceptedTrainingDays
         assertEquals 1, mod.acceptedTrainingDays.size()
@@ -76,13 +76,13 @@ class SelectAvailableDatesControllerTests {
 	
 	
 	
-	void xtestupdate(){
+	void testupdate(){
 	
 		params["osce.1.id"] = "on"
 		params["osce.2.id"] = [:]
 		params["osce.3.id"] = "on"
 	
-		params["training.1.id"] = "on"
+		//params["training.1.id"] = "on"
 		params["training.2.id"] = [:]
 		params["training.3.id"] = "on"
 
@@ -101,7 +101,7 @@ class SelectAvailableDatesControllerTests {
 		assertNotNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 1}
 		assertNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 2}
 		assertNotNull currentPatInsem.acceptedOsceDay.find{  day -> day.id == 3}
-		assertNotNull currentPatInsem.acceptedTraining.find{  train -> train.id == 1}
+		//assertNotNull currentPatInsem.//.find{  train -> train.id == 1}
 		assertNull currentPatInsem.acceptedTraining.find{  train -> train.id == 2}
 		assertNotNull currentPatInsem.acceptedTraining.find{  train -> train.id == 3}
 				
@@ -251,7 +251,7 @@ class SelectAvailableDatesControllerTests {
 		params["osce.2.id"] = [:]
 		params["osce.3.id"] = "on"
 	
-		params["training.1.id"] = "on"
+		//params["training.1.id"] = "on"
 		params["training.2.id"] = [:]
 		params["training.3.id"] = "on"
 

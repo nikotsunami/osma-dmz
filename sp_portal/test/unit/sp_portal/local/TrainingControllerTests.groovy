@@ -78,9 +78,9 @@ class TrainingControllerTests {
 
         controller.save()
 
-        assert response.redirectedUrl == '/training/show/2'
+        assert response.redirectedUrl == '/training/show/1'
         assert controller.flash.message != null
-        assert Training.count() == 2
+        assert Training.count() == 1
 		
 		def training = Training.findByName("checkout")
 		assertNotNull training;
@@ -152,7 +152,7 @@ class TrainingControllerTests {
 		setTrainingParams(training)
 
         assert training.save() != null
-		assert Training.count() == 2
+		assert Training.count() == 1
 
         // test invalid parameters in update
         params.id = training.id
@@ -170,7 +170,7 @@ class TrainingControllerTests {
 
         assert response.redirectedUrl == "/training/show/$training.id"
         assert flash.message != null
-		assert Training.count() == 2
+		assert Training.count() == 1
 
 		def training_checkout = Training.findByName('checkout')
 		assertNotNull training_checkout;
@@ -183,13 +183,13 @@ class TrainingControllerTests {
 		assertEquals expectedTrainingDate.getTime() , training_checkout.trainingDate ;
 		assert training_checkout.trainingDate.getHours() == 0;
 		
-		assert training_checkout.timeStart.getHours() == 8 ;
-		assert training_checkout.timeStart.getMinutes() == 30 ;
-		assert training_checkout.trainingDate.getTime() + 8*60*60*1000 + 30*60*1000 == training_checkout.timeStart.getTime()
+		assert training_checkout.timeStart.getHours() == 6 ;
+		assert training_checkout.timeStart.getMinutes() == 0 ;
+		assert training_checkout.trainingDate.getTime() + 6*60*60*1000 + 0*60*1000 == training_checkout.timeStart.getTime()
 		
 		assert training_checkout.timeEnd.getHours() == 10 ;
-		assert training_checkout.timeEnd.getMinutes() == 30 ;
-		assert training_checkout.trainingDate.getTime() + 10*60*60*1000 + 30*60*1000 == training_checkout.timeEnd.getTime()
+		assert training_checkout.timeEnd.getMinutes() == 0 ;
+		assert training_checkout.trainingDate.getTime() + 10*60*60*1000 + 0*60*1000 == training_checkout.timeEnd.getTime()
 
         response.reset()
         training.clearErrors()
@@ -293,13 +293,13 @@ class TrainingControllerTests {
 		setTrainingParams(training)
 
         assert training.save() != null
-        assert Training.count() == 2
+        assert Training.count() == 1
 
         params.id = training.id
 
         controller.delete()
 
-        assert Training.count() == 1
+        assert Training.count() == 0
         assert Training.get(training.id) == null
         assert response.redirectedUrl == '/training/list'
 		

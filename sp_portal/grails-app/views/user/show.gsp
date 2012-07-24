@@ -22,16 +22,25 @@
             <div class="message" role="status">${flash.message}</div>
             </g:if>
             <ol class="property-list user">
-
-                <g:if test="${userInstance?.isActive}">
+			 <g:if test="${userInstance?.userName}">
                 <li class="fieldcontain">
-                    <span id="isActive-label" class="property-label"><g:message code="user.isActive.label" default="Is Active" /></span>
+                    <span id="userName-label" class="property-label"><g:message code="user.userName.label" default="User Name" /></span>
 
-                        <span class="property-value" aria-labelledby="isActive-label"><g:formatBoolean boolean="${userInstance?.isActive}" /></span>
+                        <span class="property-value" aria-labelledby="userName-label"><g:fieldValue bean="${userInstance}" field="userName"/></span>
 
                 </li>
                 </g:if>
+				
+				   <g:if test="${userInstance?.userEmail}">
+                <li class="fieldcontain">
+                    <span id="userEmail-label" class="property-label"><g:message code="user.userEmail.label" default="User Email" /></span>
 
+                        <span class="property-value" aria-labelledby="userEmail-label"><g:fieldValue bean="${userInstance}" field="userEmail"/></span>
+
+                </li>
+                </g:if>
+				
+				
                 <g:if test="${userInstance?.passwordHash}">
                 <li class="fieldcontain">
                     <span id="passwordHash-label" class="property-label"><g:message code="user.passwordHash.label" default="Password Hash" /></span>
@@ -52,27 +61,25 @@
                 </li>
                 </g:if>
 
-                <g:if test="${userInstance?.userEmail}">
-                <li class="fieldcontain">
-                    <span id="userEmail-label" class="property-label"><g:message code="user.userEmail.label" default="User Email" /></span>
+				
+				
 
-                        <span class="property-value" aria-labelledby="userEmail-label"><g:fieldValue bean="${userInstance}" field="userEmail"/></span>
+                <g:if test="${userInstance?.isActive}">
+                <li class="fieldcontain">
+                    <span id="isActive-label" class="property-label"><g:message code="user.isActive.label" default="Is Active" /></span>
+
+                        <span class="property-value" aria-labelledby="isActive-label"><g:formatBoolean boolean="${userInstance?.isActive}" /></span>
 
                 </li>
                 </g:if>
 
-                <g:if test="${userInstance?.userName}">
-                <li class="fieldcontain">
-                    <span id="userName-label" class="property-label"><g:message code="user.userName.label" default="User Name" /></span>
+             
 
-                        <span class="property-value" aria-labelledby="userName-label"><g:fieldValue bean="${userInstance}" field="userName"/></span>
-
-                </li>
-                </g:if>
+               
 
                 <g:if test="${userInstance?.standardizedPatient}">
                 <li class="fieldcontain">
-                    <span id="userName-label" class="property-label"><g:message code="user.userName.label" default="User Name" /></span>
+                    <span id="userName-label" class="property-label"><g:message code="user.origId.labell" default="OrigId" /></span>
 
                         <span class="property-value" aria-labelledby="userName-label"><g:fieldValue bean="${userInstance.standardizedPatient}" field="origId"/></span>
 

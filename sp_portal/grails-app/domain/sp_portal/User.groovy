@@ -3,10 +3,10 @@ import local.*;
 
 class User {
     static constraints = {
-        userName(unique:true)
-        passwordHash(password:true)
-        userEmail()
-        standardizedPatient(nullable: true)
+        userName unique:true
+        passwordHash password:true
+        userEmail unique:true,email:true
+        standardizedPatient nullable: true
     }
 
     String userName;
