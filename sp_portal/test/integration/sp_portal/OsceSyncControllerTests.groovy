@@ -100,12 +100,76 @@ class OsceSyncControllerTests extends GroovyTestCase{
 		assertEquals "shen",p[0].preName;
 		assertEquals "yangsong",p[0].name;
 		
+		
+		//to test unavailable data 
+		def jsonData2 = controller.jsonToGroovy(getTestData2());
+		def model2 = controller.sync(jsonData2)
+		
+		def list3 = local.OsceDay.list();
+
+		assertEquals 5,list3.size();
+		
+		def trainingList2 = local.Training.list();
+		assertEquals 6,trainingList2.size();
+		
+		//to test update date
+		Date exceptedDate2 = convertToDate("2010-08-01T08:00:00Z");
+		def osceDay2 = local.OsceDay.findByOsceDate(exceptedDate2);
+		assertNotNull osceDay2.osceDate;
+		
+		def t3 = local.Training.findByTimeStart(convertToDate("2010-07-10T05:15:00Z"));
+		assertNotNull t3;
+		assertEquals "test1", t3.name;
+		assertEquals convertToDate("2010-07-10T00:00:00Z"), t3.trainingDate;
+		assertEquals convertToDate("2010-07-10T05:15:00Z"), t3.timeStart;
+		assertEquals convertToDate("2010-07-10T14:00:00Z"), t3.timeEnd;
+
+		def t4 = local.Training.findByTimeStart(convertToDate("2012-05-10T09:20:00Z"));
+		assertNotNull t4;
+		assertEquals "test2", t4.name;
+		assertEquals convertToDate("2012-05-10T00:00:00Z"), t4.trainingDate;
+		assertEquals convertToDate("2012-05-10T09:20:00Z"), t4.timeStart;
+		assertEquals convertToDate("2012-05-10T11:00:00Z"), t4.timeEnd;
+		
    }
 
-	private String getTestData(){
-	 def json  = """
+	
+	private String getTestData2(){
+		def json  = """
 		{
-			  languages :[{language: "English"}],
+			  languages :[{language: "en"}],
+			  osceDay : [ {osceDate: "2010-08-01T08:00:00Z"},
+							{osceDate: ""}
+							],
+			  trainings : [ {name: "",                            
+							trainingDate: "2000-06-10T00:00:00Z",
+							timeStart: "2000-06-10T09:20:00Z",
+							timeEnd: "2000-06-10T11:00:00Z"},
+							{name: "test6",                           
+							trainingDate: "",
+							timeStart: "2000-05-10T09:20:00Z",
+							timeEnd: "2000-05-10T11:00:00Z"},
+							{name: "test2",
+							trainingDate: "2012-05-10T00:00:00Z",
+							timeStart: "2012-05-10T09:20:00Z",
+							timeEnd: "2012-05-10T11:00:00Z"},
+							{name: "test7",
+							trainingDate: "2010-07-10T00:00:00Z",
+							timeStart: "2010-07-10T05:15:00Z",
+							timeEnd: "2010-07-10T09:00:00Z"}],
+		   standardizedPatient: []
+
+			}
+
+		
+		""";
+		return json;
+	}
+	
+	private String getTestData(){
+	    def json  = """
+		{
+			  languages :[{language: "en"}],
 			  osceDay : [ {osceDate: "2010-07-18T16:00:00Z"},
 							{osceDate: "2010-07-12T16:00:00Z"}, //Test database data does not exist
 							{osceDate: "2010-07-10T16:00:00Z"}
@@ -146,7 +210,7 @@ class OsceSyncControllerTests extends GroovyTestCase{
 		""";
 		return json;
 	}
-	
+
 	
 	//{"class":"sp_portal.local.OsceDay","id":1,"osceDate":"2012-07-12T08:15:47Z"},{"class":"sp_portal.local.OsceDay","id":2,"osceDate":"3912-07-04T16:00:00Z"}
 	private void initOsceDayData(Date date){

@@ -50,7 +50,7 @@ class ManageTrainingTests {
 
         newTrainingPage.clickButton("Create");
 
-        newTrainingPage.assertTextPresent("Start time is empty")
+       // newTrainingPage.assertTextPresent("Start time is empty")
 
 
 // Try another with end time rmpty
@@ -74,7 +74,7 @@ Some strangeness
 
 
         newTrainingPage.clickButton("Create");
-        newTrainingPage.assertTextPresent("End time is empty")
+       // newTrainingPage.assertTextPresent("End time is empty")
 
 */
 
