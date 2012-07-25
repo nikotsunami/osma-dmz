@@ -12,12 +12,14 @@ hibernate {
 // environment specific settings
 environments {
     development {
-        dataSource_original {
+        
+      /*  dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
 	  
+	  */
 
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
@@ -25,18 +27,18 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
             username = "root"
-            password = "r00ty"
+            password = "admin"
         }
-/*	
+	
        dataSource_original {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
            dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce"
             username = "root"
-            password = "r00ty"
+            password = "admin"
         }
-*/
+
     }
     test {
         dataSource {
