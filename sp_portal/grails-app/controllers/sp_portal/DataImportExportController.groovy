@@ -107,8 +107,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 				def jsonObject = JSON.parse(data);
 				preProcessData(jsonObject);
 
-            syncData(new JSONObject(jsonObject));
-            render jsonObject.email;
+          
 				syncData(new JSONObject(jsonObject));
 				
 				render jsonObject.email;

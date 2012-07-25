@@ -1,6 +1,8 @@
 package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
+
 
 class TrainingController extends sp_portal.MainController {
 
@@ -23,7 +25,7 @@ class TrainingController extends sp_portal.MainController {
 
     def save() {
 		
-		println("params : "+params)
+		log("params : "+params)
         def trainingInstance = new Training(params)
 		//String trainingDateParam = params.trainingDate
 		setStartAndEndTime(trainingInstance)
@@ -61,7 +63,7 @@ class TrainingController extends sp_portal.MainController {
     }
 
     def update() {
-	println("params : "+params)
+	log("params : "+params)
         def trainingInstance = Training.get(params.id)
 		
 	
@@ -83,7 +85,7 @@ class TrainingController extends sp_portal.MainController {
 			
 		setStartAndEndTime(trainingInstance)
 		
-		println("params.version = "+params.version);
+
         if (params.version) {
             def version = params.version.toLong()
             if (trainingInstance.version > version) {
@@ -180,7 +182,7 @@ class TrainingController extends sp_portal.MainController {
 	
 	def getTrainingDateWithNoHours(trainingDate){
 		Long dateTime = trainingDate.getTime()-(long)trainingDate.getHours()*60*60*1000-(long)trainingDate.getMinutes()*60*1000-(long)trainingDate.getSeconds()*1000
-		println(">>>>>>>>>>convert date = "+new Date(dateTime));
+
 		return dateTime
 	}
 	
