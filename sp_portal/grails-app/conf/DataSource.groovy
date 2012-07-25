@@ -12,11 +12,13 @@ hibernate {
 // environment specific settings
 environments {
     development {
+        
       /*  dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:h2:mem:devDb;MVCC=TRUE"
         }
+	  
 	  */
 
         dataSource {
