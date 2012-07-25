@@ -6,6 +6,7 @@ import org.junit.Test
 import sp_portal.pages.*;
 import grails.util.BuildSettingsHolder
 import grails.util.BuildSettings
+import static org.junit.Assert.*;
 
 class SyncSPTests {
     @Rule
@@ -47,11 +48,12 @@ class SyncSPTests {
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "12345678910123")
+        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
         userHomePage.clickBanksDetails()
+		assertFalse(userHomePage.isTextPresent("Bankaccount not found with id null"))
         userHomePage.clickQuestions()
         userHomePage.clickSelectAvailableDates()
         userHomePage.clickLogout()
@@ -183,7 +185,7 @@ class SyncSPTests {
                       "profession":"Florist/in",
                       "version":0
                    },
-                   "socialInsuranceNo":"12345678910123",
+                   "socialInsuranceNo":"1234567891234",
                    "status":null,
                    "street":"Rankenbergweg 1",
                    "telephone":null,
