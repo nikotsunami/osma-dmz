@@ -3,7 +3,7 @@ package sp_portal
 import org.springframework.mail.MailMessage
 import grails.util.GrailsUtil;
 import java.text.SimpleDateFormat;
-import org.apache.commons.logging.LogFactory;
+
 
 class DMZMailService {
 
@@ -25,7 +25,7 @@ class DMZMailService {
 				
 			} else {
 			
-				log("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
+				println("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
 			}
 			
 			saveEmail(mail.to,mail.body,mail.subject,mail.from)
@@ -48,7 +48,7 @@ class DMZMailService {
 				
 			} else {
 			
-				log("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
+				println("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
 			}
 			
 			saveEmail(mail.to,mail.body,mail.subject,mail.from)
