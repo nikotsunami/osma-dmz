@@ -5,13 +5,14 @@ import org.junit.Rule
 import org.junit.Test
 import sp_portal.pages.*;
 
+
 class LoginTests {
     @Rule
     public WebDriverHelper webdriver = new WebDriverHelper()
 
     @Test
     public void test001LoginAdmin() {
-        println(" webdriver " + webdriver)
+
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
         def adminPage = loginPage.loginAdmin();

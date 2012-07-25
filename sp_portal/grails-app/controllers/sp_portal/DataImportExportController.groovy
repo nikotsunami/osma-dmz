@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.logging.LogFactory;
 
 
 class DataImportExportController extends MainController {
@@ -103,7 +104,6 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
         if (params.data){
             String data = params.data;
-println("${data}")
             data = preProcessData(data);
             def jsonObject = JSON.parse(data);
             preProcessData(jsonObject);
@@ -412,7 +412,7 @@ println("${data}")
 
     private def logIf(condition, message){
         if (condition){
-            println(">" + message );
+            log(">" + message );
         }
     }
 

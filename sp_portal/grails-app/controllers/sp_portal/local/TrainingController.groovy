@@ -78,7 +78,6 @@ class TrainingController extends sp_portal.MainController {
 			return
 		}
 			
-		println("params.version = "+params.version);
         if (params.version) {
             def version = params.version.toLong()
             if (trainingInstance.version > version) {
@@ -142,7 +141,6 @@ class TrainingController extends sp_portal.MainController {
 	
 	def setStartAndEndTime(trainingInstance){
 		Date trainingDate = trainingInstance.trainingDate
-		println(">>>>>>>>>>>>>>>trainingDate = "+trainingDate);
 		String endHourPrame = params.timeEndHour
 		String endMinPrame = params.timeEndMin
 		String startHourPrame = params.timeStartHour
