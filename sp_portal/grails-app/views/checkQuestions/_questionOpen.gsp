@@ -9,7 +9,7 @@
 			<g:else>
 				<g:set var="text" value=" " />
 			</g:else>
-    </g:each>
+    </g:each> 
 	
     <g:textArea name="question.${question.id}" rows="5" cols="40" resize="none" value="${text}"/>
 </div>

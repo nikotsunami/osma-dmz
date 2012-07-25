@@ -22,9 +22,10 @@ class TrainingController extends sp_portal.MainController {
     }
 
     def save() {
-	
+		
+		println("params : "+params)
         def trainingInstance = new Training(params)
-		String trainingDateParam = params.trainingDate
+		//String trainingDateParam = params.trainingDate
 		setStartAndEndTime(trainingInstance)
 		
 		
@@ -60,6 +61,7 @@ class TrainingController extends sp_portal.MainController {
     }
 
     def update() {
+	println("params : "+params)
         def trainingInstance = Training.get(params.id)
 		
 	
@@ -70,6 +72,7 @@ class TrainingController extends sp_portal.MainController {
             return
         }
 		
+	
 		def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
 			
 		if(!standardizedPatients.equals('')){
@@ -78,6 +81,9 @@ class TrainingController extends sp_portal.MainController {
 			return
 		}
 			
+		setStartAndEndTime(trainingInstance)
+		
+		println("params.version = "+params.version);
         if (params.version) {
             def version = params.version.toLong()
             if (trainingInstance.version > version) {
@@ -147,27 +153,35 @@ class TrainingController extends sp_portal.MainController {
 		String startMinPrame = params.timeStartMin
 		
 		if(trainingDate !=null && startHourPrame != null && !startHourPrame.equals("") && startMinPrame != null && !startMinPrame.equals("")){
+			
 			Long startHour = Long.valueOf(startHourPrame)
 			Long startMin = Long.valueOf(startMinPrame)
 
-			Long timeStart = trainingDate.getTime()+startMin*60*1000+startHour*60*60*1000
+			Long timeStart = getTrainingDateWithNoHours(trainingDate)+startMin*60*1000+startHour*60*60*1000
 			trainingInstance.timeStart = new Date(timeStart)
 			
-			if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
-				Long endHour = Long.valueOf(endHourPrame)
-				Long endMin = Long.valueOf(endMinPrame)
-				Long timeEnd = trainingDate.getTime()+endMin*60*1000+endHour*60*60*1000
-				trainingInstance.timeEnd = new Date(timeEnd)	
-			}else{
-				trainingInstance.timeEnd = null
-			}
+			
 		}else{
 			trainingInstance.timeStart = null
-			flash.message = message(code: 'dafault.training.is.timeStart', args: [message(code: 'training.label', default: 'Training')])
-			redirect(action: "create", id: trainingInstance.id)
+			//flash.message = message(code: 'dafault.training.is.timeStart', args: [message(code: 'training.label', default: 'Training')])
+			//redirect(action: "create", id: trainingInstance.id)
 		}
 		
+		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
+				Long endHour = Long.valueOf(endHourPrame)
+				Long endMin = Long.valueOf(endMinPrame)
+				Long timeEnd = getTrainingDateWithNoHours(trainingDate)+endMin*60*1000+endHour*60*60*1000
+				trainingInstance.timeEnd = new Date(timeEnd)	
+		}else{
+			trainingInstance.timeEnd = null
+		}
 		
+	}
+	
+	def getTrainingDateWithNoHours(trainingDate){
+		Long dateTime = trainingDate.getTime()-(long)trainingDate.getHours()*60*60*1000-(long)trainingDate.getMinutes()*60*1000-(long)trainingDate.getSeconds()*1000
+		println(">>>>>>>>>>convert date = "+new Date(dateTime));
+		return dateTime
 	}
 	
 	def getStandardizedPatientsStr(trainingInstanceId){

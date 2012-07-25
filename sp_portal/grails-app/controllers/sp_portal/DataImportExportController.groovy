@@ -10,6 +10,7 @@ import java.util.Date;
 import org.apache.commons.logging.LogFactory;
 
 
+
 class DataImportExportController extends MainController {
 
     //def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
@@ -97,19 +98,26 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
             }
     }
 
-
-
-
     def importSP(){
 
         if (params.data){
             String data = params.data;
-            data = preProcessData(data);
-            def jsonObject = JSON.parse(data);
-            preProcessData(jsonObject);
+			try{
+				data = preProcessData(data);
+				def jsonObject = JSON.parse(data);
+				preProcessData(jsonObject);
 
             syncData(new JSONObject(jsonObject));
             render jsonObject.email;
+				syncData(new JSONObject(jsonObject));
+				
+				render jsonObject.email;
+			}catch(JSONException e){
+			 
+			  render text:"Get Json Object Error: "+e.getMessage(), status:500
+			}
+	
+            
         } else {
                 render "No data"
 
@@ -131,7 +139,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
             return data;
     }
 
-    private void preProcessData(jsonObject){
+    private void preProcessData(jsonObject)throws JSONException{
 
             String gender = jsonObject.get("gender");
             if(jsonObject.containsKey("gender")){
@@ -245,7 +253,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
     }
 
-    private def syncOneClass(jsonObject, datapath, contextIds ){
+    private def syncOneClass(jsonObject, datapath, contextIds )throws JSONException{
 
 
 
@@ -335,7 +343,6 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
                                     // Yes good so sync the fields
 
 
-
                                         def v = syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name, contextIds );
 
                                         sp[prop.name] = v;
@@ -394,7 +401,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
                                     sp[prop.name] = date;
                                 } catch (ParseException e) {
-                                        e.printStackTrace();
+									log.error "Date format in JSON string incorrect. Date string was :"+jsonObject.get(prop.name)+" ${e.message}", e
                                 }
                             }
 
