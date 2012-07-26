@@ -27,6 +27,7 @@ public class UserHomePage extends BasePage {
     def clickMyAccount(){
         clickLink("My Account");
         assertTextPresent("Show User");
+		return new MyAccountPage(driver);
     }
 
     def clickPersonalDetails(){
