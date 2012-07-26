@@ -165,8 +165,7 @@ class TrainingController extends sp_portal.MainController {
 			
 		}else{
 			trainingInstance.timeStart = null
-			//flash.message = message(code: 'dafault.training.is.timeStart', args: [message(code: 'training.label', default: 'Training')])
-			//redirect(action: "create", id: trainingInstance.id)
+			
 		}
 		
 		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){

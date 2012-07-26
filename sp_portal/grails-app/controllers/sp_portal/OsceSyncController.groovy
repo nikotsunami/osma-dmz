@@ -105,23 +105,12 @@ class OsceSyncController extends MainController {
 						}
                         importMessage(key)
                     }else{
-						//if(training.timeEnd.getTime()  == convertToDate(jsonTraining.timeEnd).getTime() && training.name.equals(jsonTraining.name)){
 						if(start){	
 							key = message(code: 'default.foundExist.Training.message', args: [convertToString(start)],locale: locale)
 						}else{
 							key = message(code: 'default.foundExist.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
 						}
 						importMessage(key)
-						//}
-												
-					/*	else{
-                                training.name = jsonTraining.name;
-                                training.timeEnd = convertToDate(jsonTraining.timeEnd);
-                                training.save(flush:true);
-                                key = message(code: 'default.foundNotExist.Training.message', args: [start])
-								importMessage(key,[start])
-                        }
-					*/	
 						
                     }
                 }
@@ -145,24 +134,19 @@ class OsceSyncController extends MainController {
 
             }
 			 
-			//allMsg << ["messages":oneMsg]; 
+	 
 			
 			def osceDayList = local.OsceDay.list();
 			
-			//allMsg << ["osceDay":osceDayList];
+
 			
 			def trainingList = local.Training.list();
 			
-			//allMsg << ["trainings":trainingList];
-			def patientImSemesterList = local.PatientlnSemester.list();
-			//allMsg << ["patientInSemester":patientImSemesterList];
-			
-			//def json = osceDayList as JSON;
-			def oneMsgJson = oneMsg as JSON;
-			//def osceDayListJson = osceDayList as JSON;
-			//def trainingListJson = trainingList as JSON;
 
-			//def patientImSemesterListJson = patientImSemesterList as JSON;
+			def patientImSemesterList = local.PatientlnSemester.list();
+	
+			def oneMsgJson = oneMsg as JSON;
+			
 
 			
 			String osceDayListJson = getOsceDayJson(osceDayList);

@@ -229,12 +229,7 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
                 return 2;
             } else if(type.toUpperCase().equals("QUESTION_MULT_M")){
                 return 3;
-            } 
-			/*else if(type.toUpperCase().equals("QUESTION_TITLE")){
-                return 4;
-            } 
-*/         
-			else {
+            }else {
                 return -1;
             }
     }
