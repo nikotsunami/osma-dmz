@@ -56,23 +56,23 @@ It can be built as a war file and deployed to any java servlet contained such as
 
    For more info checkout the Grails homepage at http://grails.org
 
- 
+
    1.6 Running Tests
 
-	To run all the tests including, unit, integration and functional enter:
-		grails test-app -Dserver.port=8090
+    To run all the tests including, unit, integration and functional enter:
+        grails test-app -Dserver.port=8090
 
-	To run just unit tests 
-		grails test-app -unit
+    To run just unit tests
+        grails test-app -unit
 
-	To run just integration tests 
-		grails test-app -integration
+    To run just integration tests
+        grails test-app -integration
 
-	To run just functional tests 
-		grails test-app -functional
+    To run just functional tests
+        grails test-app -functional
 grails test-app -Dserver.port=8090 -functional -Dwebdriver.browser=chrome -Dwebdriver.chrome.driver=/home/paul/Tools/chromedriver
-	To run a single test 
-		grails test-app <test-name>
+    To run a single test
+        grails test-app <test-name>
 
 
 2. LOGIN IN
@@ -174,6 +174,15 @@ grails test-app -Dserver.port=8090 -functional -Dwebdriver.browser=chrome -Dwebd
 
 
 
+5. Emails
+=============================================================================
+    5.1 The system is configured to only send emails in production mode. In other modes (development and test) they will be printed to the standard output.
+
+    5.2 Email server configuration may be found in Config.groovy
+
+    5.3 Email content configuration may be found in Config.groovy
+
+    5.4 In Emails the special codes  #preName & #name  will be automatically replaced with the appropriate StandardizedPatient fields.
 
 
 

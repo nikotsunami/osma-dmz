@@ -63,15 +63,15 @@ grails.hibernate.cache.queries = true
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.serverURL = "http://localhost:8090/${appName}"
+        grails.serverURL = "http://localhost:8080/${appName}"
     }
     production {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
-	test {
+    test {
         grails.serverURL = "http://localhost:8090/${appName}"
-	}
+    }
 }
 
 // log4j configuration
@@ -105,10 +105,10 @@ sp_portal.admin.username = "admin"
 sp_portal.admin.password = "123"
 sp_portal.admin.email = "paul@jserver.cn"
 sp_portal.mail.inviteStandardizedPatients.defaultText = """
-Dear #preName #name 
+Dear #preName #name
 
 The University of Basel would like to invite you to attend our medical examinations as a paid actor/ress. Select dates that you can attend by logging into our
-site at www.xxxxx with you username which is this email address and pasword which is your health insurace number. 
+site at www.xxxxx with you username which is this email address and pasword which is your health insurace number.
 
 
 Yours sincerely
@@ -117,14 +117,13 @@ Yours sincerely
 
 """
 sp_portal.mail.saveTraningDate.defaultText = """
-Dear marvin 
+Dear Admin,
 
-Hello, administrator, I've logged in and choose the training time.
+You are receiving this because you are an administrator for the UNIBAS Osce DMZ system.
 
+The user #preName #name has recently updated their availability for attending training and osce days.
+Their acceptance may need to be syncronized with the main Osce system.
 
-Yours sincerely
-
-#preName #name
 
 """
 

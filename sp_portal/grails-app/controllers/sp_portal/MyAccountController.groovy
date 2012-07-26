@@ -9,7 +9,6 @@ class MyAccountController extends MainController {
     public static String ADMIN_ROLE = "ADMIN_ROLE";
     public static String USER_ROLE = "USER_ROLE";
 
-
     def beforeInterceptor = [action:this.&isLoggedInAsUser]
 
     static {
@@ -17,19 +16,14 @@ class MyAccountController extends MainController {
          USER_ROLE = "USER_ROLE";
     }
 
-
     private static final log = LogFactory.getLog(this)
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-
-
     def index() {
+		
         redirect(action: "show", params: params)
     }
-
-
-
 
     def save() {
         handleInboundPassword(params);
@@ -45,31 +39,32 @@ class MyAccountController extends MainController {
     }
 
     def show() {
+		def user = User.findById(session.user.id)
 
-        def userInstance = session.user
+        def userInstance = user
 
         handleOutboundPassword(userInstance);
+
         [userInstance: userInstance]
+		
     }
 
     def edit() {
-
-
-        def userInstance = session.user
+		def user = User.findById(session.user.id)
+        def userInstance = user
+		
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "show")
-            return
+
         }
-
-
-
+		
         [userInstance: userInstance]
     }
 
     def update() {
-        def userInstance = session.user
-
+        def user = User.findById(session.user.id)
+        def userInstance = user
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
 
         if (!passwordsMatch){
@@ -77,10 +72,7 @@ class MyAccountController extends MainController {
             return;
         }
 
-
         handleInboundPassword(params);
-
-
 
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
@@ -91,8 +83,6 @@ class MyAccountController extends MainController {
         if (params.version) {
             def version = params.version.toLong()
 
-
-
             if (userInstance.version > version) {
                 userInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'user.label', default: 'User')] as Object[],
@@ -102,8 +92,8 @@ class MyAccountController extends MainController {
             }
         }
 
-        userInstance = User.get(session.user.id);
-        session.user = userInstance;
+        userInstance = User.get(user.id);
+        user = userInstance;
         userInstance.properties = params
 
         if (!userInstance.save(flush: true)) {
@@ -114,10 +104,6 @@ class MyAccountController extends MainController {
         flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
         redirect(action: "show", id: userInstance.id)
     }
-
-
-
-
 
     private boolean comparePasswords(String p1,String p2){
         log("Comparing passwords " + p1 + "  and " + p2  );

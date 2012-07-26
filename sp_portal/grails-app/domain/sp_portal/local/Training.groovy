@@ -15,11 +15,11 @@ class Training {
 
     static constraints = {
         name nullable: false, validator: {val,obj -> !val?.equals("")}
-        timeStart nullable: false
-        timeEnd nullable: false, validator: { val, obj ->
-        val?.after(obj.timeStart)
+		timeStart nullable: true
+		timeEnd nullable: true, validator: { val, obj ->
+        (obj.timeStart!=null&&(val?.after(obj.timeStart)||val==null))||(obj.timeStart==null)
         }
-        trainingDate nullable: false,unique:true
+		trainingDate nullable: false
     }
 
     public String toString(){

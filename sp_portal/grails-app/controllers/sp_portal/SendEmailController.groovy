@@ -5,6 +5,7 @@ import ch.unibas.medizin.osce.shared.AnamnesisCheckTypes
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.mail.MailMessage
+import org.apache.commons.logging.LogFactory;
 
 
 class SendEmailController extends MainController {
@@ -52,7 +53,7 @@ class SendEmailController extends MainController {
 			redirect(action: "show")
 		}catch(Exception e){
 			e.printStackTrace();
-			println("exception: "+e.getMessage())
+			log("exception: "+e.getMessage())
 			redirect(action: "sendFailure")
 		}finally{
 			session.sendPatients=null;

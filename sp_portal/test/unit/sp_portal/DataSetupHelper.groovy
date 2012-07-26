@@ -2,6 +2,7 @@ package sp_portal;
 import sp_portal.*;
 import sp_portal.local.*;
 import org.joda.time.LocalDate;
+
 class DataSetupHelper {
 
     def adminRole
@@ -199,7 +200,7 @@ class DataSetupHelper {
         user2.roles = roles1;
 
         user2.save();
-		println("user2 " + user2.errors)
+
         normalUser2 = user2
     }
 
@@ -376,7 +377,7 @@ class DataSetupHelper {
 	
 	}
 	def setUpTrainingDays(){
-	println("Setup training");
+
 
 		training2=new Training();
 		training2.id=2L

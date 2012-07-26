@@ -15,8 +15,9 @@ class OsceSyncController extends MainController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
 
-    def allMsg = [];
-    def oneMsg = [];
+	//def allMsg = [];
+	def oneMsg = [];
+	
 
 
     def syncJson(){
@@ -47,7 +48,7 @@ class OsceSyncController extends MainController {
 
 
         if(data){
-			def locale = Locale.GERMANY;
+ 			def locale = Locale.GERMANY;
 			if(data.language != JSONObject.NULL){
 				if(data.language.equals("en")){
 					locale = Locale.US;
@@ -57,22 +58,24 @@ class OsceSyncController extends MainController {
 			}
             for(int i = 0; i<data.osceDay.size();i++){
                 def day = data.osceDay[i];
-                if(day.osceDate != JSONObject.NULL){
+                if(day.osceDate != null && !day.osceDate.equals("")){
                     def date = convertToDate(day.osceDate);
-
                     def osceDay = local.OsceDay.findByOsceDate(date);
                     if(!osceDay){
                         osceDay = new local.OsceDay();
                         osceDay.osceDate = date;
                         osceDay.save(flush:true);
-						key = message(code: 'default.notFound.OsceDay.message', args: [date],locale: locale);
-                        importMessage(key)
-                    }else{
-
-						key = message(code: 'default.found.OsceDay.message', args: [date],locale: locale)
+						key = message(code: 'default.notFound.OsceDay.message', args: [convertToString(date)],locale: locale);
+						importMessage(key)
+					}else{
+						key = message(code: 'default.found.OsceDay.message', args: [convertToString(date)],locale: locale)
                         importMessage(key)
                     }
-                }
+                }else{
+					
+					key = message(code: 'default.cannotSave.OsceDay.message',locale: locale)
+					importMessage(key)
+				}
             }
 
 
@@ -85,29 +88,29 @@ class OsceSyncController extends MainController {
 
                     def training = local.Training.findByTrainingDateAndTimeStart(date,start);
                     if(!training){
-                        training = new local.Training();
-                        training.name = jsonTraining.name;
-                        training.trainingDate = convertToDate(jsonTraining.trainingDate);
-                        training.timeStart = convertToDate(jsonTraining.timeStart);
-                        training.timeEnd = convertToDate(jsonTraining.timeEnd);
-                        training.save(flush:true);
-
-						key = message(code: 'default.notFound.Training.message', args: [start],locale: locale)
+						if(jsonTraining.name && jsonTraining.trainingDate && !jsonTraining.name.equals("") && !jsonTraining.trainingDate.equals("")){
+							training = new local.Training();
+							training.name = jsonTraining.name;
+							training.trainingDate = convertToDate(jsonTraining.trainingDate);
+							training.timeStart = convertToDate(jsonTraining.timeStart);
+							training.timeEnd = convertToDate(jsonTraining.timeEnd);
+							training.save(flush:true);
+						if(start){	
+							key = message(code: 'default.notFound.Training.message', args: [convertToString(start)],locale: locale)
+						}else{
+							key = message(code: 'default.notFound.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
+						}
+						}else{
+							key = message(code: 'default.cannotSave.Training.message',locale: locale)
+						}
                         importMessage(key)
                     }else{
-						//if(training.timeEnd.getTime()  == convertToDate(jsonTraining.timeEnd).getTime() && training.name.equals(jsonTraining.name)){
-						key = message(code: 'default.foundExist.Training.message', args: [start],locale: locale)
+						if(start){	
+							key = message(code: 'default.foundExist.Training.message', args: [convertToString(start)],locale: locale)
+						}else{
+							key = message(code: 'default.foundExist.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
+						}
 						importMessage(key)
-						//}
-												
-					/*	else{
-                                training.name = jsonTraining.name;
-                                training.timeEnd = convertToDate(jsonTraining.timeEnd);
-                                training.save(flush:true);
-                                key = message(code: 'default.foundNotExist.Training.message', args: [start])
-								importMessage(key,[start])
-                        }
-					*/	
 						
                     }
                 }
@@ -131,24 +134,19 @@ class OsceSyncController extends MainController {
 
             }
 			 
-            allMsg << ["messages":oneMsg];
+	 
+			
+			def osceDayList = local.OsceDay.list();
+			
 
-            def osceDayList = local.OsceDay.list();
+			
+			def trainingList = local.Training.list();
+			
 
-            allMsg << ["osceDay":osceDayList];
-
-            def trainingList = local.Training.list();
-
-			allMsg << ["trainings":trainingList];
-            def patientImSemesterList = local.PatientlnSemester.list();
-            allMsg << ["patientInSemester":patientImSemesterList];
-
-            def json = osceDayList as JSON;
-            def oneMsgJson = oneMsg as JSON;
-			//def osceDayListJson = osceDayList as JSON;
-			//def trainingListJson = trainingList as JSON;
-
-			//def patientImSemesterListJson = patientImSemesterList as JSON;
+			def patientImSemesterList = local.PatientlnSemester.list();
+	
+			def oneMsgJson = oneMsg as JSON;
+			
 
 			
 			String osceDayListJson = getOsceDayJson(osceDayList);
@@ -161,6 +159,7 @@ class OsceSyncController extends MainController {
             render jsonStr
 
         }
+		
     }
 	
 	/**
@@ -185,7 +184,7 @@ class OsceSyncController extends MainController {
 		
 		return patientImSemesterListJson;
 	
-	}
+	} 
 	
 	
 	/**
@@ -254,7 +253,7 @@ class OsceSyncController extends MainController {
 	private String convertToString(Date date){
 		DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-		String dateStr=null;
+		String dateStr="";
 		try {
 			if(date){
 				dateStr = sdf.format(date);
@@ -264,5 +263,22 @@ class OsceSyncController extends MainController {
 		}
 		return dateStr;
     }
+	
+	/**
+	 * Time is converted to a string
+	 **/
+	private String convertTrainingDateToString(Date date){
+		DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+
+		String dateStr=null;
+		try {
+			if(date){
+				dateStr = sdf.format(date);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateStr;
+	}
 
 }

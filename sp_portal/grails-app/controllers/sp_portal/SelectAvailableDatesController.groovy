@@ -53,6 +53,8 @@ class SelectAvailableDatesController extends MainController{
 		def availableTrainingDays= [];
 		def acceptedTrainingDays = [];
 		def acceptedOsceDays = [];
+		def oDay=[];
+		def tDay=[];
 		
 		def training = params.findAll({ key, value ->
 													key.startsWith("training")
@@ -95,6 +97,13 @@ class SelectAvailableDatesController extends MainController{
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
 			if(acceptedPatinetln!=null){
+				if(acceptedPatinetln.acceptedOsceDay.size()>0){
+					oDay.addAll(acceptedPatinetln.acceptedOsceDay);
+				}
+				if(acceptedPatinetln.acceptedTraining.size()>0){
+					tDay.addAll(acceptedPatinetln.acceptedTraining);
+				
+				}
 					if(acceptedOsceDays.size()!=0 || acceptedTrainingDays.size()!=0){
 						acceptedPatinetln.accepted=false;
 						accepted=false
@@ -111,6 +120,57 @@ class SelectAvailableDatesController extends MainController{
 						
 					}
 				if(accepted==true){
+						boolean updateDays;
+						boolean updateTrain;
+			
+		
+				
+				
+			
+				if(acceptedOsceDays.size()==oDay.size()){
+					for(int i=0;i<acceptedOsceDays.size();i++){
+					
+							if(acceptedOsceDays.get(i).equals(oDay.get(i))==false){
+								oDay.set(i, acceptedOsceDays.get(i));
+							}
+					}
+					
+				
+					if(acceptedOsceDays.equals(oDay)){
+							updateDays=true
+					}else{
+						updateDays=false
+					}
+					
+				}
+				
+				if(acceptedTrainingDays.size()==tDay.size()){
+					for(int j=0;j<acceptedTrainingDays.size();j++){
+						if(acceptedTrainingDays.get(j).equals(tDay.get(j))==false){
+							tDay.set(j,acceptedTrainingDays.get(j));
+						
+						}
+					
+					}
+					if(acceptedTrainingDays.equals(tDay)){
+							updateTrain=true
+					}else{
+						updateTrain=false
+					}
+						
+				
+				}
+					
+				if(updateDays==true && updateTrain==true){
+						acceptedPatinetln.acceptedOsceDay.clear();
+						acceptedPatinetln.acceptedTraining.clear();
+						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
+						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						acceptedPatinetln.save()
+						//sendEmail(currentUser);
+						redirect(controller:"thank", action:"thankPatientInSemester");
+				
+				}else if(updateDays==false && updateTrain==false){ 
 						acceptedPatinetln.acceptedOsceDay.clear();
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
@@ -118,6 +178,34 @@ class SelectAvailableDatesController extends MainController{
 						acceptedPatinetln.save()
 						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
+				
+				}else if(updateDays==true && updateTrain==false){
+						acceptedPatinetln.acceptedOsceDay.clear();
+						acceptedPatinetln.acceptedTraining.clear();
+						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
+						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						acceptedPatinetln.save()
+						sendEmail(currentUser);
+						redirect(controller:"thank", action:"thankPatientInSemester");
+				
+				}else if(updateDays==false && updateTrain==true){
+						acceptedPatinetln.acceptedOsceDay.clear();
+						acceptedPatinetln.acceptedTraining.clear();
+						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
+						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						acceptedPatinetln.save()
+						sendEmail(currentUser);
+						redirect(controller:"thank", action:"thankPatientInSemester");
+				
+				
+				
+				}
+				
+				
+					
+						
+						
+						
 
 				}else{
 					  flash.message = message(code: 'patientInSemester.error.message');
@@ -171,7 +259,7 @@ class SelectAvailableDatesController extends MainController{
 	private void sendEmail(def currentUser){
 		
 		def patient = currentUser.standardizedPatient;
-		try{
+	
 			
 			
 			String to = grailsApplication.config.grails.mail.username;
@@ -181,8 +269,7 @@ class SelectAvailableDatesController extends MainController{
 		
 			String from = patient.email;
 
-			//TODO Used for testing whether can send email
-			//String from = "paul@jserver";
+		
 			if(patient.preName){
 				body = body.replaceAll("#preName",patient.preName);
 			}
@@ -190,14 +277,10 @@ class SelectAvailableDatesController extends MainController{
 			if(patient.name){
 				body = body.replaceAll("#name",patient.name);
 			}
-			DMZMailService.sendMails(to,from,subject,body);
+			DMZMailService.sendMailByChangeDays(to,from,subject,body);
 			
 
 
-		}catch(Exception e){
-			e.printStackTrace();
-			println(">>>>>>>>>>>exception: "+e.getMessage());
-		}
 		
 	}			
 	

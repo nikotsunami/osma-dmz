@@ -97,11 +97,15 @@ class TrainingControllerTests {
 		
 		assert training.timeStart.getHours() == 8 ;
 		assert training.timeStart.getMinutes() == 30 ;
-		assert training.trainingDate.getTime() + 8*60*60*1000 + 30*60*1000 == training.timeStart.getTime()
+		assert training.trainingDate.getYear() == training.timeStart.getYear()
+		assert training.trainingDate.getMonth() == training.timeStart.getMonth()
+		assert training.trainingDate.getDay() == training.timeStart.getDay()
 		
 		assert training.timeEnd.getHours() == 10 ;
 		assert training.timeEnd.getMinutes() == 30 ;
-		assert training.trainingDate.getTime() + 10*60*60*1000 + 30*60*1000 == training.timeEnd.getTime()
+		assert training.trainingDate.getYear() == training.timeStart.getYear()
+		assert training.trainingDate.getMonth() == training.timeStart.getMonth()
+		assert training.trainingDate.getDay() == training.timeStart.getDay()
     }
 	
 
@@ -183,13 +187,17 @@ class TrainingControllerTests {
 		assertEquals expectedTrainingDate.getTime() , training_checkout.trainingDate ;
 		assert training_checkout.trainingDate.getHours() == 0;
 		
-		assert training_checkout.timeStart.getHours() == 6 ;
-		assert training_checkout.timeStart.getMinutes() == 0 ;
-		assert training_checkout.trainingDate.getTime() + 6*60*60*1000 + 0*60*1000 == training_checkout.timeStart.getTime()
+		assert training_checkout.timeStart.getHours() == 8 ;
+		assert training_checkout.timeStart.getMinutes() == 30 ;
+		assert training_checkout.trainingDate.getYear() == training_checkout.timeStart.getYear()
+		assert training_checkout.trainingDate.getMonth() == training_checkout.timeStart.getMonth()
+		assert training_checkout.trainingDate.getDay() == training_checkout.timeStart.getDay()
 		
 		assert training_checkout.timeEnd.getHours() == 10 ;
-		assert training_checkout.timeEnd.getMinutes() == 0 ;
-		assert training_checkout.trainingDate.getTime() + 10*60*60*1000 + 0*60*1000 == training_checkout.timeEnd.getTime()
+		assert training_checkout.timeEnd.getMinutes() == 30 ;
+		assert training_checkout.trainingDate.getYear() == training_checkout.timeStart.getYear()
+		assert training_checkout.trainingDate.getMonth() == training_checkout.timeStart.getMonth()
+		assert training_checkout.trainingDate.getDay() == training_checkout.timeStart.getDay()
 
         response.reset()
         training.clearErrors()
