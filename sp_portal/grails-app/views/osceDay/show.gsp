@@ -27,7 +27,7 @@
 				<li class="fieldcontain">
 					<span id="osceDate-label" class="property-label"><g:message code="osceDay.osceDate.label" default="Osce Date" /></span>
 					
-						<span class="property-value" aria-labelledby="osceDate-label"><g:formatDate date="${osceDayInstance?.osceDate}" /></span>
+						<span class="property-value" aria-labelledby="osceDate-label"><g:formatDate format="yyyy-MM-dd" date="${osceDayInstance?.osceDate}" /></span>
 					
 				</li>
 				</g:if>

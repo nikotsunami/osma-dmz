@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.logging.LogFactory;
 
 
 
@@ -101,12 +102,12 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
         if (params.data){
             String data = params.data;
-println("${data}")
 			try{
 				data = preProcessData(data);
 				def jsonObject = JSON.parse(data);
 				preProcessData(jsonObject);
 
+          
 				syncData(new JSONObject(jsonObject));
 				
 				render jsonObject.email;
@@ -417,7 +418,7 @@ println("${data}")
 
     private def logIf(condition, message){
         if (condition){
-            println(">" + message );
+            log(">" + message );
         }
     }
 

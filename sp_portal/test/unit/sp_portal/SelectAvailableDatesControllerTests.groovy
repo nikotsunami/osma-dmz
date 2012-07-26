@@ -86,9 +86,18 @@ class SelectAvailableDatesControllerTests {
 		params["training.2.id"] = [:]
 		params["training.3.id"] = "on"
 
-	
+	def sendMailByChangeDays = [];
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
 	
 		def mod=controller.update();
+		
+	
 
 		def currentSP = datasetup.normalUser.standardizedPatient
 		def currentPatInsem =local.PatientlnSemester.findByStandardizedPatient(currentSP);
@@ -124,11 +133,22 @@ class SelectAvailableDatesControllerTests {
 		params["osce.1.id"] = "on"
 		params["training.2.id"] = "on"
 
+		def sendMailByChangeDays = [];
+		
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
 
 
 		// run the code under test
 				
 		def mod=controller.update();
+		
+	
 
 		// check the result 
 		
@@ -161,11 +181,20 @@ class SelectAvailableDatesControllerTests {
 				
 		
 		params["osce.1.id"] = "on"
+		def sendMailByChangeDays = [];
 
 
 		// run the code under test
 				
 		def mod=controller.update();
+		
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
 
 		// check the result 
 		
@@ -195,9 +224,22 @@ class SelectAvailableDatesControllerTests {
 		
 		params["training.2.id"] = "on"
 		
+		def sendMailByChangeDays = [];
+
+		
+		
 		// run the code under test
 				
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
+		
 		def mod=controller.update();
+		
 
 		// check the result 
 		
@@ -224,12 +266,24 @@ class SelectAvailableDatesControllerTests {
 		assertNotNull currentSP
 		def currentPatInsem =local.PatientlnSemester.findByStandardizedPatient(currentSP);
 		assertFalse currentPatInsem.accepted
+		
+	
 				
 		
 			
 		// run the code under test
+		def sendMailByChangeDays = [];
+
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
 				
 		def mod=controller.update();
+		
 
 		// check the result 
 		
@@ -245,6 +299,18 @@ class SelectAvailableDatesControllerTests {
 	
 		
 	void testHasSendEmailToAdmin(){
+			def sendMailByChangeDays = [];
+
+		controller.DMZMailService = [
+			sendMailByChangeDays: { eTo, eFrom, eSubject, eBody ->
+				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
+				sendMailByChangeDays << email;
+				
+			}
+		] as DMZMailService;
+		
+		
+		def mod=controller.update();
 	
 	
 		params["osce.1.id"] = "on"
@@ -255,17 +321,9 @@ class SelectAvailableDatesControllerTests {
 		params["training.2.id"] = [:]
 		params["training.3.id"] = "on"
 
-		def sentEmails = [];
-
-		controller.DMZMailService = [
-			sendMails: { eTo, eFrom, eSubject, eBody ->
-				def email = ["to":eTo,"from":eFrom,"subject":eSubject,"body":eBody ]
-				sentEmails << email;
-				
-			}
-		] as DMZMailService;
+	
 		
-		def mod=controller.update();
+		
 
 		def currentSP = datasetup.normalUser.standardizedPatient
 		String excptedFrom = currentSP.email;
@@ -275,10 +333,10 @@ class SelectAvailableDatesControllerTests {
 		excptedBody = excptedBody.replaceAll("#preName",currentSP.preName);
 		excptedBody = excptedBody.replaceAll("#name",currentSP.name);
 		
-		assertEquals excptedTo, sentEmails[0].to;
-		assertEquals excptedSubject, sentEmails[0].subject;
-		assertEquals excptedBody, sentEmails[0].body;
-		assertEquals excptedFrom, sentEmails[0].from;
+		assertEquals excptedTo, sendMailByChangeDays[0].to;
+		assertEquals excptedSubject, sendMailByChangeDays[0].subject;
+		assertEquals excptedBody, sendMailByChangeDays[0].body;
+		assertEquals excptedFrom, sendMailByChangeDays[0].from;
 	}
 	
 }
