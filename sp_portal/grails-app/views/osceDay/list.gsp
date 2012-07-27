@@ -32,7 +32,7 @@
 				<g:each in="${osceDayInstanceList}" status="i" var="osceDayInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${osceDayInstance.id}">${fieldValue(bean: osceDayInstance, field: "osceDate")}</g:link></td>
+						<td><g:link action="show" id="${osceDayInstance.id}"><g:formatDate format="yyyy-MM-dd" date="${osceDayInstance.osceDate}"/></g:link></td>
 					
 					</tr>
 				</g:each>

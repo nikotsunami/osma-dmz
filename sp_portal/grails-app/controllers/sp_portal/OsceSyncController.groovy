@@ -141,24 +141,19 @@ class OsceSyncController extends MainController {
 
             }
 			 
-			//allMsg << ["messages":oneMsg]; 
+	 
 			
 			def osceDayList = local.OsceDay.list();
 			
-			//allMsg << ["osceDay":osceDayList];
+
 			
 			def trainingList = local.Training.list();
 			
-			//allMsg << ["trainings":trainingList];
-			def patientImSemesterList = local.PatientlnSemester.list();
-			//allMsg << ["patientInSemester":patientImSemesterList];
-			
-			//def json = osceDayList as JSON;
-			def oneMsgJson = oneMsg as JSON;
-			//def osceDayListJson = osceDayList as JSON;
-			//def trainingListJson = trainingList as JSON;
 
-			//def patientImSemesterListJson = patientImSemesterList as JSON;
+			def patientImSemesterList = local.PatientlnSemester.list();
+	
+			def oneMsgJson = oneMsg as JSON;
+			
 
 			
 			String osceDayListJson = getOsceDayJson(osceDayList);
@@ -168,8 +163,9 @@ class OsceSyncController extends MainController {
 			String patientImSemesterListJson = getPatientInSemesterJson(patientImSemesterList)
 			
 			def jsonStr = "{\"message\" : "+oneMsgJson+",\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
-            println("##########in DMZ render jsonStr = "+jsonStr);
+           
 			render jsonStr
+           
 
         }
 		

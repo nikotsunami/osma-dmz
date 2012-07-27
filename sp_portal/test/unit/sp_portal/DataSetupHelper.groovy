@@ -1,6 +1,7 @@
 package sp_portal;
 import sp_portal.*;
 import sp_portal.local.*;
+import org.joda.time.LocalDate;
 
 class DataSetupHelper {
 
@@ -199,14 +200,14 @@ class DataSetupHelper {
         user2.roles = roles1;
 
         user2.save();
-		println("user2 " + user2.errors)
+
         normalUser2 = user2
     }
 
     def setupStandardizedPatients(def prefix){
         StandardizedPatient standardizedPatient = new StandardizedPatient();
         standardizedPatient.origId = 1;
-        standardizedPatient.birthday = new Date();
+        standardizedPatient.birthday = new LocalDate();
         standardizedPatient.city = "${prefix}Wuhu"
         standardizedPatient.email = "${prefix}sp1@test.com"
         standardizedPatient.gender = 1
@@ -376,7 +377,7 @@ class DataSetupHelper {
 	
 	}
 	def setUpTrainingDays(){
-	println("Setup training");
+
 
 		training2=new Training();
 		training2.id=2L

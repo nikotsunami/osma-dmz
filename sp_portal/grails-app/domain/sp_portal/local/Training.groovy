@@ -3,7 +3,7 @@ import local.*;
 import java.util.Calendar;
 
 class Training {
- static mapping = {
+   static mapping = {
       datasources(['DEFAULT'])
 
    }
@@ -15,17 +15,17 @@ class Training {
     Date timeEnd
 
     static constraints = {
-		name nullable: false, validator: {val,obj -> !val?.equals("")}
+        name nullable: false, validator: {val,obj -> !val?.equals("")}
 		timeStart nullable: true
 		timeEnd nullable: true, validator: { val, obj ->
         (obj.timeStart!=null&&(val?.after(obj.timeStart)||val==null))||(obj.timeStart==null)
-		}	
+        }
 		trainingDate nullable: false
     }
-	
-	public String toString(){
-		return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
-	}
+
+    public String toString(){
+        return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
+    }
 	
 	def static findTrainingsByDateAndName(def trainingDate,def name){
 		println(">>>>>>>>>>>>>>>>>>>>>domain findTrainingByTrainingDateAndName");

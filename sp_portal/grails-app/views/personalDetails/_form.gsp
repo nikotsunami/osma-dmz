@@ -1,5 +1,6 @@
 <%@ page import="sp_portal.local.StandardizedPatient" %>
 <%@ page import="ch.unibas.medizin.osce.shared.*" %>
+<%@ page import="org.joda.time.*" %>
 <calendar:resources lang="en" theme="tiger"/> 
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'birthday', 'error')} ">
@@ -7,8 +8,8 @@
         <g:message code="standardizedPatient.birthday.label" default="Birthday" />
 
     </label>
-    <!--<g:datePicker name="birthday" precision="day"  value="${standardizedPatientInstance?.birthday}" default="none" noSelection="['': '']"/> -->
-	 <calendar:datePicker name="birthday" value="${standardizedPatientInstance?.birthday}" defaultValue="none"/> 
+    
+	 <calendar:datePicker name="birthday" value="${standardizedPatientInstance?.birthday?.toDate()}" defaultValue=""/> 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'city', 'error')} ">

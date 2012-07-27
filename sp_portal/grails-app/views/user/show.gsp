@@ -55,7 +55,7 @@
                     <span id="roles-label" class="property-label"><g:message code="user.roles.label" default="Roles" /></span>
 
                         <g:each in="${userInstance.roles}" var="r">
-                        <span class="property-value" aria-labelledby="roles-label"><g:link controller="role" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
+                        <span class="property-value" aria-labelledby="roles-label">${r?.encodeAsHTML()}</span>
                         </g:each>
 
                 </li>
