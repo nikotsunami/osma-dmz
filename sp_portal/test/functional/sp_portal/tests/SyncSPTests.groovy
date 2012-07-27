@@ -60,6 +60,93 @@ class SyncSPTests {
 
 
     }
+	
+	
+	@Test
+    public void test003MyAccountLogin() {
+
+
+        LoginPage loginPage = webdriver.open('/', LoginPage)
+		
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+		
+		
+        MyAccountPage accountPage = userPage.clickMyAccount();
+		
+		MyAccountEditPage myAccountEditPage = accountPage.clickEdit();
+		
+		
+		myAccountEditPage.enterPassword("123")
+		myAccountEditPage.enterConfirmPassword("12")
+		myAccountEditPage.clickUpdate()
+		
+		myAccountEditPage.assertTextPresent("Passwords do not match");
+		
+		
+		userPage.clickLogout()
+		
+
+
+    }
+	
+	@Test
+	// so if passwirds are oth empty the password won't change
+    public void test004MyAccountLogin() {
+
+
+        LoginPage loginPage = webdriver.open('/', LoginPage)
+		
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+		
+		
+        MyAccountPage accountPage = userPage.clickMyAccount();
+		
+		MyAccountEditPage myAccountEditPage = accountPage.clickEdit();
+		
+		
+		myAccountEditPage.enterPassword("")
+		myAccountEditPage.enterConfirmPassword("")
+		myAccountEditPage.clickUpdate()
+				
+		
+		userPage.clickLogout()
+		
+        userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+
+
+    }	
+	
+		@Test
+	//  change password and log in with it 
+    public void test005MyAccountLogin() {
+
+
+        LoginPage loginPage = webdriver.open('/', LoginPage)
+		
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+		
+		
+        MyAccountPage accountPage = userPage.clickMyAccount();
+		
+		MyAccountEditPage myAccountEditPage = accountPage.clickEdit();
+		
+		
+		myAccountEditPage.enterPassword("123")
+		myAccountEditPage.enterConfirmPassword("123")
+		myAccountEditPage.clickUpdate()
+		
+	
+		
+		userPage.clickLogout()
+		
+        userPage = loginPage.loginUser("beddebu@hss.ch", "123");
+
+
+    }	
+	
+	
+	
+	
 
    private String getTestData(){
         def ret = $/
