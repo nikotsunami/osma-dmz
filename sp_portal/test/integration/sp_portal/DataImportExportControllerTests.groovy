@@ -379,6 +379,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
         def ret = $/
                 {
                        "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
+                       "cats":"dogs", // this is an unexpected field 
                        "anamnesisForm":{
                           "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
                           "anamnesisChecksValues":[
@@ -591,6 +592,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                                 "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
                                 "anamnesisCheck":{
                                    "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "cats":"dogs", // this is an unexpected field 
                                    "id":2,
                                    "sortOrder":2,
                                    "text":"Rauchen Sie 222?",
