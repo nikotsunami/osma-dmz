@@ -18,7 +18,7 @@ class StandardizedPatient {
     Integer version
     Long id
 
-    LocalDate birthday
+    Date birthday
     String city
     String email
     Integer gender

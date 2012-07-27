@@ -1,6 +1,6 @@
 package sp_portal
 
-import grails.converters.deep.JSON
+import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.codehaus.groovy.grails.web.json.*;
 import java.text.DateFormat;
@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.commons.logging.LogFactory;
 
+import org.joda.time.LocalDate;
 
 
 class DataImportExportController extends MainController {
@@ -60,7 +61,6 @@ class DataImportExportController extends MainController {
          def x =new User();
          x.userName= jsonData.email;
          x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
-println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
          x.userEmail=jsonData.email;
          x.standardizedPatient=standardizedPatient;
          x.isActive=true;
@@ -84,6 +84,9 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
     }
 
+	def push(){
+		redirect(action: "exportSP", id: params.data)
+	}
 
 
     def exportSP(){
@@ -99,7 +102,6 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
     }
 
     def importSP(){
-
         if (params.data){
             String data = params.data;
 			try{
@@ -321,12 +323,12 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
                 } else {
 
                    // not a basic type
-                   if (Date != prop.type){
-
+                   if (Date != prop.type && LocalDate != prop.type){
                        def fieldFinder = finders[datapath+"."+prop.name];
 
                        if (fieldFinder){
-                            // known Entity relationship
+                           
+							// known Entity relationship
 
                             if (prop.type != Set){
                                                             //  1 to 1 relationship
@@ -383,20 +385,27 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
 
                         }
                     } else {
-
-                            if(jsonObject.get(prop.name).getClass() == Date){
+                           
+							if(LocalDate == prop.type){
+								if(jsonObject[prop.name] != JSONObject.NULL){
+									LocalDate localDate =null;
+									if(jsonObject[prop.name].getClass() == Date){
+										localDate = new LocalDate(jsonObject[prop.name].getTime());
+									}else{
+										Date date = convertStringToDate(jsonObject.get(prop.name),"yyyy-MM-dd");
+										if(date){
+											localDate = new LocalDate(date.getTime());
+										}
+									}
+									sp[prop.name] = localDate;
+								}
+								return;
+							}
+							
+							if(jsonObject.get(prop.name).getClass() == Date){
                                     sp[prop.name] = jsonObject.get(prop.name);
                             }else{
-                                DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-                                Date date=null;
-                                try {
-                                    date = sdf.parse(jsonObject.get(prop.name));
-
-                                    sp[prop.name] = date;
-                                } catch (ParseException e) {
-									log.error "Date format in JSON string incorrect. Date string was :"+jsonObject.get(prop.name)+" ${e.message}", e
-                                }
+                                sp[prop.name] = convertStringToDate(jsonObject.get(prop.name),"yyyy-MM-dd'T'HH:mm:ss'Z'");
                             }
 
                     }
@@ -409,6 +418,20 @@ println("Creating new user with ${x.userName} ${jsonData.socialInsuranceNo}")
         return sp;
 
     }
+	//"yyyy-MM-dd'T'HH:mm:ss'Z'"
+	private Date convertStringToDate(String dateStr,String format){
+		DateFormat sdf=new SimpleDateFormat(format);
+
+		Date date=null;
+		try {
+			if(dateStr){
+				date = sdf.parse(dateStr);
+			}
+		} catch (ParseException e) {
+			log.error "Date format in JSON string incorrect. Date string was :"+dateStr+" ${e.message}", e
+		}
+		return date;
+	}
 
 
     private def logIf(condition, message){

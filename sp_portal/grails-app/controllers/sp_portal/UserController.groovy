@@ -4,6 +4,8 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
 import ch.unibas.medizin.osce.shared.AnamnesisCheckTypes;
 
+import org.joda.time.LocalDate;
+
 class UserController extends MainController {
 
     public static String ADMIN_ROLE = "ADMIN_ROLE";
@@ -303,7 +305,7 @@ class UserController extends MainController {
              local.StandardizedPatient  newPatient = new local.StandardizedPatient();
              newPatient.origId = patient.id;
 
-             newPatient.birthday = patient.birthday;
+             newPatient.birthday = new LocalDate(patient.birthday.getTime());
              newPatient.city = patient.city;
              newPatient.email = patient.email;
              newPatient.gender = patient.gender;

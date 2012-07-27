@@ -1,5 +1,6 @@
 package sp_portal.tests
 
+
 import org.codehaus.groovy.grails.plugins.webdriver.WebDriverHelper
 import org.junit.Rule
 import org.junit.Test
@@ -8,12 +9,32 @@ import grails.util.BuildSettingsHolder
 import grails.util.BuildSettings
 import static org.junit.Assert.*;
 
+
 class SyncSPTests {
     @Rule
     public WebDriverHelper webdriver = new WebDriverHelper()
 
-    @Test
-    public void test001LoginAdmin() {
+
+
+	@Test
+    public void testAllSyncSPCases() {
+
+		println("doTest001LoginAdmin")
+		doTest001LoginAdmin()
+		println("doTest002CreateAUserViaSyncOperation")
+		doTest002CreateAUserViaSyncOperation() 
+		println("doTest003MyAccountLogin")
+		doTest003MyAccountLogin()
+		println("doTest004MyAccountLogin")
+		doTest004MyAccountLogin() 
+		println("doTest005MyAccountLogin")
+		doTest005MyAccountLogin()
+
+    }
+
+
+
+    public void doTest001LoginAdmin() {
         // first initialize the system with a single login/logout
         LoginPage loginPage = webdriver.open('/', LoginPage)
         def adminPage = loginPage.loginAdmin();
@@ -21,8 +42,7 @@ class SyncSPTests {
 
     }
 
-    @Test
-    public void test002CreateAUserViaSyncOperation() {
+    public void doTest002CreateAUserViaSyncOperation() {
 
         String baseURL = null;
         if (System.getProperty(BuildSettings.FUNCTIONAL_BASE_URL_PROPERTY) == null) {
@@ -62,8 +82,8 @@ class SyncSPTests {
     }
 	
 	
-	@Test
-    public void test003MyAccountLogin() {
+
+    public void doTest003MyAccountLogin() {
 
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
@@ -89,9 +109,9 @@ class SyncSPTests {
 
     }
 	
-	@Test
+	
 	// so if passwirds are oth empty the password won't change
-    public void test004MyAccountLogin() {
+    public void doTest004MyAccountLogin() {
 
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
@@ -116,9 +136,9 @@ class SyncSPTests {
 
     }	
 	
-		@Test
+
 	//  change password and log in with it 
-    public void test005MyAccountLogin() {
+    public void doTest005MyAccountLogin() {
 
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
@@ -232,7 +252,7 @@ class SyncSPTests {
                       "postalCode":null,
                       "version":0
                    },
-                   "birthday":"1965-09-24T00:00:00Z",
+                   "birthday":"1965-09-24",
                    "city":"Basel",
                    "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                    "descriptions":null,
