@@ -1,5 +1,7 @@
 package sp_portal.remote
 import remote.*;
+import org.joda.time.LocalDate;
+
 class StandardizedPatient {
 
    static mapping = {

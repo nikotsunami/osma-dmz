@@ -269,8 +269,7 @@ class SelectAvailableDatesController extends MainController{
 		
 			String from = patient.email;
 
-			//TODO Used for testing whether can send email
-			//String from = "paul@jserver";
+		
 			if(patient.preName){
 				body = body.replaceAll("#preName",patient.preName);
 			}

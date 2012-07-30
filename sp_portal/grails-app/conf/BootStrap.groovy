@@ -1,5 +1,9 @@
 import sp_portal.Role
 import sp_portal.User
+
+import grails.converters.JSON
+import org.joda.time.*;
+
 class BootStrap {
 
     def init = { servletContext ->
@@ -12,6 +16,10 @@ class BootStrap {
             
 
            }
+		JSON.registerObjectMarshaller(LocalDate) {
+			return it?.toString("yyyy-MM-dd")
+		} 
+		   
     }
     def destroy = { }
 }

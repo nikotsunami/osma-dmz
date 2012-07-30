@@ -17,6 +17,7 @@
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="submit" value="${message(code: 'user.button.send')}" />
+                    <g:actionSubmit action="push"  name="push" value="push" />
                 </fieldset>
         </g:form>
     </body>
