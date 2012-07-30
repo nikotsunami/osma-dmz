@@ -185,7 +185,11 @@ class TrainingController extends sp_portal.MainController {
 		//Long dateTime = trainingDate.getTime();
 		Calendar calendar  = Calendar.getInstance();
 		calendar.setTime(trainingDate);
-		Long dateTime = calendar.getTimeInMillis()-(long)calendar.get(Calendar.HOUR_OF_DAY)*60*60*1000-(long)calendar.get(Calendar.MINUTE)*60*1000-(long)calendar.get(Calendar.SECOND)*1000
+		Long timeInMillis = calendar.getTimeInMillis();
+		Long hourOfDay = (long)calendar.get(Calendar.HOUR_OF_DAY);
+		Long minute = (long)calendar.get(Calendar.MINUTE);
+		Long second = (long)calendar.get(Calendar.SECOND);
+		Long dateTime = timeInMillis-hourOfDay*60*60*1000-minute*60*1000-second*1000 
 		return dateTime
 	}
 	
