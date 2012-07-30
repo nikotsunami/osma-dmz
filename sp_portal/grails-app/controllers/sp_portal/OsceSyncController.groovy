@@ -63,7 +63,7 @@ class OsceSyncController extends MainController {
                 def day = data.osceDay[i];
                 if(day.osceDate != null && !day.osceDate.equals("")){
                     def date = convertToDate(day.osceDate);
-                    def osceDay = local.OsceDay.findByOsceDate(date);
+                    def osceDay = local.OsceDay.findOsceDaysByOsceDate(date);
                     if(!osceDay){
                         osceDay = new local.OsceDay();
                         osceDay.osceDate = date;
@@ -85,37 +85,44 @@ class OsceSyncController extends MainController {
             for(int i = 0; i<data.trainings.size();i++){
                 def jsonTraining = data.trainings[i];
 
-                if(jsonTraining.timeStart!= JSONObject.NULL&&jsonTraining.trainingDate != JSONObject.NULL){
+                if(jsonTraining.trainingDate != JSONObject.NULL){
                     def start= convertToDate(jsonTraining.timeStart);
                     def date = convertToDate(jsonTraining.trainingDate);
-
-                    def training = local.Training.findByTrainingDateAndTimeStart(date,start);
-                    if(!training){
-						if(jsonTraining.name && jsonTraining.trainingDate && !jsonTraining.name.equals("") && !jsonTraining.trainingDate.equals("")){
-							training = new local.Training();
-							training.name = jsonTraining.name;
-							training.trainingDate = convertToDate(jsonTraining.trainingDate);
-							training.timeStart = convertToDate(jsonTraining.timeStart);
-							training.timeEnd = convertToDate(jsonTraining.timeEnd);
-							training.save(flush:true);
-						if(start){	
-							key = message(code: 'default.notFound.Training.message', args: [convertToString(start)],locale: locale)
+					def name = jsonTraining.name;
+					def training = null;
+					if(date){
+						if(start){
+							training = local.Training.findTraningsByDateAndStart(date,start);
 						}else{
-							key = message(code: 'default.notFound.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
+							training = local.Training.findTrainingsByDateAndName(date,name);							
 						}
+						if(!training){
+							if(jsonTraining.name && jsonTraining.trainingDate && !jsonTraining.name.equals("") && !jsonTraining.trainingDate.equals("")){
+								training = new local.Training();
+								training.name = jsonTraining.name;
+								training.trainingDate = convertToDate(jsonTraining.trainingDate);
+								training.timeStart = convertToDate(jsonTraining.timeStart);
+								training.timeEnd = convertToDate(jsonTraining.timeEnd);
+								training.save(flush:true);
+								if(start){	
+									key = message(code: 'default.notFound.Training.message', args: [convertToString(start)],locale: locale)
+								}else{
+									key = message(code: 'default.notFound.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
+								}
+							}else{
+								key = message(code: 'default.cannotSave.Training.message',locale: locale)
+							}
+							importMessage(key)
 						}else{
-							key = message(code: 'default.cannotSave.Training.message',locale: locale)
+							if(start){	
+								key = message(code: 'default.foundExist.Training.message', args: [convertToString(start)],locale: locale)
+							}else{
+								key = message(code: 'default.foundExist.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
+							}
+							importMessage(key)
+							
 						}
-                        importMessage(key)
-                    }else{
-						if(start){	
-							key = message(code: 'default.foundExist.Training.message', args: [convertToString(start)],locale: locale)
-						}else{
-							key = message(code: 'default.foundExist.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
-						}
-						importMessage(key)
-						
-                    }
+					}
                 }
 
             }
@@ -159,7 +166,8 @@ class OsceSyncController extends MainController {
 			String patientImSemesterListJson = getPatientInSemesterJson(patientImSemesterList)
 			
 			def jsonStr = "{\"message\" : "+oneMsgJson+",\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
-            render jsonStr
+            println("##########in DMZ render jsonStr = "+jsonStr);
+			render jsonStr
 
         }
 		
@@ -241,7 +249,7 @@ class OsceSyncController extends MainController {
 
         Date date=null;
         try {
-			if(dateStr){
+			if(dateStr && !dateStr.equals("")){
 				date = sdf.parse(dateStr);
 			}
         } catch (ParseException e) {

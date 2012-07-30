@@ -1,7 +1,7 @@
 package sp_portal;
 import sp_portal.*;
 import sp_portal.local.*;
-
+import org.joda.time.LocalDate;
 
 class DataSetupHelper {
 
@@ -207,7 +207,7 @@ class DataSetupHelper {
     def setupStandardizedPatients(def prefix){
         StandardizedPatient standardizedPatient = new StandardizedPatient();
         standardizedPatient.origId = 1;
-        standardizedPatient.birthday = new Date();
+        standardizedPatient.birthday = new LocalDate();
         standardizedPatient.city = "${prefix}Wuhu"
         standardizedPatient.email = "${prefix}sp1@test.com"
         standardizedPatient.gender = 1

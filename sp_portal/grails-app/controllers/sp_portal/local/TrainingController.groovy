@@ -3,6 +3,7 @@ package sp_portal.local
 import org.springframework.dao.DataIntegrityViolationException
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Calendar;
 
 class TrainingController extends sp_portal.MainController {
 
@@ -180,8 +181,15 @@ class TrainingController extends sp_portal.MainController {
 	}
 	
 	def getTrainingDateWithNoHours(trainingDate){
-		Long dateTime = trainingDate.getTime()-(long)trainingDate.getHours()*60*60*1000-(long)trainingDate.getMinutes()*60*1000-(long)trainingDate.getSeconds()*1000
-
+		//Long dateTime = trainingDate.getTime()-(long)trainingDate.getHours()*60*60*1000-(long)trainingDate.getMinutes()*60*1000-(long)trainingDate.getSeconds()*1000
+		//Long dateTime = trainingDate.getTime();
+		Calendar calendar  = Calendar.getInstance();
+		calendar.setTime(trainingDate);
+		Long timeInMillis = calendar.getTimeInMillis();
+		Long hourOfDay = (long)calendar.get(Calendar.HOUR_OF_DAY);
+		Long minute = (long)calendar.get(Calendar.MINUTE);
+		Long second = (long)calendar.get(Calendar.SECOND);
+		Long dateTime = timeInMillis-hourOfDay*60*60*1000-minute*60*1000-second*1000 
 		return dateTime
 	}
 	

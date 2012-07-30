@@ -22,7 +22,10 @@
                 <li class="fieldcontain">
                     <span id="birthday-label" class="property-label"><g:message code="standardizedPatient.birthday.label" default="Birthday" /></span>
 
-                        <span class="property-value" aria-labelledby="birthday-label"><g:formatDate date="${standardizedPatientInstance?.birthday}" /></span>
+                        <span class="property-value" aria-labelledby="birthday-label">
+						
+						${standardizedPatientInstance?.birthday}
+						</span>
 
                 </li>
                 </g:if>
