@@ -9,6 +9,6 @@
 				  
 		    </g:if>
     </g:each>
-    <g:radio name="question.${question.id}" value="true" checked="${validValue}"/>&nbsp;&nbspYes&nbsp;&nbsp;&nbsp;&nbsp;
-		<g:radio name="question.${question.id}" value="false" checked="${valid}"/>&nbsp;&nbspNo		    	  
+    <g:radio name="question.${question.id}" value="true" checked="${validValue}"/>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;
+		<g:radio name="question.${question.id}" value="false" checked="${valid}"/>&nbsp;&nbsp;No		    	  
 </div>

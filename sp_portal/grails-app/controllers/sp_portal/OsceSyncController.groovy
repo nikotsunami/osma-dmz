@@ -37,6 +37,9 @@ class OsceSyncController extends MainController {
         oneMsg << ["key":key]
 
     }
+	def test(){
+
+    }
 
     /**
      *OscdDay synchronise database and Training and validate Patient is present
