@@ -44,6 +44,7 @@ abstract class BasePage extends WebDriverPage {
     }
 
 
+
     def clickLinkWithHref(href){
         driver.findElement(By.xpath("//a[@href='" + href + "']")).click();
         confirmNoErrors()
@@ -59,7 +60,8 @@ abstract class BasePage extends WebDriverPage {
     }
 
     def confirmNoErrors(){
-        assertFalse("Error Page encountered at " + driver.getCurrentUrl() , isTextPresent("Error 500"));
+        assertFalse("Error Page encountered at " + driver.getCurrentUrl() ,
+                    driver.getPageSource().contains("Error 500"));
     }
 
 
@@ -124,29 +126,25 @@ abstract class BasePage extends WebDriverPage {
         File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         // Now you can do whatever you need to do with it, for example copy somewhere
         FileUtils.copyFile(scrFile, new File("." +name));
-
-
-
     }
 
 
     private int getDay(){
 
-        //
+
         // Get various information from the Date object.
-        //
+
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DATE);
 
         return day;
     }
 
-
     private int getMonth(){
 
-        //
+
         // Get various information from the Date object.
-        //
+
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH) + 1;
 
@@ -155,14 +153,40 @@ abstract class BasePage extends WebDriverPage {
 
     private int getYear(){
 
-          //
+
         // Get various information from the Date object.
-        //
+
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
 
         return year;
     }
+
+    def clickCheckDay(id){
+        driver.findElement(By.xpath("//*[@id='" + id + "']")).click();
+    }
+
+    def clickCheckBoxQuestion(id,value){
+        driver.findElement(By.xpath("//input[@id='" + id + "' and @value='" + value + "']")).click();
+
+
+
+
+    }
+
+    def clickRadioQuestion(id,value){
+
+        driver.findElement(By.xpath("//input[@id='" + id + "' and @value='" + value + "']")).click();
+
+    }
+
+    def findIframe(){
+        driver.switchTo().frame("questionPage");
+
+        //driver.findElement(By.xpath("//*[@id='" + id + "']")).click();
+
+    }
+
 
 
 

@@ -59,6 +59,7 @@ class OsceDayController extends sp_portal.MainController {
             redirect(action: "list")
             return
         }
+		//if there has standardized patient has selected this osceDay,can not update
 		def standardizedPatients = getStandardizedPatientsStr(osceDayInstance.id)
 		if(!standardizedPatients.equals('')){
 			flash.message = message(code: 'default.osceday.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id]) + standardizedPatients
@@ -95,7 +96,8 @@ class OsceDayController extends sp_portal.MainController {
             return
         }
 
-        try {			
+        try {	
+			//if there has standardized patient has selected this osceDay,can not delete
 			def standardizedPatients = getStandardizedPatientsStr(osceDayInstance.id)
 			if(!standardizedPatients.equals('')){
 				flash.message = message(code: 'default.osceday.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id]) + standardizedPatients
@@ -124,6 +126,9 @@ class OsceDayController extends sp_portal.MainController {
 		
 	}
 	
+	/**
+	 * get standardizedPatients has selected this osceDay
+	 **/
 	def getStandardizedPatientsStr(osceDayInstanceId){
 		def allPatientlnSemesters = PatientlnSemester.list()
 		def standardizedPatients = ''

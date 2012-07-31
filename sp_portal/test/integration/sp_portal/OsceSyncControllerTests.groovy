@@ -21,10 +21,6 @@ class OsceSyncControllerTests extends GroovyTestCase{
 
 	void testjsonToGroovy(){
 		def controller = new OsceSyncController()
-
-	
-		
-	
 		def resp = controller.jsonToGroovy(getTestData());
 		
 		assertEquals "2010-07-18T16:00:00Z" , resp.osceDay[0].osceDate
@@ -92,6 +88,7 @@ class OsceSyncControllerTests extends GroovyTestCase{
 		assertEquals convertToDate("2010-05-10T00:00:00Z"), t2.trainingDate;
 		assertEquals convertToDate("2010-05-10T9:20:00Z"), t2.timeStart;
 		assertEquals convertToDate("2010-05-10T11:00:00Z"), t2.timeEnd;
+
 		
 		def p = local.StandardizedPatient.list();
 		assertNotNull p
@@ -131,8 +128,59 @@ class OsceSyncControllerTests extends GroovyTestCase{
 		assertEquals convertToDate("2012-05-10T09:20:00Z"), t4.timeStart;
 		assertEquals convertToDate("2012-05-10T11:00:00Z"), t4.timeEnd;
 		
+		
+		//Test sync when date has some second diffrent
+		def jsonData3 = controller.jsonToGroovy(getTestData3());
+		def model3 = controller.sync(jsonData3)
+		
+		def list4 = local.OsceDay.list();
+
+		assertEquals 5,list4.size();
+		
+		def trainingList3 = local.Training.list();
+		assertEquals 8,trainingList3.size();
+		
    }
 
+		private String getTestData3(){
+		def json  = """
+		{
+			  languages :[{language: "en"}],
+			  osceDay : [ {osceDate: "2010-08-01T08:00:52Z"},
+							{osceDate: ""}
+							],
+			  trainings : [ {name: "",                            
+							trainingDate: "2000-06-10T00:00:59Z",
+							timeStart: "2000-06-10T09:19:01Z",
+							timeEnd: "2000-06-10T11:00:00Z"},
+							{name: "test6",                           
+							trainingDate: "",
+							timeStart: "2000-05-10T09:20:55Z",
+							timeEnd: "2000-05-10T11:00:00Z"},
+							{name: "test2",
+							trainingDate: "2012-05-10T00:00:59Z",
+							timeStart: "2012-05-10T09:19:01Z",
+							timeEnd: "2012-05-10T11:00:00Z"},
+							{name: "test2",
+							trainingDate: "2012-05-10T00:01:00Z",
+							timeStart: "",
+							timeEnd: ""},
+							{name: "test2",
+							trainingDate: "2012-05-09T23:59:00Z",
+							timeStart: "",
+							timeEnd: ""},
+							{name: "test7",
+							trainingDate: "2010-07-10T00:00:58Z",
+							timeStart: "2010-07-10T05:15:00Z",
+							timeEnd: "2010-07-10T09:00:00Z"}],
+		   standardizedPatient: []
+
+			}
+
+		
+		""";
+		return json;
+	}
 	
 	private String getTestData2(){
 		def json  = """

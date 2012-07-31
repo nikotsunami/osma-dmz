@@ -28,7 +28,6 @@ class TrainingController extends sp_portal.MainController {
 		
 		log("params : "+params)
         def trainingInstance = new Training(params)
-		//String trainingDateParam = params.trainingDate
 		setStartAndEndTime(trainingInstance)
 		
 		
@@ -77,7 +76,7 @@ class TrainingController extends sp_portal.MainController {
 		
 	
 		def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
-			
+		//if there has standardized patient has selected this training,can not update	
 		if(!standardizedPatients.equals('')){
 			flash.message = message(code: 'default.training.is.accepted', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
 			redirect(action: "show", id: params.id)
@@ -119,8 +118,8 @@ class TrainingController extends sp_portal.MainController {
 
         try {
 		
-			def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)
-			
+			def standardizedPatients = getStandardizedPatientsStr(trainingInstance.id)			
+			//if there has standardized patient has selected this training,can not delete
 			if(!standardizedPatients.equals('')){
 				flash.message = message(code: 'default.training.is.accepted' , args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])+standardizedPatients
 				redirect(action: "show", id: params.id)
@@ -148,6 +147,9 @@ class TrainingController extends sp_portal.MainController {
 		
 	}
 	
+	/**
+	 * set timeStart and timeEnd of the training
+	 **/
 	def setStartAndEndTime(trainingInstance){
 		Date trainingDate = trainingInstance.trainingDate
 		String endHourPrame = params.timeEndHour
@@ -180,7 +182,11 @@ class TrainingController extends sp_portal.MainController {
 		
 	}
 	
+	/**
+	 * get 0:00 a.m of trainingDate
+	 **/
 	def getTrainingDateWithNoHours(trainingDate){
+
 		//Long dateTime = trainingDate.getTime()-(long)trainingDate.getHours()*60*60*1000-(long)trainingDate.getMinutes()*60*1000-(long)trainingDate.getSeconds()*1000
 		//Long dateTime = trainingDate.getTime();
 		Calendar calendar  = Calendar.getInstance();
@@ -190,9 +196,14 @@ class TrainingController extends sp_portal.MainController {
 		Long minute = (long)calendar.get(Calendar.MINUTE);
 		Long second = (long)calendar.get(Calendar.SECOND);
 		Long dateTime = timeInMillis-hourOfDay*60*60*1000-minute*60*1000-second*1000 
+
+
 		return dateTime
 	}
 	
+	/**
+	 * get standardizedPatients has selected this training
+	 **/
 	def getStandardizedPatientsStr(trainingInstanceId){
 		def allPatientlnSemesters = PatientlnSemester.list()
 		def standardizedPatients = ''

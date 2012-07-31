@@ -10,7 +10,7 @@
 </head>
 <body>
 
-              <iframe src="${createLink(action:'showPage',controller:'checkQuestions')}" width="100%" height="600"  frameborder="0" scrolling="auto">
+              <iframe id="questionPage" src="${createLink(action:'showPage',controller:'checkQuestions')}" width="100%" height="600"  frameborder="0" scrolling="auto">
                 </iframe>
 
     </body>
