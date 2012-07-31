@@ -37,6 +37,7 @@ class DataImportExportController extends MainController {
                                                             def x = new local.StandardizedPatient();
                                                             x.origId = id;
                                                             x.save(flush:true);
+                                                            context.errors.addAll(x.errors)
                                                             createUser(x,jsonData);
                                                             return x},
                        "StandardizedPatient.bankaccount":{ id,jsonData,context -> def x = new local.Bankaccount(); x.origId = id; return x},
@@ -84,9 +85,9 @@ class DataImportExportController extends MainController {
 
     }
 
-	def push(){
-		redirect(action: "exportSP", id: params.data)
-	}
+    def push(){
+        redirect(action: "exportSP", id: params.data)
+    }
 
 
     def exportSP(){
@@ -104,21 +105,21 @@ class DataImportExportController extends MainController {
     def importSP(){
         if (params.data){
             String data = params.data;
-			try{
-				data = preProcessData(data);
-				def jsonObject = JSON.parse(data);
-				preProcessData(jsonObject);
+            try{
+                data = preProcessData(data);
+                def jsonObject = JSON.parse(data);
+                preProcessData(jsonObject);
 
-          
-				syncData(new JSONObject(jsonObject));
-				
-				render jsonObject.email;
-			}catch(JSONException e){
-			 
-			  render text:"Get Json Object Error: "+e.getMessage(), status:500
-			}
-	
-            
+
+                syncData(new JSONObject(jsonObject));
+
+                render jsonObject.email;
+            }catch(JSONException e){
+
+              render text:"Get Json Object Error: "+e.getMessage(), status:500
+            }
+
+
         } else {
                 render "No data"
 
@@ -210,14 +211,17 @@ class DataImportExportController extends MainController {
     /**
      * Syncs the data for everything below SP
      */
-    private boolean syncData(jsonObject){
+    private def syncData(jsonObject){
 
         def context = [:] ;
         context.postHooks = [];
+        context.errors = [];
 
         syncOneClass(jsonObject, "StandardizedPatient", context);
 
          context.postHooks.each{ hook -> hook() ;  }
+         return context.errors
+
 
     }
 
@@ -327,7 +331,7 @@ class DataImportExportController extends MainController {
                        def fieldFinder = finders[datapath+"."+prop.name];
 
                        if (fieldFinder){
-                           
+
 							// known Entity relationship
 
                             if (prop.type != Set){
@@ -386,22 +390,22 @@ class DataImportExportController extends MainController {
                         }
                     } else {
                            
-							if(LocalDate == prop.type){
-								if(jsonObject[prop.name] != JSONObject.NULL){
-									LocalDate localDate =null;
-									if(jsonObject[prop.name].getClass() == Date){
-										localDate = new LocalDate(jsonObject[prop.name].getTime());
-									}else{
-										Date date = convertStringToDate(jsonObject.get(prop.name),"yyyy-MM-dd");
-										if(date){
-											localDate = new LocalDate(date.getTime());
-										}
-									}
-									sp[prop.name] = localDate;
-								}
-								return;
-							}
-							
+                            if(LocalDate == prop.type){
+                                if(jsonObject[prop.name] != JSONObject.NULL){
+                                    LocalDate localDate =null;
+                                    if(jsonObject[prop.name].getClass() == Date){
+                                        localDate = new LocalDate(jsonObject[prop.name].getTime());
+                                    }else{
+                                        Date date = convertStringToDate(jsonObject.get(prop.name),"yyyy-MM-dd");
+                                        if(date){
+                                            localDate = new LocalDate(date.getTime());
+                                        }
+                                    }
+                                    sp[prop.name] = localDate;
+                                }
+                                return;
+                            }
+
 							if(jsonObject.get(prop.name).getClass() == Date){
                                     sp[prop.name] = jsonObject.get(prop.name);
                             }else{
@@ -415,23 +419,26 @@ class DataImportExportController extends MainController {
         }    // end loop over all the proerties in the class
 
         sp.save(flush:true);
+       contextIds.errors = sp.errors
+
+
         return sp;
 
     }
-	//"yyyy-MM-dd'T'HH:mm:ss'Z'"
-	private Date convertStringToDate(String dateStr,String format){
-		DateFormat sdf=new SimpleDateFormat(format);
+    //"yyyy-MM-dd'T'HH:mm:ss'Z'"
+    private Date convertStringToDate(String dateStr,String format){
+        DateFormat sdf=new SimpleDateFormat(format);
 
-		Date date=null;
-		try {
-			if(dateStr){
-				date = sdf.parse(dateStr);
-			}
-		} catch (ParseException e) {
-			log.error "Date format in JSON string incorrect. Date string was :"+dateStr+" ${e.message}", e
-		}
-		return date;
-	}
+        Date date=null;
+        try {
+            if(dateStr){
+                date = sdf.parse(dateStr);
+            }
+        } catch (ParseException e) {
+            log.error "Date format in JSON string incorrect. Date string was :"+dateStr+" ${e.message}", e
+        }
+        return date;
+    }
 
 
     private def logIf(condition, message){
