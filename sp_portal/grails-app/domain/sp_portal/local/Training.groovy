@@ -27,8 +27,10 @@ class Training {
         return trainingDate.format("yyyy-MM-dd") + " " + timeStart.format("hh:mm:ss");
     }
 	
+	/**
+	 * find trainings by trainingDate(between 1 minute before the trainingDate and 1 minute after the trainingDate) and name
+	 **/
 	def static findTrainingsByDateAndName(def trainingDate,def name){
-		println(">>>>>>>>>>>>>>>>>>>>>domain findTrainingByTrainingDateAndName");
 		Calendar calBegin = Calendar.getInstance();
 		calBegin.setTime(trainingDate);
 		calBegin.add(Calendar.MINUTE,-1);
@@ -38,10 +40,6 @@ class Training {
 		calEnd.setTime(trainingDate);
 		calEnd.add(Calendar.MINUTE,1);
 		Date maxDate = calEnd.getTime();
-		
-		System.out.println(">>>>>>>>>>>>>>>trainingDate = "+trainingDate);
-		System.out.println(">>>>>>>>>>>>>>>minDate = "+ minDate);
-		System.out.println(">>>>>>>>>>>>>>>maxDate = "+maxDate);
 		def query = Training.where {
 			trainingDate < maxDate && trainingDate > minDate && name==name
 		}
@@ -51,6 +49,9 @@ class Training {
 	
 	}
 	
+	/**
+	 * find trainings by trainingDate(between 1 minute before the trainingDate and 1 minute after the trainingDate) and timeStart(same as trainingDate)
+	 **/
 	def static findTraningsByDateAndStart(def trainingDate,def timeStart){
 		if(trainingDate == null){
 			return null;
@@ -83,7 +84,7 @@ class Training {
 			trainingDate < maxDate && trainingDate > minDate && timeStart < maxStartDate && timeStart > minStartDate
 		}
 	
-		def results = query.list(sort:"name")
+		def results = query.list(sort:"trainingDate")
 		return results;
 	
 	}

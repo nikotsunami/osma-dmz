@@ -48,16 +48,10 @@ class OsceSyncController extends MainController {
         if(data){
             //get locale from osce
             def locale = Locale.GERMANY;
-            if(data.language != JSONObject.NULL){
-                if(data.language.equals("en")){
-                    locale = Locale.US;
-                }else if(data.language.equals("de")){
-                    locale = Locale.GERMANY;
-                }else if(data.language.equals("fr")){
-                    locale = Locale.FRANCE;
-                }else if(data.language.equals("it")){
-                    locale = Locale.ITALY;
-                }
+			if(data.language != JSONObject.NULL && !data.language.equals("")){				
+				def language = data.language.toString()
+				locale = new Locale(language)
+                
             }
             //Synchronise OsceDay
             for(int i = 0; i<data.osceDay.size();i++){

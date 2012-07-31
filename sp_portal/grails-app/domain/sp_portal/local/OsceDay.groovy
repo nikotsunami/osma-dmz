@@ -21,6 +21,9 @@ class OsceDay {
 		return osceDate.format("yyyy-MM-dd");
 	}
 	
+	/**
+	 * find osceDays by osceDate(between 1 minute before the osceDate and 1 minute after the osceDate)
+	 **/
 	def static findOsceDaysByOsceDate(def osceDate){
 		Calendar calBegin = Calendar.getInstance();
 		calBegin.setTime(osceDate);
