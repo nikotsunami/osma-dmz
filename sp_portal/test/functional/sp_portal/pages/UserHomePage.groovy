@@ -42,11 +42,14 @@ public class UserHomePage extends BasePage {
 
     def clickQuestions(){
         clickLink("Questions");
+		return new CheckPage(driver)
+		//return new ShowQuestionPage(driver)
 
     }
 
     def clickSelectAvailableDates(){
         clickLink("Select Available Dates");
+		return new SelectAvailableDatesPage(driver);
 
     }
 

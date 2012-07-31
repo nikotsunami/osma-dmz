@@ -20,7 +20,7 @@
 	 <g:render template="questionTITLE" model="['question':title]"/>  
 	
 	 
-	 <g:form action="save" >
+	 <g:form  >
 			<fieldset class="form">
 				<g:each var="value" status="i" in="${questions}">
 						<g:if test="${value.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()}">
@@ -45,7 +45,7 @@
 		
 			</fieldset>
 			<fieldset class="buttons" style="algin:bottom">
-				<g:submitButton name="Save" value="${message(code: 'default.button.save')} " />
+				<g:actionSubmit action="Save" value="${message(code: 'default.button.save')}" />
 				
 				<g:if test="${params.int('index') != 0}">
 					<g:actionSubmit action="showFirst"  name="First" value="${message(code: 'default.button.first')}" />
