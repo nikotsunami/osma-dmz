@@ -40,31 +40,31 @@ class SelectAvailableDatesTests {
         String dataStr = getTestData();
         dataStr = dataStr.replaceAll("\n", "")
         dataStr = dataStr.replaceAll("  ", "")
-				
-		
+
+
         def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
-	
+
         dataImpExpPage.submitData(dataStr);
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
         userHomePage.clickBanksDetails()
-		assertFalse(userHomePage.isTextPresent("Bankaccount not found with id null"))
+        assertFalse(userHomePage.isTextPresent("Bankaccount not found with id null"))
         userHomePage.clickQuestions()
         userHomePage.clickSelectAvailableDates()
         userHomePage.clickLogout()
 
 
     }
-	 
-	 @Test
-	 public void test003ClickCheck(){
-		 String baseURL = null;
+
+     @Test
+     public void test003ClickCheck(){
+         String baseURL = null;
         if (System.getProperty(BuildSettings.FUNCTIONAL_BASE_URL_PROPERTY) == null) {
             baseURL = System.getProperty("grails.functional.test.baseURL")
 
@@ -75,30 +75,30 @@ class SelectAvailableDatesTests {
         if (baseURL == null){
             baseURL = "http://localhost:8090/sp_portal"
         }
-		
-		String dataDay=getTestData2();
-		dataDay = dataDay.replaceAll("\n", "")
-        dataDay = dataDay.replaceAll("  ", "")
-		def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
-		dataImpDays.submitData(dataDay);
-		
-	
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
-		selectPage.chooseDays("training.1");
-		selectPage.chooseDays("osce.1");
-		
-		selectPage.clickSave();
-		selectPage.assertTextPresent("Thank you for your participation");
 
-	 
-	 
-	 }
-	 
-	 @Test
-	 public void test004ClickTrainDay(){
-		 String baseURL = null;
+        String dataDay=getTestData2();
+        dataDay = dataDay.replaceAll("\n", "")
+        dataDay = dataDay.replaceAll("  ", "")
+        def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
+        dataImpDays.submitData(dataDay);
+
+
+         LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+        selectPage.chooseDays("training.1");
+        selectPage.chooseDays("osce.1");
+
+        selectPage.clickSave();
+        selectPage.assertTextPresent("Thank you for your participation");
+
+
+
+     }
+
+     @Test
+     public void test004ClickTrainDay(){
+         String baseURL = null;
         if (System.getProperty(BuildSettings.FUNCTIONAL_BASE_URL_PROPERTY) == null) {
             baseURL = System.getProperty("grails.functional.test.baseURL")
 
@@ -109,28 +109,28 @@ class SelectAvailableDatesTests {
         if (baseURL == null){
             baseURL = "http://localhost:8090/sp_portal"
         }
-		
-		String dataDay=getTestData2();
-		dataDay = dataDay.replaceAll("\n", "")
-        dataDay = dataDay.replaceAll("  ", "")
-		def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
-		dataImpDays.submitData(dataDay);
-		
-	
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
-		selectPage.chooseDays("training.1");		
-		selectPage.clickSave();
-		selectPage.assertTextPresent("Training Days");
 
-	 
-	 
-	 }
-	 
-	 @Test
-	 public void test005ClickOsceDay(){
-		 String baseURL = null;
+        String dataDay=getTestData2();
+        dataDay = dataDay.replaceAll("\n", "")
+        dataDay = dataDay.replaceAll("  ", "")
+        def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
+        dataImpDays.submitData(dataDay);
+
+
+         LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+        selectPage.chooseDays("training.1");
+        selectPage.clickSave();
+        selectPage.assertTextPresent("Training Days");
+
+
+
+     }
+
+     @Test
+     public void test005ClickOsceDay(){
+         String baseURL = null;
         if (System.getProperty(BuildSettings.FUNCTIONAL_BASE_URL_PROPERTY) == null) {
             baseURL = System.getProperty("grails.functional.test.baseURL")
 
@@ -141,27 +141,27 @@ class SelectAvailableDatesTests {
         if (baseURL == null){
             baseURL = "http://localhost:8090/sp_portal"
         }
-		
-		String dataDay=getTestData2();
-		dataDay = dataDay.replaceAll("\n", "")
-        dataDay = dataDay.replaceAll("  ", "")
-		def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
-		dataImpDays.submitData(dataDay);
-		
-	
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
-		selectPage.chooseDays("osce.1");		
-		selectPage.clickSave();
-		selectPage.assertTextPresent("Training Days");
 
-	 
-	 
-	 }
-	 @Test
-	 public void test006ClickNull(){
-		 String baseURL = null;
+        String dataDay=getTestData2();
+        dataDay = dataDay.replaceAll("\n", "")
+        dataDay = dataDay.replaceAll("  ", "")
+        def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
+        dataImpDays.submitData(dataDay);
+
+
+         LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+        selectPage.chooseDays("osce.1");
+        selectPage.clickSave();
+        selectPage.assertTextPresent("Training Days");
+
+
+
+     }
+     @Test
+     public void test006ClickNull(){
+         String baseURL = null;
         if (System.getProperty(BuildSettings.FUNCTIONAL_BASE_URL_PROPERTY) == null) {
             baseURL = System.getProperty("grails.functional.test.baseURL")
 
@@ -172,58 +172,58 @@ class SelectAvailableDatesTests {
         if (baseURL == null){
             baseURL = "http://localhost:8090/sp_portal"
         }
-		
-		String dataDay=getTestData2();
-		dataDay = dataDay.replaceAll("\n", "")
+
+        String dataDay=getTestData2();
+        dataDay = dataDay.replaceAll("\n", "")
         dataDay = dataDay.replaceAll("  ", "")
-		def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
-		dataImpDays.submitData(dataDay);
-		
-	
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()		
-		selectPage.clickSave();
-		selectPage.assertTextPresent("Thank you for your participation");
+        def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
+        dataImpDays.submitData(dataDay);
 
-	 
-	 
-	 }
-	
-	
-	private String getTestData2(){
-		def json  = $/
-		{
-			  languages :[{language: "en"}],
-			  osceDay : [ {osceDate: "2010-08-01T08:00:00Z"},
-							{osceDate: ""}
-							],
-			  trainings : [ {name: "",                            
-							trainingDate: "2000-06-10T00:00:00Z",
-							timeStart: "2000-06-10T09:20:00Z",
-							timeEnd: "2000-06-10T11:00:00Z"},
-							{name: "test6",                           
-							trainingDate: "",
-							timeStart: "2000-05-10T09:20:00Z",
-							timeEnd: "2000-05-10T11:00:00Z"},
-							{name: "test2",
-							trainingDate: "2012-05-10T00:00:00Z",
-							timeStart: "2012-05-10T09:20:00Z",
-							timeEnd: "2012-05-10T11:00:00Z"},
-							{name: "test7",
-							trainingDate: "2010-07-10T00:00:00Z",
-							timeStart: "2010-07-10T05:15:00Z",
-							timeEnd: "2010-07-10T09:00:00Z"}],
-		   standardizedPatient: []
 
-			}
+         LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+        selectPage.clickSave();
+        selectPage.assertTextPresent("Thank you for your participation");
 
-			/$
-		
-		
-		return json.toString();
-	}
-	
+
+
+     }
+
+
+    private String getTestData2(){
+        def json  = $/
+        {
+              languages :[{language: "en"}],
+              osceDay : [ {osceDate: "2010-08-01T08:00:00Z"},
+                            {osceDate: ""}
+                            ],
+              trainings : [ {name: "",
+                            trainingDate: "2000-06-10T00:00:00Z",
+                            timeStart: "2000-06-10T09:20:00Z",
+                            timeEnd: "2000-06-10T11:00:00Z"},
+                            {name: "test6",
+                            trainingDate: "",
+                            timeStart: "2000-05-10T09:20:00Z",
+                            timeEnd: "2000-05-10T11:00:00Z"},
+                            {name: "test2",
+                            trainingDate: "2012-05-10T00:00:00Z",
+                            timeStart: "2012-05-10T09:20:00Z",
+                            timeEnd: "2012-05-10T11:00:00Z"},
+                            {name: "test7",
+                            trainingDate: "2010-07-10T00:00:00Z",
+                            timeStart: "2010-07-10T05:15:00Z",
+                            timeEnd: "2010-07-10T09:00:00Z"}],
+           standardizedPatient: []
+
+            }
+
+            /$
+
+
+        return json.toString();
+    }
+
 
    private String getTestData(){
         def ret = $/
@@ -313,10 +313,10 @@ class SelectAvailableDatesTests {
                    "city":"Basel",
                    "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                    "descriptions":null,
-                   "email":"beddebu@hss.ch",
+                   "email":"SelectAvailableDatesTests@user.ch",
                    "gender":"FEMALE",
                    "height":182,
-                   "id":23,
+                   "id":231,
                    "immagePath":null,
                    "langskills":[
                       {

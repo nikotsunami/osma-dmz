@@ -40,123 +40,123 @@ class CheckQuestionTests {
         String dataStr = getTestData();
         dataStr = dataStr.replaceAll("\n", "")
         dataStr = dataStr.replaceAll("  ", "")
-				
-		
+
+
         def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
-	
+
         dataImpExpPage.submitData(dataStr);
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
         userHomePage.clickBanksDetails()
-		assertFalse(userHomePage.isTextPresent("Bankaccount not found with id null"))
+        assertFalse(userHomePage.isTextPresent("Bankaccount not found with id null"))
         userHomePage.clickQuestions()
         userHomePage.clickSelectAvailableDates()
         userHomePage.clickLogout()
 
 
     }
-	
-	@Test
-	public void test003AnswerQuestions1(){
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
+
+    @Test
+    public void test003AnswerQuestions1(){
+         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		
-		
-		CheckPage showpage=userHomePage.clickQuestions();
-		
-		ShowQuestionPage showQuestionPage=showpage.find();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		showQuestionPage.clickRadio("question.1","true");
-		showQuestionPage.clickNextBtn();
-		showQuestionPage.clickNextBtn();
-		showQuestionPage.assertTextPresent("Thank you for your participation");
-		
-		
-		
-	
-	}
-	
-	@Test
-	public void test004AnswerQuestions2(){
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+
+
+        CheckPage showpage=userHomePage.clickQuestions();
+
+        ShowQuestionPage showQuestionPage=showpage.find();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+        showQuestionPage.clickRadio("question.1","true");
+        showQuestionPage.clickNextBtn();
+        showQuestionPage.clickNextBtn();
+        showQuestionPage.assertTextPresent("Thank you for your participation");
+
+
+
+
+    }
+
+    @Test
+    public void test004AnswerQuestions2(){
+         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		
-		
-		CheckPage showpage=userHomePage.clickQuestions();
-		
-		ShowQuestionPage showQuestionPage=showpage.find();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		
-		showQuestionPage.clickNextBtn();
-		showQuestionPage.clickCheckBox("question.4","oft");
-		showQuestionPage.clickCheckBox("question.4","selten");
-		showQuestionPage.clickRadio("question.3","oft");
-		showQuestionPage.clickSave();
-		showQuestionPage.assertTextPresent("Thank you for your participation");
-		
-		
-		
-	
-	}
-	
-	@Test
-	public void test005AnswerQuestions3(){
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+
+
+        CheckPage showpage=userHomePage.clickQuestions();
+
+        ShowQuestionPage showQuestionPage=showpage.find();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+
+        showQuestionPage.clickNextBtn();
+        showQuestionPage.clickCheckBox("question.4","oft");
+        showQuestionPage.clickCheckBox("question.4","selten");
+        showQuestionPage.clickRadio("question.3","oft");
+        showQuestionPage.clickSave();
+        showQuestionPage.assertTextPresent("Thank you for your participation");
+
+
+
+
+    }
+
+    @Test
+    public void test005AnswerQuestions3(){
+         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		
-		
-		CheckPage showpage=userHomePage.clickQuestions();
-		
-		ShowQuestionPage showQuestionPage=showpage.find();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		
-		showQuestionPage.clickNextBtn();
-		showQuestionPage.assertTextPresent("Krankengeschichte");
-		showQuestionPage.clickPrevious();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		
-		
-		
-	
-	}
-	
-	@Test
-	public void test006AnswerQuestions4(){
-		 LoginPage loginPage = webdriver.open('/', LoginPage)
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+
+
+        CheckPage showpage=userHomePage.clickQuestions();
+
+        ShowQuestionPage showQuestionPage=showpage.find();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+
+        showQuestionPage.clickNextBtn();
+        showQuestionPage.assertTextPresent("Krankengeschichte");
+        showQuestionPage.clickPrevious();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+
+
+
+
+    }
+
+    @Test
+    public void test006AnswerQuestions4(){
+         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
-		
-		
-		CheckPage showpage=userHomePage.clickQuestions();
-		
-		ShowQuestionPage showQuestionPage=showpage.find();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		
-		showQuestionPage.clickLast();
-		showQuestionPage.assertTextPresent("Krankengeschichte");
-		showQuestionPage.clickFirst();
-		showQuestionPage.assertTextPresent("Konsumverhalten");
-		
-		
-		
-	
-	}
-	 
-	 
-	
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+
+
+        CheckPage showpage=userHomePage.clickQuestions();
+
+        ShowQuestionPage showQuestionPage=showpage.find();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+
+        showQuestionPage.clickLast();
+        showQuestionPage.assertTextPresent("Krankengeschichte");
+        showQuestionPage.clickFirst();
+        showQuestionPage.assertTextPresent("Konsumverhalten");
+
+
+
+
+    }
+
+
+
    private String getTestData(){
         def ret = $/
                 {
@@ -214,7 +214,7 @@ class CheckQuestionTests {
                             "truth":false,
                             "version":0
                          },
-						    {
+                            {
                             "anamnesisChecksValue":null,
                             "anamnesischeck":{
                                "anamnesisCheckTitle":{
@@ -240,7 +240,7 @@ class CheckQuestionTests {
                             "truth":false,
                             "version":0
                          },
-						     {
+                             {
                             "anamnesisChecksValue":null,
                             "anamnesischeck":{
                                "anamnesisCheckTitle":{
@@ -266,7 +266,7 @@ class CheckQuestionTests {
                             "truth":false,
                             "version":0
                          },
-						      {
+                              {
                             "anamnesisChecksValue":null,
                             "anamnesischeck":{
                                "anamnesisCheckTitle":{
@@ -292,10 +292,10 @@ class CheckQuestionTests {
                             "truth":false,
                             "version":0
                          },
-						 
-						 
-						 
-						 
+
+
+
+
                       ],
                       "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
                       "createDate":"2009-09-19T00:00:00Z",
@@ -327,10 +327,10 @@ class CheckQuestionTests {
                    "city":"Basel",
                    "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                    "descriptions":null,
-                   "email":"beddebu@hss.ch",
+                   "email":"CheckQuestionsTest@user.ch",
                    "gender":"FEMALE",
                    "height":182,
-                   "id":23,
+                   "id":230,
                    "immagePath":null,
                    "langskills":[
                       {
