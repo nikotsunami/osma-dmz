@@ -10,12 +10,15 @@ import java.util.Date;
 import org.apache.commons.logging.LogFactory;
 
 import org.joda.time.LocalDate;
-
+import org.springframework.context.MessageSource;
+import org.springframework.validation.FieldError;
+import java.util.Locale;
 
 class DataImportExportController extends MainController {
 
     //def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
-
+	
+	def messageSource
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -37,7 +40,17 @@ class DataImportExportController extends MainController {
                                                             def x = new local.StandardizedPatient();
                                                             x.origId = id;
                                                             x.save(flush:true);
-                                                            context.errors.addAll(x.errors)
+															if (x.hasErrors()) {			
+																x.errors?.allErrors?.each{ 
+																	try{
+																		String msg = messageSource.getMessage(it, locale)
+																		context.errors << msg;	
+																	}catch(Exception e){
+																		log.error "Get the sync field error: "+"{e.message}",e
+																	}
+																};
+																	
+															}	
                                                             createUser(x,jsonData);
                                                             return x},
                        "StandardizedPatient.bankaccount":{ id,jsonData,context -> def x = new local.Bankaccount(); x.origId = id; return x},
@@ -104,22 +117,29 @@ class DataImportExportController extends MainController {
 
     def importSP(){
         if (params.data){
+			println(">>>>>>>>>params.data: "+params.data);
             String data = params.data;
             try{
                 data = preProcessData(data);
                 def jsonObject = JSON.parse(data);
-                preProcessData(jsonObject);
-
-
-                syncData(new JSONObject(jsonObject));
-
-                render jsonObject.email;
-            }catch(JSONException e){
-
-              render text:"Get Json Object Error: "+e.getMessage(), status:500
-            }
-
-
+				def jsonPatient = jsonObject["StandardizedPatient"];
+				if(jsonPatient != JSONObject.NULL){
+					
+					preProcessData(jsonPatient);
+				
+					def jsonData = syncData(new JSONObject(jsonObject)) as JSON;				
+					def json =jsonData.toString();
+					json = json.substring(1,json.length()-1);
+					
+					response.setCharacterEncoding("UTF-8");
+					render text:jsonData,contentType:"application/json",encoding:"UTF-8"
+				}
+			}catch(JSONException e){
+			 
+			  render text:"Get Json Object Error: "+e.getMessage(), status:500
+			}
+	
+            
         } else {
                 render "No data"
 
@@ -142,7 +162,6 @@ class DataImportExportController extends MainController {
     }
 
     private void preProcessData(jsonObject)throws JSONException{
-
             String gender = jsonObject.get("gender");
             if(jsonObject.containsKey("gender")){
                 if(gender){
@@ -205,25 +224,41 @@ class DataImportExportController extends MainController {
 
     }
 
-
-
-
+	def locale;
+	
     /**
      * Syncs the data for everything below SP
      */
     private def syncData(jsonObject){
-
         def context = [:] ;
         context.postHooks = [];
-        context.errors = [];
+		context.errors = [];
+		
+		locale = getLocale(jsonObject);
+		def jsonPatient = jsonObject["StandardizedPatient"];
+        syncOneClass(jsonPatient, "StandardizedPatient", context);
 
-        syncOneClass(jsonObject, "StandardizedPatient", context);
+        context.postHooks.each{ hook -> hook() ;  }
+		def errorMsg =[:]
+		errorMsg.errors = [];
+		for(String error : context.errors){
+			errorMsg.errors << ["error":error];
+		}
 
-         context.postHooks.each{ hook -> hook() ;  }
-         return context.errors
-
+		return errorMsg
 
     }
+	
+	/**
+	 * get the Locale from jsonObject
+	 */
+	private def getLocale(jsonObject){
+		def locale = Locale.GERMANY;
+		def jsonLanguage = jsonObject["languages"];
+		if(jsonLanguage["language"] != JSONObject.NULL){	
+			locale = new Locale(jsonLanguage["language"].toString())
+		}
+	}
 
     private int anamnesisChecksTypeTransformet(String type){
 
@@ -253,7 +288,7 @@ class DataImportExportController extends MainController {
 
     }
 
-    private def syncOneClass(jsonObject, datapath, contextIds )throws JSONException{
+    private def syncOneClass(jsonObject, datapath, contextIds)throws JSONException{
 
 
 
@@ -343,7 +378,7 @@ class DataImportExportController extends MainController {
                                     // Yes good so sync the fields
 
 
-                                        def v = syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name, contextIds );
+                                        def v = syncOneClass(jsonObject[prop.name] ,datapath+"."+prop.name, contextIds);
 
                                         sp[prop.name] = v;
 
@@ -373,7 +408,7 @@ class DataImportExportController extends MainController {
                                         array.each{ member ->
 
                                               // No then overwrite
-                                              def newValue = syncOneClass(member,datapath+"."+prop.name, contextIds );
+                                              def newValue = syncOneClass(member,datapath+"."+prop.name, contextIds);
 
                                                if (newValue){
 
@@ -419,15 +454,32 @@ class DataImportExportController extends MainController {
         }    // end loop over all the proerties in the class
 
         sp.save(flush:true);
-       contextIds.errors = sp.errors
-
-
+		addErrorMessages(sp,contextIds)
+		
         return sp;
 
     }
-    //"yyyy-MM-dd'T'HH:mm:ss'Z'"
-    private Date convertStringToDate(String dateStr,String format){
-        DateFormat sdf=new SimpleDateFormat(format);
+	
+	/**
+     * Add error message which field of the synchronization fails
+	 */
+	private void addErrorMessages(instance,context){
+			if (instance.hasErrors()) {			
+				instance.errors?.allErrors?.each{ 
+					try{
+						String msg = messageSource.getMessage(it, locale)
+						context.errors << msg;
+					}catch(Exception e){
+						log.error "Get the sync field error: "+"{e.message}",e
+					}
+				};
+					
+			}	
+	}
+	 
+	//"yyyy-MM-dd'T'HH:mm:ss'Z'"
+	private Date convertStringToDate(String dateStr,String format){
+		DateFormat sdf=new SimpleDateFormat(format);
 
         Date date=null;
         try {

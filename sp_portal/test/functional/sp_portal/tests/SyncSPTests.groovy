@@ -4,6 +4,8 @@ package sp_portal.tests
 import org.codehaus.groovy.grails.plugins.webdriver.WebDriverHelper
 import org.junit.Rule
 import org.junit.Test
+import org.junit.Before
+import org.junit.After
 import sp_portal.pages.*;
 import grails.util.BuildSettingsHolder
 import grails.util.BuildSettings
@@ -13,27 +15,17 @@ import static org.junit.Assert.*;
 class SyncSPTests {
     @Rule
     public WebDriverHelper webdriver = new WebDriverHelper()
-
-
-
+	
 	@Test
-    public void testAllSyncSPCases() {
+	public void doTestAllSyncSPTests(){
+		doTest001LoginAdmin();
+		doTest002CreateAUserViaSyncOperation();
+		doTest003MyAccountLogin();
+		doTest004MyAccountLogin();
+		doTest005MyAccountLogin();
+	}
 
-		println("doTest001LoginAdmin")
-		doTest001LoginAdmin()
-		println("doTest002CreateAUserViaSyncOperation")
-		doTest002CreateAUserViaSyncOperation() 
-		println("doTest003MyAccountLogin")
-		doTest003MyAccountLogin()
-		println("doTest004MyAccountLogin")
-		doTest004MyAccountLogin() 
-		println("doTest005MyAccountLogin")
-		doTest005MyAccountLogin()
-
-    }
-
-
-
+	
     public void doTest001LoginAdmin() {
         // first initialize the system with a single login/logout
         LoginPage loginPage = webdriver.open('/', LoginPage)
@@ -42,6 +34,7 @@ class SyncSPTests {
 
     }
 
+	
     public void doTest002CreateAUserViaSyncOperation() {
 
         String baseURL = null;
@@ -82,7 +75,7 @@ class SyncSPTests {
     }
 	
 	
-
+	
     public void doTest003MyAccountLogin() {
 
 
@@ -170,7 +163,8 @@ class SyncSPTests {
 
    private String getTestData(){
         def ret = $/
-                {
+                {    
+         "StandardizedPatient":{
                    "anamnesisForm":{
                       "anamnesischecksvalues":[
                          {
@@ -301,7 +295,8 @@ class SyncSPTests {
                    "videoPath":null,
                    "weight":82,
                    "workPermission":null
-                }
+                },
+			"languages" :{"language": "de"}}
                 /$
             return ret.toString();
 

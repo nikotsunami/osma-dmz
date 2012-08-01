@@ -3,6 +3,8 @@ package sp_portal.tests
 import org.codehaus.groovy.grails.plugins.webdriver.WebDriverHelper
 import org.junit.Rule
 import org.junit.Test
+import org.junit.Before
+import org.junit.After
 import sp_portal.pages.*;
 import grails.util.BuildSettingsHolder
 import grails.util.BuildSettings
@@ -10,8 +12,30 @@ import static org.junit.Assert.*;
 
 class SelectAvailableDatesTests {
     @Rule
-    public WebDriverHelper webdriver = new WebDriverHelper()
+    public WebDriverHelper webdriver = new WebDriverHelper();
+	
+	private static boolean initialized = false;
+	
+	@Before
+	public void initialize(){
+		if (!initialized){
+			String dataStr = getTestData();
+			dataStr = dataStr.replaceAll("\n", "")
+			dataStr = dataStr.replaceAll("  ", "")
 
+
+			def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
+
+			dataImpExpPage.submitData(dataStr);
+			initialized = true;
+		}
+	}
+	
+	@After
+	public void deleteOutputFile(){
+		webdriver = null;
+	}
+	
     @Test
     public void test001LoginAdmin() {
         // first initialize the system with a single login/logout
@@ -37,14 +61,14 @@ class SelectAvailableDatesTests {
         }
 
 
-        String dataStr = getTestData();
-        dataStr = dataStr.replaceAll("\n", "")
-        dataStr = dataStr.replaceAll("  ", "")
-
-
-        def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
-
-        dataImpExpPage.submitData(dataStr);
+//        String dataStr = getTestData();
+//        dataStr = dataStr.replaceAll("\n", "")
+//        dataStr = dataStr.replaceAll("  ", "")
+//
+//
+//        def dataImpExpPage  = webdriver.open('/dataImportExport/test', DataImportExportTestPage)
+//
+//        dataImpExpPage.submitData(dataStr);
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
@@ -227,7 +251,8 @@ class SelectAvailableDatesTests {
 
    private String getTestData(){
         def ret = $/
-                {
+                {    
+         "StandardizedPatient": {
                    "anamnesisForm":{
                       "anamnesischecksvalues":[
                          {
@@ -358,7 +383,8 @@ class SelectAvailableDatesTests {
                    "videoPath":null,
                    "weight":82,
                    "workPermission":null
-                }
+                },
+			"languages" :{"language": "de"}}
                 /$
             return ret.toString();
 

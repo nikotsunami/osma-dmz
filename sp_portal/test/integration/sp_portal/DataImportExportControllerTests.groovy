@@ -62,7 +62,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                     assert list.size == 1;
 
-                    assert response.text == "qqq@rrr.com";
+     //               assert response.text == "qqq@rrr.com";
 
                     //-------------verify standardizedPatient-----------------
                     assertEquals "qqq@rrr.com", standardizedPatient.email;
@@ -220,9 +220,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                 def profession=local.Profession.findByOrigId(3);
 
-                assert list.size == 1;
-
-                assert response.text == "qqq@rrr.com";
+                assert list.size == 1;                
 
                 //-------------verify standardizedPatient-----------------
                 assertEquals "qqq@rrr.com", standardizedPatient.email;
@@ -341,7 +339,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
    }
 
 
-   void testExportSP(){
+    void testExportSP(){
 
         def controller = new DataImportExportController()
         Role role1 = new Role();
@@ -377,10 +375,10 @@ class DataImportExportControllerTests extends GroovyTestCase{
         
    }
    
-   /**
-	* Test the json data that the birthday is String type data;
-    */
-   void testImportSP3(){
+    /**
+	 * Test the json data that the birthday is String type data;
+     */
+    void testImportSP3(){
 
          def controller = new DataImportExportController()
                 Role role1 = new Role();
@@ -423,7 +421,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                 assert list.size == 1;
 
-                assert response.text == "qqq@rrr.com";
+    //            assert response.text == "qqq@rrr.com";
 
                 //-------------verify standardizedPatient-----------------
                 assertEquals "qqq@rrr.com", standardizedPatient.email;
@@ -542,10 +540,78 @@ class DataImportExportControllerTests extends GroovyTestCase{
         
    }
 	
+	 void testImportErrorFieldJsonData(){
+
+                def controller = new DataImportExportController()
+                Role role1 = new Role();
+                role1.roleName= "USER_ROLE";
+                role1.save();
+
+                def params = controller.params;
+                def response = controller.response;
+
+				// test the locale is en
+                params.data = getTestErrorFieldData("en");
+				
+
+                def model = controller.importSP()
+				
+				def jsonObject = JSON.parse(response.text);
+								
+				assertTrue jsonObject.errors.error.size() == 4
+				
+				def expectedError1 = "Property [city] of class [class sp_portal.local.StandardizedPatient] with value [Metzkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk] exceeds the maximum size of [30]";
+				def expectedError2 = "Property [email] of class [class sp_portal.local.StandardizedPatient] with value [qqqrrr.com] is not a valid e-mail address";
+				def expectedError3 = "Property [socialInsuranceNo] of class [class sp_portal.local.StandardizedPatient] with value [12345678911234] exceeds the maximum size of [13]";
+				def expectedError4 = "Property [socialInsuranceNo] of class [class sp_portal.local.StandardizedPatient] with value [12345678911234] does not match the required pattern [[0-9]{13,13}]";
+
+				assertEquals jsonObject.errors.error[0],expectedError1;
+				assertEquals jsonObject.errors.error[1],expectedError2;
+				assertEquals jsonObject.errors.error[2],expectedError3;
+				assertEquals jsonObject.errors.error[3],expectedError4;
+
+				//controller.response.contentAsString
+				
+
+   }
+   
+   void testImportErrorFieldJsonDataWithDe(){
+				def controller = new DataImportExportController()
+                Role role1 = new Role();
+                role1.roleName= "USER_ROLE";
+                role1.save();
+
+                def params = controller.params;
+                def response = controller.response;
+
+				// test the locale is en
+                params.data = getTestErrorFieldData("de");
+				
+
+                def model = controller.importSP()
+				
+				def jsonObject = JSON.parse(response.text);
+								
+				assertTrue jsonObject.errors.error.size() == 4
+				
+				def expectedError0 = "Eigenschaft [city] der Klasse [class sp_portal.local.StandardizedPatient] mit dem Wert [Metzkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk] überschreitet die maximale Größe von [30]";
+				def expectedError1 = "Eigenschaft [email] der Klasse [class sp_portal.local.StandardizedPatient] mit dem Wert [qqqrrr.com] ist keine gültige E-Mail-Adresse";
+				def expectedError2 = "Eigenschaft [socialInsuranceNo] der Klasse [class sp_portal.local.StandardizedPatient] mit dem Wert [12345678911234] überschreitet die maximale Größe von [13]";
+				def expectedError3 = "Eigenschaft [socialInsuranceNo] der Klasse [class sp_portal.local.StandardizedPatient] mit dem Wert [12345678911234] entspricht nicht dem erforderlichen Muster [[0-9]{13,13}]";
+
+				assertEquals jsonObject.errors.error[0],expectedError0;
+				assertEquals jsonObject.errors.error[1],expectedError1;
+				assertEquals jsonObject.errors.error[2],expectedError2;
+				assertEquals jsonObject.errors.error[3],expectedError3;
+   }
+
+    
+	
 	
     private String getTestData1(){
         def ret = $/
-                {
+           {
+				"StandardizedPatient":{
                        "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                        "cats":"dogs", // this is an unexpected field 
                        "anamnesisForm":{
@@ -690,15 +756,17 @@ class DataImportExportControllerTests extends GroovyTestCase{
                        "videoPath":"hello nick",
                        "weight":57,
                        "workPermission":null
-                    }
+                    },
+					"languages" :{"language": "en"}}
                 /$
             return ret.toString();
 
     }
 
-     private String getTestData2(){
+    private String getTestData2(){
         def ret = $/
-                {
+               {
+				"StandardizedPatient": {
                        "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                        "anamnesisForm":{
                           "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
@@ -842,14 +910,15 @@ class DataImportExportControllerTests extends GroovyTestCase{
                        "videoPath":"hello nick",
                        "weight":57,
                        "workPermission":null
-                    }
+                    },
+					"languages" :{"language": "en"}}
                 /$
             return ret.toString();
 
     }
-	 private String getTestData3(){
+    private String getTestData3(){
         def ret = $/
-                {
+                {"StandardizedPatient":{
                        "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
                        "anamnesisForm":{
                           "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
@@ -992,11 +1061,173 @@ class DataImportExportControllerTests extends GroovyTestCase{
                        "videoPath":"hello nick",
                        "weight":57,
                        "workPermission":null
-                    }
+                    },
+					"languages" :{"language": "en"}}
                 /$
             return ret.toString();
 
     }
+
+
+
+	
+	private String getTestErrorFieldData(String locale){
+	def ret = $/{    
+         "StandardizedPatient":{
+                       "class":"ch.unibas.medizin.osce.domain.StandardizedPatient",
+                       "cats":"dogs", 
+                       "anamnesisForm":{
+                          "class":"ch.unibas.medizin.osce.domain.AnamnesisForm",
+                          "anamnesisChecksValues":[
+                             {
+                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
+                                "anamnesisCheck":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "id":3,
+                                   "sortOrder":11,
+                                   "text":"Nehmen Sie zurzeit regelmässig Medikamente ein?",
+
+                                    "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":1,
+                                      "sort_order":9,
+                                      "text":"Treatment history category",
+                                      "version":0
+                                   },
+                                   "type":"QUESTION_YES_NO",
+                                   "userSpecifiedOrder":null,
+                                   "value":""
+                                },
+                                "anamnesisChecksValue":null,
+                                "anamnesisForm":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
+                                },
+                                "comment":null,
+                                "id":9,
+                                "truth":false
+                             },
+                             {
+                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
+                                "anamnesisCheck":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "id":1,
+                                   "sortOrder":2,
+                                   "text":"Rauchen Sie?",
+
+                                   "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":2,
+                                      "sort_order":2,
+                                      "text":"Personal lifestyle category",
+                                      "version":0
+                                   },
+                                   "type":"QUESTION_MULT_S",
+                                   "userSpecifiedOrder":null,
+                                   "value":"oft|mittel|selten"
+                                },
+                                "anamnesisChecksValue":"1-0-0",
+                                "anamnesisForm":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
+                                },
+                                "comment":null,
+                                "id":8,
+                                "truth":true
+                             },
+                             {
+                                "class":"ch.unibas.medizin.osce.domain.AnamnesisChecksValue",
+                                "anamnesisCheck":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisCheck",
+                                   "id":2,
+                                   "sortOrder":2,
+                                   "text":"Rauchen Sie 222?",
+                                    "anamnesisCheckTitle":{
+                                      "class":"ch.unibas.medizin.osce.domain.AnamnesisCheckTitle",
+                                      "id":3,
+                                      "sort_order":3,
+                                      "text":"Personal lifestyle category",
+                                      "version":0
+                                   },
+                                   "type":"QUESTION_OPEN",
+                                   "userSpecifiedOrder":null,
+                                   "value":"JDJDJDDJDJDJ"
+                                },
+                                "anamnesisChecksValue":"1",
+                                "anamnesisForm":{
+                                   "class":"ch.unibas.medizin.osce.domain.AnamnesisForm"
+                                },
+                                "comment":null,
+                                "id":80,
+                                "truth":true
+                             }
+                          ],
+                          "createDate":new Date(1279382400000),
+                          "id":3,
+                          "scars":[{
+                                   "id":9,
+                                   "traitType":"TATTOO",
+                                   "bodypart":"Oberschenkel (links)"}
+                           ],
+                          "standardizedPatients":[
+                             {
+                                "class":"ch.unibas.medizin.osce.domain.StandardizedPatient"
+                             }
+                          ]
+                       },
+                       "bankaccount":{
+                          "class":"ch.unibas.medizin.osce.domain.Bankaccount",
+                          "bankName":"Baslerl bank",
+                          "bic":"GENODEF1JEV",
+                          "city":"SHanghai",
+                          "iban":"CH46 3948 4853 2029 3",
+                          "id":12,
+                          "ownerName":"sqq",
+                          "postalCode":1234,
+                          "standardizedPatients":[
+                             {
+                                "class":"ch.unibas.medizin.osce.domain.StandardizedPatient"
+                             }
+                          ]
+                       },
+                       "birthday":"1990-07-08",
+                       "city":"Metzkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+                       "description":null,
+                       "email":"qqqrrr.com",
+                       "gender":"FEMALE",
+                       "height":162,
+                       "immagePath":null,
+                       "maritalStatus":null,
+                       "mobile":"078 427 24 85",
+                       "name":"Lamarie",
+                       "nationality":{
+                          "class":"ch.unibas.medizin.osce.domain.Nationality",
+                          "nationality":"Frankreich",
+                          "id":7
+                       },
+                       "id":5711,
+                       "postalCode":4057,
+                       "preName":"Marianne",
+                       "profession":{
+                          "class":"ch.unibas.medizin.osce.domain.Profession",
+                          "id":3,
+                          "profession":"Bauarbeiter/in"
+                       },
+                       "socialInsuranceNo":"12345678911234",
+                       "street":"Feldbergstrasse 145",
+                       "telephone":null,
+                       "telephone2":";kjlkjlj",
+                       "videoPath":"hello nick",
+                       "weight":57,
+                       "workPermission":null
+                    },
+			"languages" :{"language": "de"}}
+		/$
+		if(locale){
+			ret = ret.replaceAll("\"language\": \"de\"","\"language\": \""+locale+"\"");
+		}
+		return ret;
+	}
+
+
 
 
 }
