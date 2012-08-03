@@ -1,25 +1,33 @@
 package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
 
 class AnamnesisFormController extends sp_portal.MainController{
 	def beforeInterceptor = [action:this.&isLoggedInAsUser]
+	private static final log = LogFactory.getLog(this)
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
+		log.info("index of anamnesisForm")
         redirect(action: "list", params: params)
     }
 
     def list() {
+		log.info("list of anamnesisForm")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [anamnesisFormInstanceList: AnamnesisForm.list(params), anamnesisFormInstanceTotal: AnamnesisForm.count()]
     }
 
     def create() {
+		log.info("user create AnamnesisForm")
         [anamnesisFormInstance: new AnamnesisForm(params)]
     }
 
     def save() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class AnamnesisFormController Method save() with params : "+params)
+		}
         def anamnesisFormInstance = new AnamnesisForm(params)
         if (!anamnesisFormInstance.save(flush: true)) {
             render(view: "create", model: [anamnesisFormInstance: anamnesisFormInstance])
@@ -31,6 +39,7 @@ class AnamnesisFormController extends sp_portal.MainController{
     }
 
     def show() {
+		log.info("user show AnamnesisForm")
         def anamnesisFormInstance = AnamnesisForm.get(params.id)
         if (!anamnesisFormInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'anamnesisForm.label', default: 'AnamnesisForm'), params.id])
@@ -42,6 +51,7 @@ class AnamnesisFormController extends sp_portal.MainController{
     }
 
     def edit() {
+		log.info("user edit AnamnesisForm")
         def anamnesisFormInstance = AnamnesisForm.get(params.id)
         if (!anamnesisFormInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'anamnesisForm.label', default: 'AnamnesisForm'), params.id])
@@ -53,6 +63,9 @@ class AnamnesisFormController extends sp_portal.MainController{
     }
 
     def update() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class AnamnesisFormController Method update() with params : "+params)
+		}
         def anamnesisFormInstance = AnamnesisForm.get(params.id)
         if (!anamnesisFormInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'anamnesisForm.label', default: 'AnamnesisForm'), params.id])
@@ -83,6 +96,9 @@ class AnamnesisFormController extends sp_portal.MainController{
     }
 
     def delete() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class AnamnesisFormController Method delete() with params : "+params)
+		}
         def anamnesisFormInstance = AnamnesisForm.get(params.id)
         if (!anamnesisFormInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'anamnesisForm.label', default: 'AnamnesisForm'), params.id])

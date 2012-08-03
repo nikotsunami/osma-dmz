@@ -1,30 +1,51 @@
 package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
 
 class PatientlnSemesterController extends sp_portal.MainController {
 
     def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
-
+	private static final log = LogFactory.getLog(this)
+	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	
     def index() {
+		log.info("index of patientlnSemester")
         redirect(action: "list", params: params)
     }
 
     def list() {
+		log.info("list of patientlnSemester")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [patientlnSemesterInstanceList: PatientlnSemester.list(params), patientlnSemesterInstanceTotal: PatientlnSemester.count()]
     }
 
     def create() {
+		log.info("user create patientlnSemester")
         [patientlnSemesterInstance: new PatientlnSemester(params)]
     }
 
     def save() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class PatientlnSemesterController Method save() with params : "+params)
+		}
 		boolean accepted
 		
 		def sp=StandardizedPatient.findById(params.standardizedPatient.id);
-		
+		if(log.isDebugEnabled()){
+			log.debug("find standardizedPatient : "+sp)
+		}
 		def patientlnSemesterInstance = PatientlnSemester.findByStandardizedPatient(sp)
+		if(log.isDebugEnabled()){
+			StringBuffer sb = new StringBuffer();
+			sb.append( "\n patientlnSemesterInstance.accepted: ");
+			sb.append(patientlnSemesterInstance?.accepted);
+			sb.append( "\n patientlnSemesterInstance.acceptedOsceDay: ");
+			sb.append(patientlnSemesterInstance?.acceptedOsceDay);
+			sb.append( "\n patientlnSemesterInstance.acceptedTraining: ");
+			sb.append(patientlnSemesterInstance?.acceptedTraining);
+			log.debug( "find patientlnSemesterInstance by "+sp +" : " + sb.toString());
+		} 
 		
 				if(patientlnSemesterInstance!=null){
 		
@@ -51,13 +72,21 @@ class PatientlnSemesterController extends sp_portal.MainController {
 						patientlnSemesterInstance.acceptedTraining.addAll(training);
 						patientlnSemesterInstance.save()
 						redirect(action: "show", id: patientlnSemesterInstance.id)
-
 				}else{
 					  flash.message = message(code: 'patientInSemester.error.message');
 					  redirect(action: "show", id: patientlnSemesterInstance.id)
 				
 				}
-				
+				if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n patientlnSemesterInstance.accepted: ");
+					sb.append(patientlnSemesterInstance?.accepted);
+					sb.append( "\n patientlnSemesterInstance.acceptedOsceDay: ");
+					sb.append(patientlnSemesterInstance?.acceptedOsceDay);
+					sb.append( "\n patientlnSemesterInstance.acceptedTraining: ");
+					sb.append(patientlnSemesterInstance?.acceptedTraining);
+					log.debug( "find patientlnSemesterInstance and update to : " + sb.toString());
+				} 
 				
 				
 			}else{
@@ -90,7 +119,16 @@ class PatientlnSemesterController extends sp_portal.MainController {
 					  redirect(action: "create");
 				
 				}
-							
+				if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n patient.accepted: ");
+					sb.append(patient?.accepted);
+					sb.append( "\n patient.acceptedOsceDay: ");
+					sb.append(patient?.acceptedOsceDay);
+					sb.append( "\n patient.acceptedTraining: ");
+					sb.append(patient?.acceptedTraining);
+					log.debug( "not find patientlnSemesterInstance and new PatientlnSemester: " + sb.toString());
+				} 			
 			}
 			
 			
@@ -108,7 +146,11 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 
     def show() {
+		log.info("user show patientlnSemester")
         def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get patientlnSemesterInstance : "+patientlnSemesterInstance)
+		}
         if (!patientlnSemesterInstance) {
 			//flash.message = message(code: 'default.not.found.message', args: [message(code: 'patientlnSemester.label', default: 'PatientlnSemester'), params.id])
             redirect(action: "list")
@@ -119,7 +161,11 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 
     def edit() {
+		log.info("user edit patientlnSemester")
         def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get patientlnSemesterInstance : "+patientlnSemesterInstance)
+		}
         if (!patientlnSemesterInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'patientlnSemester.label', default: 'PatientlnSemester'), params.id])
             redirect(action: "list")
@@ -130,7 +176,13 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 
     def update() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class PatientlnSemesterController Method update() with params : "+params)
+		}
         def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get patientlnSemesterInstance : "+patientlnSemesterInstance)
+		}
         if (!patientlnSemesterInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'patientlnSemester.label', default: 'PatientlnSemester'), params.id])
             redirect(action: "list")
@@ -160,7 +212,13 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 
     def delete() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class PatientlnSemesterController Method delete() with params : "+params)
+		}
         def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get patientlnSemesterInstance : "+patientlnSemesterInstance)
+		}
         if (!patientlnSemesterInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'patientlnSemester.label', default: 'PatientlnSemester'), params.id])
             redirect(action: "list")
@@ -179,7 +237,11 @@ class PatientlnSemesterController extends sp_portal.MainController {
     }
 	
 	def cancel(){
+		log.info("user cancel patientlnSemester")
 		def patientlnSemesterInstance = PatientlnSemester.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get patientlnSemesterInstance : "+patientlnSemesterInstance)
+		}
         if (!patientlnSemesterInstance) {
             redirect(action: "list")
             

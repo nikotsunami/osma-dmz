@@ -1,5 +1,6 @@
 package sp_portal.local
 import local.*;
+import org.apache.log4j.Logger;
 
 class OsceDay {
  static mapping = {
@@ -18,13 +19,16 @@ class OsceDay {
 	
 	public String toString(){
 		
-		return osceDate.format("yyyy-MM-dd");
+		return osceDate?.format("yyyy-MM-dd");
 	}
-	
+	private static Logger log = Logger.getLogger(OsceDay.class);
 	/**
 	 * find osceDays by osceDate(between 1 minute before the osceDate and 1 minute after the osceDate)
 	 **/
 	def static findOsceDaysByOsceDate(def osceDate){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceDay Method findOsceDaysByOsceDate entered osceDate : "+osceDate)
+		}
 		Calendar calBegin = Calendar.getInstance();
 		calBegin.setTime(osceDate);
 		calBegin.add(Calendar.MINUTE,-1);
@@ -40,6 +44,9 @@ class OsceDay {
 		}
 	
 		def results = query.list(sort:"osceDate")
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceDay Method findOsceDaysByOsceDate return results : "+results)
+		}
 		return results;
 	
 	}

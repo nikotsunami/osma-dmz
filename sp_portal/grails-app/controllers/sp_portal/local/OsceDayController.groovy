@@ -1,26 +1,40 @@
 package sp_portal.local
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
 
 class OsceDayController extends sp_portal.MainController {
 
   def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
+  
+  private static final log = LogFactory.getLog(this)
+	
+  static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
+		log.info("index of osceDay")
         redirect(action: "list", params: params)
     }
 
     def list() {
+		log.info("list of osceDay")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [osceDayInstanceList: OsceDay.list(params), osceDayInstanceTotal: OsceDay.count()]
     }
 
     def create() {
+		log.info("user create osceDay")
         [osceDayInstance: new OsceDay(params)]
     }
 
     def save() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceDayController Method save() with params : "+params)
+		}
         def osceDayInstance = new OsceDay(params)
+		if(log.isDebugEnabled()){
+			log.debug("new OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance.save(flush: true)) {
             render(view: "create", model: [osceDayInstance: osceDayInstance])
             return
@@ -31,7 +45,11 @@ class OsceDayController extends sp_portal.MainController {
     }
 
     def show() {
+		log.info("user show training")
         def osceDayInstance = OsceDay.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance) {
 			//flash.message = message(code: 'default.not.found.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "list")
@@ -42,7 +60,11 @@ class OsceDayController extends sp_portal.MainController {
     }
 
     def edit() {
+		log.info("user edit training")
         def osceDayInstance = OsceDay.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "list")
@@ -53,7 +75,13 @@ class OsceDayController extends sp_portal.MainController {
     }
 
     def update() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceDayController Method update() with params : "+params)
+		}
         def osceDayInstance = OsceDay.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "list")
@@ -89,7 +117,13 @@ class OsceDayController extends sp_portal.MainController {
     }
 
     def delete() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceDayController Method delete() with params : "+params)
+		}
         def osceDayInstance = OsceDay.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'osceDay.label', default: 'OsceDay'), params.id])
             redirect(action: "list")
@@ -116,7 +150,11 @@ class OsceDayController extends sp_portal.MainController {
     }
 	
 	def cancel(){
+		log.info("user edit training")
 		def osceDayInstance = OsceDay.get(params.id)
+		if(log.isDebugEnabled()){
+			log.debug("get OsceDay : "+osceDayInstance)
+		}
         if (!osceDayInstance) {
             redirect(action: "list")
             
@@ -130,6 +168,9 @@ class OsceDayController extends sp_portal.MainController {
 	 * get standardizedPatients has selected this osceDay
 	 **/
 	def getStandardizedPatientsStr(osceDayInstanceId){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceDayController Method getStandardizedPatientsStr entered osceDayInstanceId : "+osceDayInstanceId)
+		}
 		def allPatientlnSemesters = PatientlnSemester.list()
 		def standardizedPatients = ''
 			for(PatientlnSemester patientlnSemester : allPatientlnSemesters){
@@ -143,6 +184,9 @@ class OsceDayController extends sp_portal.MainController {
 					}
 				}
 			}
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceDayController Method getStandardizedPatientsStr return standardizedPatients : "+standardizedPatients)
+		}
 		return standardizedPatients;
 	}
 }

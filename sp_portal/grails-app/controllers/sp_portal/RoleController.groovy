@@ -1,29 +1,36 @@
 package sp_portal
 
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
 
 class RoleController{
 
-		def beforeInterceptor = [action:this.&isLoggedInAsAdmin]    
-    
+	def beforeInterceptor = [action:this.&isLoggedInAsAdmin]    
+    private static final log = LogFactory.getLog(this)
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     
     
 
     def index() {
+		log.info("index of role")
         redirect(action: "list", params: params)
     }
 
-    def list() {   
+    def list() {
+		log.info("list of role")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [roleInstanceList: Role.list(params), roleInstanceTotal: Role.count()]
     }
 
     def create() {
+		log.info("create role")
         [roleInstance: new Role(params)]
     }
 
     def save() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class RoleController Method save() with params : "+params)
+		}
         def roleInstance = new Role(params)
         if (!roleInstance.save(flush: true)) {
             render(view: "create", model: [roleInstance: roleInstance])
@@ -35,6 +42,9 @@ class RoleController{
     }
 
     def show() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class RoleController Method show() with params : "+params)
+		}
         def roleInstance = Role.get(params.id)
         if (!roleInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])
@@ -46,6 +56,9 @@ class RoleController{
     }
 
     def edit() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class RoleController Method edit() with params : "+params)
+		}
         def roleInstance = Role.get(params.id)
         if (!roleInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])
@@ -57,6 +70,9 @@ class RoleController{
     }
 
     def update() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class RoleController Method update() with params : "+params)
+		}
         def roleInstance = Role.get(params.id)
         if (!roleInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])
@@ -87,6 +103,9 @@ class RoleController{
     }
 
     def delete() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class RoleController Method delete() with params : "+params)
+		}
         def roleInstance = Role.get(params.id)
         if (!roleInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])

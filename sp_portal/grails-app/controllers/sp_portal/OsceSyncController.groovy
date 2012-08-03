@@ -8,25 +8,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import org.apache.commons.logging.LogFactory;
 
 
 class OsceSyncController extends MainController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	
+	private static final log = LogFactory.getLog(this)
 
     def oneMsg = [];
 
 
 
     def syncJson(){
+		log.info("user sync json")
         def jsonObject = jsonToGroovy(params.data);
         sync(jsonObject)
     }
 
 
     def jsonToGroovy(json){
-
-        def jsonObject = JSON.parse(json);
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method jsonToGroovy(json) entered json : "+json)
+		}
+		log.info("parse json to jsonObject")
+        def jsonObject = JSON.parse(json);		
         return jsonObject ;
     }
 
@@ -42,7 +49,9 @@ class OsceSyncController extends MainController {
      *OscdDay synchronise database and Training and validate Patient is present
      */
     def sync(data){
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method sync entered data : "+data)
+		}
         def key = [];
 
         if(data){
@@ -54,6 +63,7 @@ class OsceSyncController extends MainController {
                 
             }
             //Synchronise OsceDay
+			log.info("Synchronise OsceDay")
             for(int i = 0; i<data.osceDay.size();i++){
                 def day = data.osceDay[i];
                 if(day.osceDate != null && !day.osceDate.equals("")){
@@ -64,7 +74,6 @@ class OsceSyncController extends MainController {
                         osceDay.osceDate = date;
                         osceDay.save(flush:true);
                         key = message(code: 'default.notFound.OsceDay.message', args: [convertToString(date)],locale: locale);
-                        println(">>>>>>key = "+key);
                         importMessage(key)
                     }else{
                         key = message(code: 'default.found.OsceDay.message', args: [convertToString(date)],locale: locale)
@@ -78,6 +87,7 @@ class OsceSyncController extends MainController {
             }
 
             //Synchronise Training
+			log.info("Synchronise Training")
             for(int i = 0; i<data.trainings.size();i++){
                 def jsonTraining = data.trainings[i];
 
@@ -130,6 +140,7 @@ class OsceSyncController extends MainController {
 
 
             //Validate standardizedPatient is present
+			log.info("Validate standardizedPatient is exist")
             for(int i = 0; i<data.standardizedPatient.size();i++){
                 def jsonPatient = data.standardizedPatient[i];
                 if(jsonPatient.id != JSONObject.NULL){
@@ -145,6 +156,8 @@ class OsceSyncController extends MainController {
 
 
             //set json date and send to OSCE
+			log.info("set json date of DMZ and send to OSCE")
+			
             def osceDayList = local.OsceDay.list();
 
             def trainingList = local.Training.list();
@@ -152,7 +165,9 @@ class OsceSyncController extends MainController {
             def patientImSemesterList = local.PatientlnSemester.list();
 
             def oneMsgJson = oneMsg as JSON;
-			
+			if(log.isDebugEnabled()){
+				log.debug("message : "+oneMsgJson)
+			}
 
 
             String osceDayListJson = getOsceDayJson(osceDayList);
@@ -163,8 +178,10 @@ class OsceSyncController extends MainController {
 
             def jsonStr = "{\"message\" : "+oneMsgJson+",\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
 
-
             response.setCharacterEncoding("UTF-8");
+			if(log.isDebugEnabled()){
+				log.debug("render jsonStr : "+jsonStr)
+			}
             render text:jsonStr ,contentType:"application/json",encoding:"UTF-8"
 
 
@@ -176,6 +193,9 @@ class OsceSyncController extends MainController {
      * get the response json data of PatientInSemester
      */
     private String getPatientInSemesterJson(def patientImSemesterList){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method getPatientInSemesterJson entered patientImSemesterList : "+patientImSemesterList)
+		}
         String patientImSemesterListJson = "[";
         int count =0;
         for(local.PatientlnSemester semeter : patientImSemesterList){
@@ -191,7 +211,9 @@ class OsceSyncController extends MainController {
 
         }
         patientImSemesterListJson +="]";
-
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method getPatientInSemesterJson return patientImSemesterListJson : "+patientImSemesterListJson)
+		}
         return patientImSemesterListJson;
 
     }
@@ -201,6 +223,9 @@ class OsceSyncController extends MainController {
      * get the response Json data of OsceDay
      */
     private String getOsceDayJson(def osceDayList){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method getOsceDayJson entered osceDayList : "+osceDayList)
+		}
         String osceDayListJson = "[";
 
         int i = 0;
@@ -213,6 +238,9 @@ class OsceSyncController extends MainController {
             }
         }
         osceDayListJson+="]";
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method getOsceDayJson return osceDayListJson : "+osceDayListJson)
+		}
         return osceDayListJson;
     }
 
@@ -220,6 +248,9 @@ class OsceSyncController extends MainController {
      * get the response Json data of Training
      */
     private String getTrainingJson(def trainingList){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method getTrainingJson entered trainingList : "+trainingList)
+		}
         String trainingListJson = "[";
 
         int i = 0;
@@ -235,6 +266,9 @@ class OsceSyncController extends MainController {
             }
         }
         trainingListJson+="]";
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method getTrainingJson return trainingListJson : "+trainingListJson)
+		}
         return trainingListJson;
 
     }
@@ -244,6 +278,9 @@ class OsceSyncController extends MainController {
      *The date of the format string into "yyyy-MM-dd 'T' HH: MM: ss 'Z'" format
      */
     private Date convertToDate(String dateStr){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method convertToDate entered dateStr : "+dateStr)
+		}
         DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         Date date=null;
@@ -254,6 +291,9 @@ class OsceSyncController extends MainController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method convertToDate return date : "+date)
+		}
         return date;
     }
 
@@ -261,6 +301,9 @@ class OsceSyncController extends MainController {
      * Time is converted to a string
      **/
     private String convertToString(Date date){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method convertToString entered date : "+date)
+		}
         DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         String dateStr="";
@@ -271,6 +314,9 @@ class OsceSyncController extends MainController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method convertToString return dateStr : "+dateStr)
+		}
         return dateStr;
     }
 
@@ -278,6 +324,9 @@ class OsceSyncController extends MainController {
      * Time is converted to a string
      **/
     private String convertTrainingDateToString(Date date){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class OsceSyncController Method convertTrainingDateToString entered date : "+date)
+		}
         DateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
         String dateStr=null;
@@ -288,6 +337,9 @@ class OsceSyncController extends MainController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+		if(log.isTraceEnabled()){
+			log.trace("<< In class OsceSyncController Method convertTrainingDateToString return dateStr : "+dateStr)
+		}
         return dateStr;
     }
 

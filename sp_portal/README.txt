@@ -185,7 +185,45 @@ grails test-app -Dserver.port=8090 -functional -Dwebdriver.browser=chrome -Dwebd
     5.4 In Emails the special codes  #preName & #name  will be automatically replaced with the appropriate StandardizedPatient fields.
 
 
+6. Logger
+=============================================================================
+	6.1 The are several standard logging levels, which are listed here in order of descending priority:
 
+		off
+		fatal
+		error
+		warn
+		info
+		debug
+		trace
+		all
 
-
+	6.2 To configure logger in console
+	
+		You need to change the Config.groovy ,in log4j configuration do like this :
+			log4j = {
+				appenders {
+					console name: "stdout", threshold: org.apache.log4j.Level.INFO
+				}
+			}
+	    It only write out messages at 'info' level ,you can change the level
+	
+	6.3 There is the default one that writes messages to the console, another that writes them to a file
+	
+		You need to change the Config.groovy ,in log4j configuration do like this :
+			log4j = {
+				appenders {
+					appender new RollingFileAppender(
+						name: "myAppender",
+						maxFileSize: 5120,
+						file: "D:/logs/myApp.log")
+				}
+			}
+			
+	6.4 To configure a single level for a logger
+	
+		You need to change the Config.groovy ,in log4j configuration do like this :
+			
+			debug myAppender: "sp_portal.local.TrainingController"
+		
 

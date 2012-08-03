@@ -11,84 +11,91 @@ import sun.misc.BASE64Encoder;
  * This class contains common functionality for all controllers, e.g. security checking
  */
 class MainController {
-
+	private static final log = LogFactory.getLog(this)
 
     def isLoggedIn(){
-     def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
-         if(session.user){
+		log.info(">> In class MainController Method isLoggedIn")
+		def user = User.findByUserNameAndPasswordHash(params.userName, hashPassword(params.passwordHash,params.userName))
+        if(session.user){
+			log.info("<< In class MainController Method isLoggedIn return true")
             return true;
-         } else {
-            redirect(controller:"authentication", action:"login")
-            return false;
-         }
+        } else {
+           redirect(controller:"authentication", action:"login")
+		   log.info("<< In class MainController Method isLoggedIn return false")
+           return false;
+        }
     }
 
     def isLoggedInAsAdmin(){
-      boolean isLogin = false;
-          if(session.user){
+		log.info(">> In class MainController Method isLoggedInAsAdmin")
+        boolean isLogin = false;
+            if(session.user){
                 User user = session.user;
                 def newUser = User.findById(user.id);
                 if(newUser!=null){
-                     def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.ADMIN_ROLE) }
-                         if ( result.size() > 0 ){
-                        isLogin = true;
-                   }else{
-                            session.user = null;
-                    }
-                }
-
-
-          }
-         if(!isLogin){
-             redirect(controller:"authentication", action:"login")
-         }
-       return isLogin;
-    }
-
-    def isLoggedInAsUser(){
-
-      boolean isLogin = false;
-          if(session.user){
-                User user = session.user;
-                def newUser = User.findById(user.id);
-                if(newUser!=null){
-                    def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.USER_ROLE) }
+                    def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.ADMIN_ROLE) }
                         if ( result.size() > 0 ){
                         isLogin = true;
                     }else{
-                            session.user = null;
+                        session.user = null;
                     }
                 }
 
+
           }
-      if(!isLogin){
-         redirect(controller:"authentication", action:"login")
-      }
+        if(!isLogin){
+            redirect(controller:"authentication", action:"login")
+        }
+		if(log.isTraceEnabled()){
+			log.info(">> In class MainController Method isLoggedInAsAdmin return isLogin : "+isLogin)
+		}
         return isLogin;
     }
 
-     static encodePassword(String password,String userName) {
-                MessageDigest md;
-                try {
-                       md = MessageDigest.getInstance("SHA-256");
-                } catch (NoSuchAlgorithmException e) {
-                     // TODO Auto-generated catch block
-
-                     e.printStackTrace();
-                     return "";
+    def isLoggedInAsUser(){
+		log.info(">> In class MainController Method isLoggedInAsUser")
+        boolean isLogin = false;
+        if(session.user){
+            User user = session.user;
+            def newUser = User.findById(user.id);
+            if(newUser!=null){
+                def result = newUser.roles.findAll{ role -> role.roleName.contains(AuthenticationController.USER_ROLE) }
+                if ( result.size() > 0 ){
+                    isLogin = true;
+                }else{
+                    session.user = null;
                 }
-                if(password!=null && userName!=null){
-                    md.update(password.getBytes());
-                   md.update(userName.getBytes());
-                }
+            }
 
+		}
+        if(!isLogin){
+            redirect(controller:"authentication", action:"login")
+        }
+		if(log.isTraceEnabled()){
+			log.info(">> In class MainController Method isLoggedInAsUser return isLogin : "+isLogin)
+		}
+		return isLogin;
+    }
 
-                 return (new BASE64Encoder()).encode(md.digest());
+    static encodePassword(String password,String userName) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "";
+        }
+        if(password!=null && userName!=null){
+            md.update(password.getBytes());
+            md.update(userName.getBytes());
+        }
+		def encodePassword = (new BASE64Encoder()).encode(md.digest())	
+        return encodePassword;
 
     }
 
     private String hashPassword(String unhashedPW, String userName){
-
         return encodePassword(unhashedPW,userName);
     }
 
@@ -100,9 +107,9 @@ class MainController {
 
 
     private void handleInboundPassword(params){
-
-
-        log("In handleInboundPassword  " + params);
+		if(log.isTraceEnabled()){
+			log.trace(">> In class MainController Method handleInboundPassword() entered params : "+params)
+		}
 
         if (params.passwordHash) {
               if(session.user!=null){
@@ -123,8 +130,9 @@ class MainController {
                 params.passwordHash = userInstance.passwordHash;
             }
         }
-
-        log("Leaving handleInboundPassword  " + params);
+		if(log.isTraceEnabled()){
+			log.trace("<< In class MainController Method handleInboundPassword() Leaving handleInboundPassword params: "+params)
+		}
 
     }
 
@@ -134,7 +142,7 @@ class MainController {
 
 
   	private void setupDefaultData(){
-           
+				log.info(">> In class MainController Method setupDefaultData")
                 User admin = new User();
 
                 log("1 " + admin);
@@ -145,7 +153,7 @@ class MainController {
                 admin.isActive = true;
 
                 log("2 " + admin);
-                log("2 " + admin.userEmail);
+                log("2 " + admin?.userEmail);
 
                 def roles = [];
                 roles.add(Role.findByRoleName(ADMIN_ROLE));
@@ -153,7 +161,10 @@ class MainController {
                 admin.roles = roles;
 
                 admin.save();
-                log("setup Default Data over" + admin)
+				if(log.isTraceEnabled()){
+					log.trace("setup Default Data over admin: "+admin)
+				}
+                
 
            
     }

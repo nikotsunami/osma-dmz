@@ -1,25 +1,33 @@
 package sp_portal.local
 import sp_portal.User;
 import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.logging.LogFactory;
 
 class BankaccountController extends sp_portal.MainController{
     def beforeInterceptor = [action:this.&isLoggedInAsUser]
+	private static final log = LogFactory.getLog(this)
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
+		log.info("index of bankaccount")
         redirect(action: "list", params: params)
     }
 
     def list() {
+		log.info("list of bankaccount")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [bankaccountInstanceList: Bankaccount.list(params), bankaccountInstanceTotal: Bankaccount.count()]
     }
 
     def create() {
+		log.info("user create bankaccount")
         [bankaccountInstance: new Bankaccount(params)]
     }
 
     def save() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class BankaccountController Method save() with params : "+params)
+		}
         def bankaccountInstance = new Bankaccount(params)
         if (!bankaccountInstance.save(flush: true)) {
             render(view: "create", model: [bankaccountInstance: bankaccountInstance])
@@ -30,8 +38,22 @@ class BankaccountController extends sp_portal.MainController{
     }
 
     def show() {
-        def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class BankaccountController Method show() with params : "+params)
+		}
+		def bankaccountInstance = null
+		def user = User.findById(session.user.id)
+		if(log.isDebugEnabled()){
+			log.debug("find user : "+user)
+		}
+		def standardizedPatient = user.standardizedPatient
+		if(log.isDebugEnabled()){
+			log.debug("get standardizedPatient : "+standardizedPatient)
+		}
+        bankaccountInstance = standardizedPatient.bankaccount;
+		if(log.isDebugEnabled()){
+			log.debug("get bankaccountInstance : "+bankaccountInstance)
+		}
         if (!bankaccountInstance) {
 
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
@@ -41,7 +63,22 @@ class BankaccountController extends sp_portal.MainController{
     }
 
     def edit() {
-		def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
+		if(log.isTraceEnabled()){
+			log.trace(">> In class BankaccountController Method edit() with params : "+params)
+		}
+		def bankaccountInstance = null
+		def user = User.findById(session.user.id)
+		if(log.isDebugEnabled()){
+			log.debug("find user : "+user)
+		}
+		def standardizedPatient = user.standardizedPatient
+		if(log.isDebugEnabled()){
+			log.debug("get standardizedPatient : "+standardizedPatient)
+		}
+		bankaccountInstance = standardizedPatient.bankaccount;
+		if(log.isDebugEnabled()){
+			log.debug("get bankaccountInstance : "+bankaccountInstance)
+		}
         if (!bankaccountInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
 			redirect(action: "show")
@@ -51,7 +88,22 @@ class BankaccountController extends sp_portal.MainController{
     }
 
     def update() {
-        def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
+        if(log.isTraceEnabled()){
+			log.trace(">> In class BankaccountController Method update() with params : "+params)
+		}
+		def bankaccountInstance = null
+		def user = User.findById(session.user.id)
+		if(log.isDebugEnabled()){
+			log.debug("find user : "+user)
+		}
+		def standardizedPatient = user.standardizedPatient
+		if(log.isDebugEnabled()){
+			log.debug("get standardizedPatient : "+standardizedPatient)
+		}
+		bankaccountInstance = standardizedPatient.bankaccount;
+		if(log.isDebugEnabled()){
+			log.debug("get bankaccountInstance : "+bankaccountInstance)
+		}
         if (!bankaccountInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
             redirect(action: "list")
@@ -81,7 +133,23 @@ class BankaccountController extends sp_portal.MainController{
     }
 
     def delete() {
-        def bankaccountInstance = User.findById(session.user.id).standardizedPatient.bankaccount;
+        if(log.isTraceEnabled()){
+			log.trace(">> In class BankaccountController Method update() with params : "+params)
+		}
+
+		def bankaccountInstance = null
+		def user = User.findById(session.user.id)
+		if(log.isDebugEnabled()){
+			log.debug("find user : "+user)
+		}
+		def standardizedPatient = user.standardizedPatient
+		if(log.isDebugEnabled()){
+			log.debug("get standardizedPatient : "+standardizedPatient)
+		}
+		bankaccountInstance = standardizedPatient.bankaccount;
+		if(log.isDebugEnabled()){
+			log.debug("get bankaccountInstance : "+bankaccountInstance)
+		}
         if (!bankaccountInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
             redirect(action: "list")

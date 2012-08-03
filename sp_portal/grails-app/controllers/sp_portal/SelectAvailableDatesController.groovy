@@ -8,7 +8,7 @@ class SelectAvailableDatesController extends MainController{
 
 
 	def beforeInterceptor = [action:this.&isLoggedInAsUser]
-
+	private static final log = LogFactory.getLog(this)
 
 	def index(){
 		redirect(action: "show",params: params);
@@ -17,7 +17,7 @@ class SelectAvailableDatesController extends MainController{
 
 
 	def show(){
-		
+		log.info("show selectAvailableDates")
 		def acceptedPatinetln;
 		def availableOsceDays =[]; 
 		def availableTrainingDays= [];
@@ -28,15 +28,25 @@ class SelectAvailableDatesController extends MainController{
 		availableOsceDays = local.OsceDay.findAll();
 		availableTrainingDays = local.Training.findAll();
 		def currentUser = User.findById(session.user.id);
-		
+		if(log.isDebugEnabled()){
+			log.debug("find availableOsceDays : "+availableOsceDays)
+			log.debug("find availableTrainingDays :"+availableTrainingDays)
+			log.debug("find currentUser : "+currentUser)
+		}
 		
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);
-			
+			if(log.isDebugEnabled()){
+				log.debug("find acceptedPatinetln : "+acceptedPatinetln)
+			}
 			if(acceptedPatinetln!=null){
 				
 				acceptedOsceDays = acceptedPatinetln.acceptedOsceDay
 				acceptedTrainingDays = acceptedPatinetln.acceptedTraining;
+				if(log.isDebugEnabled()){
+					log.debug("acceptedOsceDays : "+acceptedOsceDays)
+					log.debug("acceptedTrainingDays :"+acceptedTrainingDays)
+				}
 			}
 
 		}
@@ -48,6 +58,9 @@ class SelectAvailableDatesController extends MainController{
 
 
 	def update(){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SelectAvailableDatesController Method update() with params : "+params)
+		}
 		def acceptedPatinetln;
 		def availableOsceDays =[]; 
 		def availableTrainingDays= [];
@@ -73,7 +86,6 @@ class SelectAvailableDatesController extends MainController{
 			});	
 											
 		
-		
 		def osce=params.findAll({ key, value ->
 													key.startsWith("osce")
 													});
@@ -88,14 +100,19 @@ class SelectAvailableDatesController extends MainController{
 					acceptedOsceDays.add(osceDay);
 				}
 			});	
-				
+	
 		boolean accepted ;
 		
 		def currentUser = User.findById(session.user.id);
-		
+		if(log.isDebugEnabled()){
+			log.debug("find currentUser : "+currentUser)
+		}
 	
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
+			if(log.isDebugEnabled()){
+				log.debug("find acceptedPatinetln : "+acceptedPatinetln)
+			}
 			if(acceptedPatinetln!=null){
 				if(acceptedPatinetln.acceptedOsceDay.size()>0){
 					oDay.addAll(acceptedPatinetln.acceptedOsceDay);
@@ -201,7 +218,9 @@ class SelectAvailableDatesController extends MainController{
 				
 				}
 				
-				
+				if(log.isDebugEnabled()){
+					log.debug("update acceptedPatinetln : "+acceptedPatinetln)
+				}
 					
 						
 						
@@ -244,7 +263,9 @@ class SelectAvailableDatesController extends MainController{
 					  redirect(action: "show",params: params);
 				
 				}
-																	
+				if(log.isDebugEnabled()){
+					log.debug("new patientlnSemester : "+patient)
+				}													
 							
 			}
 					
@@ -257,9 +278,13 @@ class SelectAvailableDatesController extends MainController{
 	DMZMailService DMZMailService =null;
 	
 	private void sendEmail(def currentUser){
-		
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SelectAvailableDatesController Method sendEmail entered currentUser : "+currentUser)
+		}
 		def patient = currentUser.standardizedPatient;
-	
+		if(log.isDebugEnabled()){
+			log.debug("current patient : "+patient)
+		}	
 			
 			
 			String to = grailsApplication.config.grails.mail.username;
@@ -268,14 +293,19 @@ class SelectAvailableDatesController extends MainController{
 			String body = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
 		
 			String from = patient.email;
-
-		
+					
 			if(patient.preName){
 				body = body.replaceAll("#preName",patient.preName);
 			}
 			
 			if(patient.name){
 				body = body.replaceAll("#name",patient.name);
+			}
+			if(log.isDebugEnabled()){
+				log.debug("sendMail to : "+to)
+				log.debug("sendMail subject : "+subject)
+				log.debug("sendMail body : "+body)
+				log.debug("sendMail from : "+from)
 			}
 			DMZMailService.sendMailByChangeDays(to,from,subject,body);
 			

@@ -17,6 +17,7 @@ import java.util.Locale;
 class DataImportExportController extends MainController {
 
     //def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
+	private static final log = LogFactory.getLog(this)
 	
 	def messageSource
 
@@ -72,17 +73,35 @@ class DataImportExportController extends MainController {
                        "StandardizedPatient.anamnesisForm.scars":{ id,jsonData,context -> def x = new local.Scar(); x.origId = id; return x},
                         ]
     static def createUser(standardizedPatient,jsonData){
-         def x =new User();
-         x.userName= jsonData.email;
-         x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
-         x.userEmail=jsonData.email;
-         x.standardizedPatient=standardizedPatient;
-         x.isActive=true;
-         def roles = [];
-         roles.add(Role.findByRoleName("USER_ROLE"));
-         x.roles = roles;
-         x.save(flush:true);
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method createUser entered standardizedPatient : "+standardizedPatient + "  jsonData : "+jsonData)
+		}
+        def x =new User();
+        x.userName= jsonData.email;
+        x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
+        x.userEmail=jsonData.email;
+        x.standardizedPatient=standardizedPatient;
+        x.isActive=true;
+        def roles = [];
+        roles.add(Role.findByRoleName("USER_ROLE"));
+        x.roles = roles;
+        x.save(flush:true);
+		if(log.isDebugEnabled()){
+			StringBuffer sb = new StringBuffer();
+			sb.append( "\n userName: ");
+			sb.append(x?.userName);
+			sb.append( "\n passwordHash: ");
+			sb.append(x?.passwordHash);
+			sb.append( "\n userEmail: ");
+			sb.append(x?.userEmail);
+			sb.append( "\n standardizedPatient: ");
+			sb.append(x?.standardizedPatient);
+			sb.append( "\n isActive: ");
+			sb.append(x?.isActive);
+			sb.append( "\n roles: ");
+			sb.append(x?.roles);
+			log.debug( "new user : " + sb.toString());
+		}
 
     }
 
@@ -99,31 +118,93 @@ class DataImportExportController extends MainController {
     }
 
     def push(){
+		log.info("user push data")
         redirect(action: "exportSP", id: params.data)
     }
 
 
     def exportSP(){
-           if (params.id){
-              local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method exportSP with params : "+params)
+		}
+        if (params.id){
+            local.StandardizedPatient patient = local.StandardizedPatient.findByOrigId(params.id);
            // remote.StandardizedPatient patient = remote.StandardizedPatient.findById(params.id);
-                if (patient){
-                    render patient as JSON;
-                } else {
-                    render params.id +"not found"
-                }
+		   if(log.isDebugEnabled()){
+				StringBuffer sb = new StringBuffer();
+				sb.append( "\n origId: ");
+				sb.append(patient?.origId);
+				sb.append( "\n birthday: ");
+				sb.append(patient?.birthday);
+				sb.append( "\n city: ");
+				sb.append(patient?.city);
+				sb.append( "\n email: ");
+				sb.append(patient?.email);
+				sb.append( "\n gender: ");
+				sb.append(patient?.gender);
+				sb.append( "\n height: ");
+				sb.append(patient?.height);
+				sb.append( "\n immagePath: ");
+				sb.append(patient?.immagePath);
+				sb.append( "\n maritalStatus: ");
+				sb.append(patient?.maritalStatus);
+				sb.append( "\n mobile: ");
+				sb.append(patient?.mobile);
+				sb.append( "\n name: ");
+				sb.append(patient?.name);
+				sb.append( "\n postalCode: ");
+				sb.append(patient?.postalCode);
+				sb.append( "\n preName: ");
+				sb.append(patient?.preName);			
+				sb.append( "\n socialInsuranceNo: ");
+				sb.append(patient?.socialInsuranceNo);
+				sb.append( "\n street ");
+				sb.append(patient?.street);
+				sb.append( "\n telephone: ");
+				sb.append(patient?.telephone);
+				sb.append( "\n telephone2: ");
+				sb.append(patient?.telephone2);
+				sb.append( "\n videoPath: ");
+				sb.append(patient?.videoPath);
+				sb.append( "\n weight: ");
+				sb.append(patient?.weight);
+				sb.append( "\n workPermission: ");
+				sb.append(patient?.workPermission);
+				sb.append( "\n anamnesisForm: ");
+				sb.append(patient?.anamnesisForm);
+				sb.append( "\n description: ");
+				sb.append(patient?.description);
+				sb.append( "\n profession: ");
+				sb.append(patient?.profession);
+				sb.append( "\n nationality: ");
+				sb.append(patient?.nationality);
+				sb.append( "\n bankaccount: ");
+				sb.append(patient?.bankaccount);
+				log.debug( "find patient : " + sb.toString());
+			}
+            if (patient){
+                 render patient as JSON;
+            } else {
+                render params.id +"not found"
             }
+        }
     }
 
     def importSP(){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method importSP with params.data : "+params.data)
+		}
         if (params.data){
-			println(">>>>>>>>>params.data: "+params.data);
+			
             String data = params.data;
             try{
                 data = preProcessData(data);
                 def jsonObject = JSON.parse(data);
 				def jsonPatient = jsonObject["StandardizedPatient"];
 				if(jsonPatient != JSONObject.NULL){
+				if(log.isDebugEnabled()){
+					log.debug( "parse data to jsonObject : "+jsonObject);
+				}
 					
 					preProcessData(jsonPatient);
 				
@@ -148,6 +229,7 @@ class DataImportExportController extends MainController {
 
 
     private String preProcessData(String data){
+			log.info("preProcessData data called")
             data = data.replaceAll("bankAccount", "bankaccount");
             data = data.replaceAll("BIC", "bic");
             data = data.replaceAll("IBAN", "iban");
@@ -157,11 +239,14 @@ class DataImportExportController extends MainController {
             data = data.replaceAll("sort_order", "sortOrder");
             data = data.replaceAll("descriptions", "description");
 
-
+			if(log.isTraceEnabled()){
+				log.trace("<< In class DataImportExportController Method preProcessData(String data) return data : "+data)
+			}
             return data;
     }
 
     private void preProcessData(jsonObject)throws JSONException{
+			log.info("preProcessData jsonObject called")
             String gender = jsonObject.get("gender");
             if(jsonObject.containsKey("gender")){
                 if(gender){
@@ -221,7 +306,9 @@ class DataImportExportController extends MainController {
                         }
                     }
              }
-
+			if(log.isTraceEnabled()){
+				log.trace("<< In class DataImportExportController Method preProcessData(jsonObject) end  jsonObject: "+jsonObject)
+			}
     }
 
 	def locale;
@@ -230,6 +317,7 @@ class DataImportExportController extends MainController {
      * Syncs the data for everything below SP
      */
     private def syncData(jsonObject){
+		log.info("sync jsonObject")
         def context = [:] ;
         context.postHooks = [];
 		context.errors = [];
@@ -289,7 +377,9 @@ class DataImportExportController extends MainController {
     }
 
     private def syncOneClass(jsonObject, datapath, contextIds)throws JSONException{
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method syncOneClass(jsonObject, datapath, contextIds ) with entered datapath : "+datapath + " contextIds : "+contextIds)
+		}
 
 
         if (!jsonObject || (jsonObject == JSONObject.NULL)  || !jsonObject.id){
@@ -298,7 +388,9 @@ class DataImportExportController extends MainController {
 
         // locate the class in the db
         def sp = finders[datapath](jsonObject.id);
-
+		if(log.isDebugEnabled()){
+			log.debug("locate the class sp in the db : "+sp)
+		}
         contextIds[datapath] = jsonObject.id;
 
         if (!sp) {
@@ -311,10 +403,14 @@ class DataImportExportController extends MainController {
 
                 return null;
             }
+			if(log.isDebugEnabled()){
+				log.debug("sp not found and create sp : "+sp)
+			}
         }
 
 
         // loop over all the proerties in the class
+		log.info("loop over all the proerties in the class")
         sp.metaPropertyValues.each{ prop ->
 
             // avoid the read only properties
@@ -323,6 +419,9 @@ class DataImportExportController extends MainController {
 
                 // if it is a basic type
                 if ([Long, String, Integer, Boolean, Short].contains( prop.type)){
+					if(log.isDebugEnabled()){
+						log.debug("it is a basic type proerties : "+prop.name)
+					}
                     // if the json data contains this property
                     if(jsonObject.containsKey(prop.name)) {
 
@@ -357,20 +456,34 @@ class DataImportExportController extends MainController {
 
                             }
                         }
-                  }
-
+						if(log.isDebugEnabled()){
+							log.debug("sp[prop.name] : "+sp[prop.name])
+						}
+					}else{
+						if(log.isDebugEnabled()){
+							log.debug("jsonObject not containsKey "+prop.name)
+						}
+					}
+					
                 } else {
 
                    // not a basic type
+				   if(log.isDebugEnabled()){
+						log.debug("it is not a basic type proerties name : "+prop.name)
+						log.debug("proerties type : "+prop.type)
+				   }
                    if (Date != prop.type && LocalDate != prop.type){
-                       def fieldFinder = finders[datapath+"."+prop.name];
-
+                        def fieldFinder = finders[datapath+"."+prop.name];
+						if(log.isDebugEnabled()){
+							log.debug("find field "+fieldFinder)
+						}
                        if (fieldFinder){
 
 							// known Entity relationship
 
                             if (prop.type != Set){
-                                                            //  1 to 1 relationship
+								log.info("proerties type is 1 to 1")
+                                //  1 to 1 relationship
                                 // Are the ids the same?
                                 // Confirm the property value has an id field so it is a db entity
                                 if ((jsonObject[prop.name] != JSONObject.NULL) && jsonObject[prop.name]?.id ){
@@ -396,6 +509,7 @@ class DataImportExportController extends MainController {
 
 
                             } else {
+									log.info("proerties type is 1 to m")
                                 //  one to many relationship, so clear the current values and reinitialize from JSON data
 
 
@@ -422,7 +536,9 @@ class DataImportExportController extends MainController {
                                 }
                             }
 
-                        }
+                        }else{							
+								log.info("not founnd field")							
+						}
                     } else {
                            
                             if(LocalDate == prop.type){
@@ -446,7 +562,9 @@ class DataImportExportController extends MainController {
                             }else{
                                 sp[prop.name] = convertStringToDate(jsonObject.get(prop.name),"yyyy-MM-dd'T'HH:mm:ss'Z'");
                             }
-
+							if(log.isDebugEnabled()){
+								log.debug("sp[prop.name] : "+sp[prop.name])
+							}
                     }
 
                 }
@@ -464,6 +582,9 @@ class DataImportExportController extends MainController {
      * Add error message which field of the synchronization fails
 	 */
 	private void addErrorMessages(instance,context){
+			if(log.isTraceEnabled()){
+				log.trace(">> In class DataImportExportController Method addErrorMessages entered instance : "+instance + " context : "+context)
+			}
 			if (instance.hasErrors()) {			
 				instance.errors?.allErrors?.each{ 
 					try{
@@ -479,6 +600,9 @@ class DataImportExportController extends MainController {
 	 
 	//"yyyy-MM-dd'T'HH:mm:ss'Z'"
 	private Date convertStringToDate(String dateStr,String format){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method convertStringToDate entered dateStr : "+dateStr)
+		}
 		DateFormat sdf=new SimpleDateFormat(format);
 
         Date date=null;
@@ -489,6 +613,9 @@ class DataImportExportController extends MainController {
         } catch (ParseException e) {
             log.error "Date format in JSON string incorrect. Date string was :"+dateStr+" ${e.message}", e
         }
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method convertStringToDate return date : "+date)
+		}
         return date;
     }
 

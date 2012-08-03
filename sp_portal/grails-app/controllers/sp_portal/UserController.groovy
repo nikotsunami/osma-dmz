@@ -27,11 +27,12 @@ class UserController extends MainController {
 
 
     def index() {
+		log.info("index of user")
         redirect(action: "welcome", params: params)
     }
 
     def list() {
-        log("IN ACTION LIST");
+        log.info("list of user")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
 
 
@@ -40,6 +41,9 @@ class UserController extends MainController {
     }
 
     def create() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method create() with params : "+params)
+		}
           params.isActive=true
           //def standardizedPatient = new local.StandardizedPatient();
 
@@ -65,8 +69,8 @@ class UserController extends MainController {
 
 
     def importData() {
+		log.info("import Data Pressed")
         def messages = [];
-        log("Import Data Pressed");
 
         def needsTitleChecks = [];
 
@@ -79,7 +83,9 @@ class UserController extends MainController {
              newScar.origId = scar.id;
              newScar.bodypart = scar.bodypart;
              newScar.traitType = scar.traitType;
-
+			 if(log.isDebugEnabled()){
+				log.debug("save newScar : "+newScar)
+			 }
              newScar.save();
              importMessage(messages,"${message(code: 'default.scar.message')}",""+scar.id);
           } else {
@@ -90,7 +96,7 @@ class UserController extends MainController {
 
         def anamnesisCheckList =  remote.AnamnesisCheck.list();
         // add AnamnesisCheck data which type is title
-
+		log.info("add anamnesisCheck titles")
 
         def titleCheckList = remote.AnamnesisCheck.findAllByType(AnamnesisCheckTypes.QUESTION_TITLE.getTypeId());
 
@@ -104,10 +110,29 @@ class UserController extends MainController {
              newCheck.value = titleCheck.value;
              newCheck.userSpecifiedOrder = titleCheck.userSpecifiedOrder;
 
-               if(titleCheck.title){
-                 newCheck.title = local.AnamnesisForm.findByOrigId(titleCheck.id);
-               }
-
+             if(titleCheck.title){
+                newCheck.title = local.AnamnesisForm.findByOrigId(titleCheck.id);
+             }
+			 if(log.isDebugEnabled()){
+				StringBuffer sb = new StringBuffer();
+				sb.append( "\n newCheck.origId: ");
+				sb.append(newCheck?.origId);
+				sb.append( "\n newCheck.sortOrder: ");
+				sb.append(newCheck?.sortOrder);
+				sb.append( "\n newCheck.text: ");
+				sb.append(newCheck?.text);
+				sb.append( "\n newCheck.type: ");
+				sb.append(newCheck?.type);
+				sb.append( "\n newCheck.value: ");
+				sb.append(newCheck?.value);
+				sb.append( "\n newCheck.userSpecifiedOrder: ");
+				sb.append(newCheck?.userSpecifiedOrder);
+				sb.append( "\n newCheck.title: ");
+				sb.append(newCheck?.title);
+				sb.append( "\n newCheck.anamnesisCheckTitle: ");
+				sb.append(newCheck?.anamnesisCheckTitle);
+				log.debug( "save titleCheck: " + sb.toString());
+			 }
              newCheck.save();
              importMessage(messages,"${message(code: 'default.AnamnesisCheck.message')}", ""+titleCheck.id);
           }else {
@@ -124,6 +149,16 @@ class UserController extends MainController {
              newAnamnesisCheckTitle.origId = anamnesisCheckTitle.id;
              newAnamnesisCheckTitle.sortOrder = anamnesisCheckTitle.sortOrder;
              newAnamnesisCheckTitle.text = anamnesisCheckTitle.text;
+			 if(log.isDebugEnabled()){
+				StringBuffer sb = new StringBuffer();
+				sb.append( "\n newAnamnesisCheckTitle.origId: ");
+				sb.append(newAnamnesisCheckTitle?.origId);
+				sb.append( "\n newAnamnesisCheckTitle.sortOrder: ");
+				sb.append(newAnamnesisCheckTitle?.sortOrder);
+				sb.append( "\n newAnamnesisCheckTitle.text: ");
+				sb.append(newAnamnesisCheckTitle?.text);
+				log.debug( "save anamnesisCheckTitle: " + sb.toString());
+			 }
              newAnamnesisCheckTitle.save();
 
              importMessage(messages,"${message(code: 'default.AnamnesisCheckTitle.message')}", ""+anamnesisCheckTitle.id);
@@ -131,7 +166,7 @@ class UserController extends MainController {
             existsMessage(messages,"${message(code: 'default.AnamnesisCheckTitle.message')}", ""+anamnesisCheckTitle.id);
           }
         }
-
+		log.info("add anamnesisChecks")
         for (remote.AnamnesisCheck check : anamnesisCheckList ){
           if(!(local.AnamnesisCheck.findByOrigId(check.id))){
 
@@ -154,7 +189,26 @@ class UserController extends MainController {
                       log(" title = " + newCheck.anamnesisCheckTitle.text);
                    }
 
-
+				if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newCheck.origId: ");
+					sb.append(newCheck?.origId);
+					sb.append( "\n newCheck.sortOrder: ");
+					sb.append(newCheck?.sortOrder);
+					sb.append( "\n newCheck.text: ");
+					sb.append(newCheck?.text);
+					sb.append( "\n newCheck.type: ");
+					sb.append(newCheck?.type);
+					sb.append( "\n newCheck.value: ");
+					sb.append(newCheck?.value);
+					sb.append( "\n newCheck.userSpecifiedOrder: ");
+					sb.append(newCheck?.userSpecifiedOrder);
+					sb.append( "\n newCheck.title: ");
+					sb.append(newCheck?.title);
+					sb.append( "\n newCheck.anamnesisCheckTitle: ");
+					sb.append(newCheck?.anamnesisCheckTitle);
+					log.debug( "save newCheck: " + sb.toString());
+				}
 
                  newCheck.save();
 
@@ -168,7 +222,7 @@ class UserController extends MainController {
 
         }
 
-
+		log.info("add anamnesisForm")
         def anamnesisForm  =  remote.AnamnesisForm .list();
         for (remote.AnamnesisForm anamnesisFormValue : anamnesisForm ){
           if(!(local.AnamnesisForm.findByOrigId(anamnesisFormValue.id))){
@@ -176,13 +230,22 @@ class UserController extends MainController {
              local.AnamnesisForm newAnamnesisForm = new local.AnamnesisForm();
              newAnamnesisForm.origId = anamnesisFormValue.id;
              newAnamnesisForm.createDate = anamnesisFormValue.createDate;
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newAnamnesisForm.origId: ");
+					sb.append(newAnamnesisForm?.origId);
+					sb.append( "\n newAnamnesisForm.createDate: ");
+					sb.append(newAnamnesisForm?.createDate);
+					log.debug( "save newAnamnesisForm: " + sb.toString());
+			 }
              newAnamnesisForm.save();
                          importMessage(messages,"${message(code: 'default.AnamnesisForm.message')}", ""+anamnesisFormValue.id);
                     }else {
             existsMessage(messages,"${message(code: 'default.AnamnesisForm.message')}", ""+anamnesisFormValue.id);
           }
         }
-
+		
+		log.info("add bankaccount")
         def bankaccountList =  remote.Bankaccount.list();
         for (remote.Bankaccount bankAccount : bankaccountList ){
 
@@ -196,6 +259,24 @@ class UserController extends MainController {
                             newBankaccount.city = bankAccount.city;
                             newBankaccount.ownerName = bankAccount.ownerName;
                             newBankaccount.postalCode = bankAccount.postalCode;
+		       if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newBankaccount.origId: ");
+					sb.append(newBankaccount?.origId);
+					sb.append( "\n newBankaccount.bic: ");
+					sb.append(newBankaccount?.bic);
+					sb.append( "\n newBankaccount.iban: ");
+					sb.append(newBankaccount?.iban);
+					sb.append( "\n newBankaccount.bankName: ");
+					sb.append(newBankaccount?.bankName);
+					sb.append( "\n newBankaccount.city: ");
+					sb.append(newBankaccount?.city);
+					sb.append( "\n newBankaccount.ownerName: ");
+					sb.append(newBankaccount?.ownerName);
+					sb.append( "\n newBankaccount.postalCode: ");
+					sb.append(newBankaccount?.postalCode);
+					log.debug( "save newBankaccount: " + sb.toString());
+			 }
               newBankaccount.save();
 
                             importMessage(messages,"${message(code: 'default.Bankaccount.message')}", ""+bankAccount.id);
@@ -206,7 +287,7 @@ class UserController extends MainController {
 
 
 
-
+		log.info("add description")
         def descriptions   =  remote.Description.list();
         for (remote.Description description : descriptions ){
 
@@ -215,6 +296,14 @@ class UserController extends MainController {
              local.Description newDescription = new local.Description();
              newDescription.origId = description.id;
              newDescription.description = description.description;
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newDescription.origId: ");
+					sb.append(newDescription?.origId);
+					sb.append( "\n newDescription.description: ");
+					sb.append(newDescription?.description);
+					log.debug( "save newDescription: " + sb.toString());
+			 }
              newDescription.save();
 
 
@@ -225,7 +314,7 @@ class UserController extends MainController {
         }
 
 
-
+		log.info("add spokenLanguage")
         def languages =  remote.SpokenLanguage.list();
         for (remote.SpokenLanguage language : languages ){
           if(!(local.SpokenLanguage.findByOrigId(language.id))){
@@ -233,6 +322,14 @@ class UserController extends MainController {
              local.SpokenLanguage newLanguage = new local.SpokenLanguage();
              newLanguage.origId = language.id;
              newLanguage.languageName = language.languageName;
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newLanguage.origId: ");
+					sb.append(newLanguage?.origId);
+					sb.append( "\n newLanguage.languageName: ");
+					sb.append(newLanguage?.languageName);
+					log.debug( "save newLanguage: " + sb.toString());
+			 }
              newLanguage.save();
 
             importMessage(messages,"${message(code: 'default.SpokenLanguage.message')}", ""+language.id);
@@ -241,7 +338,8 @@ class UserController extends MainController {
           }
 
         }
-
+		
+		log.info("add nationalitys")
         def nationalitys =  remote.Nationality.list();
         for (remote.Nationality nationality : nationalitys ){
           if(!(local.Nationality.findByOrigId(nationality.id))){
@@ -249,6 +347,14 @@ class UserController extends MainController {
              local.Nationality newNationality = new local.Nationality();
              newNationality.origId = nationality.id;
              newNationality.nationality = nationality.nationality;
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newNationality.origId: ");
+					sb.append(newNationality?.origId);
+					sb.append( "\n newNationality.nationality: ");
+					sb.append(newNationality?.nationality);
+					log.debug( "save newNationality: " + sb.toString());
+			 }
              newNationality.save();
 
              importMessage(messages,"${message(code: 'default.Nationality.message')}", ""+nationality.id);
@@ -257,6 +363,7 @@ class UserController extends MainController {
           }
         }
 
+		log.info("add professions")
         def professions =  remote.Profession.list();
         for (remote.Profession profession : professions ){
           if(!(local.Profession.findByOrigId(profession.id))){
@@ -264,6 +371,14 @@ class UserController extends MainController {
              local.Profession newProfession = new local.Profession();
              newProfession.origId = profession.id;
              newProfession.profession = profession.profession;
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newProfession.origId: ");
+					sb.append(newProfession?.origId);
+					sb.append( "\n newProfession.profession: ");
+					sb.append(newProfession?.profession);
+					log.debug( "save newProfession: " + sb.toString());
+			 }
              newProfession.save();
              importMessage(messages,"${message(code: 'default.Profession.message')}", ""+profession.id);
                     }else {
@@ -272,7 +387,7 @@ class UserController extends MainController {
         }
 
 
-
+		log.info("add professions")
         def checkValues =  remote.AnamnesisChecksValue .list();
         for (remote.AnamnesisChecksValue  checkValue : checkValues ){
           if(!(local.AnamnesisChecksValue.findByOrigId(checkValue.id))){
@@ -289,6 +404,18 @@ class UserController extends MainController {
              if(checkValue.anamnesisCheck){
                newCheckValue.anamnesisCheck = local.AnamnesisCheck.findByOrigId(checkValue.anamnesisCheck.id);
              }
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n newCheckValue.origId: ");
+					sb.append(newCheckValue?.origId);
+					sb.append( "\n newCheckValue.anamnesisChecksValue: ");
+					sb.append(newCheckValue?.anamnesisChecksValue);
+					sb.append( "\n newCheckValue.comment: ");
+					sb.append(newCheckValue?.comment);
+					sb.append( "\n newCheckValue.truth: ");
+					sb.append(newCheckValue?.truth);
+					log.debug( "save newCheckValue: " + sb.toString());
+			 }
              newCheckValue.save();
              importMessage(messages,"${message(code: 'default.AnamnesisChecksValue.message')}", ""+checkValue.id);
           }else {
@@ -297,7 +424,7 @@ class UserController extends MainController {
         }
 
 
-
+		log.info("add standardizedPatient")
          def patients = remote.StandardizedPatient.list();
          for (remote.StandardizedPatient patient : patients ){
            if(!(local.StandardizedPatient.findByOrigId(patient.id))){
@@ -340,12 +467,64 @@ class UserController extends MainController {
              if (patient.bankaccount){
                  newPatient.bankaccount = local.Bankaccount.findByOrigId(patient.bankaccount.id);// TOdo
                   }
+		     if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n origId: ");
+					sb.append(newPatient?.origId);
+					sb.append( "\n birthday: ");
+					sb.append(newPatient?.birthday);
+					sb.append( "\n city: ");
+					sb.append(newPatient?.city);
+					sb.append( "\n email: ");
+					sb.append(newPatient?.email);
+					sb.append( "\n gender: ");
+					sb.append(newPatient?.gender);
+					sb.append( "\n height: ");
+					sb.append(newPatient?.height);
+					sb.append( "\n immagePath: ");
+					sb.append(newPatient?.immagePath);
+					sb.append( "\n maritalStatus: ");
+					sb.append(newPatient?.maritalStatus);
+					sb.append( "\n mobile: ");
+					sb.append(newPatient?.mobile);
+					sb.append( "\n name: ");
+					sb.append(newPatient?.name);
+					sb.append( "\n postalCode: ");
+					sb.append(newPatient?.postalCode);
+					sb.append( "\n preName: ");
+					sb.append(newPatient?.preName);			
+					sb.append( "\n socialInsuranceNo: ");
+					sb.append(newPatient?.socialInsuranceNo);
+					sb.append( "\n street ");
+					sb.append(newPatient?.street);
+					sb.append( "\n telephone: ");
+					sb.append(newPatient?.telephone);
+					sb.append( "\n telephone2: ");
+					sb.append(newPatient?.telephone2);
+					sb.append( "\n videoPath: ");
+					sb.append(newPatient?.videoPath);
+					sb.append( "\n weight: ");
+					sb.append(newPatient?.weight);
+					sb.append( "\n workPermission: ");
+					sb.append(newPatient?.workPermission);
+					sb.append( "\n anamnesisForm: ");
+					sb.append(newPatient?.anamnesisForm);
+					sb.append( "\n description: ");
+					sb.append(newPatient?.description);
+					sb.append( "\n profession: ");
+					sb.append(newPatient?.profession);
+					sb.append( "\n nationality: ");
+					sb.append(newPatient?.nationality);
+					sb.append( "\n bankaccount: ");
+					sb.append(newPatient?.bankaccount);
+					log.debug( "save newPatient: " + sb.toString());
+			 }
              newPatient.save();
 
 
 
              importMessage(messages,"${message(code: 'default.StandardizedPatient.message')}", ""+patient.id);
-
+			  log.info("add user")
               User user = new User();
 
               log("1 " + user);
@@ -364,6 +543,18 @@ class UserController extends MainController {
               user.roles = roles;
 
               user.standardizedPatient = newPatient;
+			   if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n userName: ");
+					sb.append(user?.userName);
+					sb.append( "\n userEmail: ");
+					sb.append(user?.userEmail);
+					sb.append( "\n passwordHash: ");
+					sb.append(user?.passwordHash);
+					sb.append( "\n isActive: ");
+					sb.append(user?.isActive);
+					log.debug( "save user: " + sb.toString());
+				}
               user.save();
 
                 createUserMessage(messages,user.userName,user.passwordHash)
@@ -374,7 +565,7 @@ class UserController extends MainController {
 
          }
 
-
+		log.info("add langSkills")
        def langSkills =  remote.LangSkill.list();
         for (remote.LangSkill langSkill : langSkills ){
           if(!(local.LangSkill.findByOrigId(langSkill.id))){
@@ -387,6 +578,18 @@ class UserController extends MainController {
                          if(langSkill.spokenLanguage){
                                 newLangSkill.spokenLanguage = local.SpokenLanguage.findByOrigId(langSkill.spokenLanguage.id);
              }
+			 if(log.isDebugEnabled()){
+					StringBuffer sb = new StringBuffer();
+					sb.append( "\n origId: ");
+					sb.append(newLangSkill?.origId);
+					sb.append( "\n skill: ");
+					sb.append(newLangSkill?.skill);
+					sb.append( "\n standardizedPatient: ");
+					sb.append(newLangSkill?.standardizedPatient);
+					sb.append( "\n spokenLanguage: ");
+					sb.append(newLangSkill?.spokenLanguage);
+					log.debug( "save newLangSkill: " + sb.toString());
+				}
              newLangSkill.save();
 
              importMessage(messages,"${message(code: 'default.LangSkill.message')}", ""+langSkill.id);
@@ -401,7 +604,9 @@ class UserController extends MainController {
 
 
     def save() {
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method save() with params : "+params)
+		}
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
 
 
@@ -425,6 +630,9 @@ class UserController extends MainController {
 
 
     def show() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method show() with params : "+params)
+		}
         def userInstance = User.get(params.id)
         if (!userInstance) {
            // flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
@@ -438,7 +646,9 @@ class UserController extends MainController {
     }
 
     def edit() {
-
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method edit() with params : "+params)
+		}
 
         def userInstance = User.get(params.id)
         if (!userInstance) {
@@ -453,6 +663,9 @@ class UserController extends MainController {
     }
 
     def update() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method update() with params : "+params)
+		}
 
 
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
@@ -499,6 +712,9 @@ class UserController extends MainController {
     }
 
     def delete() {
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method delete() with params : "+params)
+		}
         def userInstance = User.get(params.id)
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
@@ -518,6 +734,7 @@ class UserController extends MainController {
     }
 
     def clearData(){
+		log.info("clearData in UserController")
        // User.deleteAll(User.list());
        // Role.deleteAll(Role.list());
         log("" +local.Scar.list());
@@ -540,16 +757,19 @@ class UserController extends MainController {
     }
 
     private void setupDefaultData(){
+		 log.info("setupDefaultData in UserController")
             if (Role.list().size() == 0){
 
                 Role adminRole = new Role();
                 adminRole.roleName = ADMIN_ROLE;
                 adminRole.roleDescription = "Administrate Users";
+				log.info("add adminRole")
                 adminRole.save();
 
                 Role userRole = new Role();
                 userRole.roleName = USER_ROLE;
                 userRole.roleDescription = "Normal Users";
+				log.info("add userRole")
                 userRole.save();
 
                 User admin = new User();
@@ -566,14 +786,14 @@ class UserController extends MainController {
 
 
                 log("2 " + admin);
-                log("2 " + admin.userEmail);
+                log("2 " + admin?.userEmail);
 
                 def roles = [];
                 roles.add(Role.findByRoleName(ADMIN_ROLE));
 
 
                 admin.roles = roles;
-
+				log.info("add admin")
                 admin.save();
 
 
@@ -588,7 +808,7 @@ class UserController extends MainController {
                 roles2.add(Role.findByRoleName(USER_ROLE));
 
                 user1.roles = roles2;
-
+				log.info("add user1")
                 user1.save();
 
             }
@@ -599,13 +819,16 @@ class UserController extends MainController {
 
 
     private boolean comparePasswords(String p1,String p2){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class UserController Method comparePasswords with p1 : "+p1+" and "+p2)
+		}
         log("Comparing passwords " + p1 + "  and " + p2  );
         if ( p1 != p2) {
              flash.message = message(code: 'default.password.match.message');
-             log(" returning false");
+             log.info("comparePasswords returning false");
              return false;
         }
-        log(" returning true");
+        log.info("comparePasswords returning true");
         return true;
     }
 

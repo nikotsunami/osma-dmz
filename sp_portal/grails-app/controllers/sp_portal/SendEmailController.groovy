@@ -11,23 +11,29 @@ import org.apache.commons.logging.LogFactory;
 class SendEmailController extends MainController {
 
 	def beforeInterceptor = [action:this.&isLoggedInAsAdmin]
-
+	private static final log = LogFactory.getLog(this)
 
     def index() {
+		log.info("index of sendEmail")
         redirect(action: "show", params: params)
     }
     
 
     def show() {
-	  def patientInstanceList = local.StandardizedPatient.findAll();
-	  [patientInstanceList: patientInstanceList]
+		log.info("show sendEmail")
+	    def patientInstanceList = local.StandardizedPatient.findAll();
+	    [patientInstanceList: patientInstanceList]
     }
 	
 	
 	DMZMailService DMZMailService =null;
 	
 	def sendEmail(){
+		log.info("In class SendEmailController Method sendEmail ")
 		def patients = session.sendPatients;
+		if(log.isDebugEnabled()){
+			log.debug("patients : "+patients)
+		}
 		String to="";
 		String subject="";
 		String body="";
@@ -47,6 +53,13 @@ class SendEmailController extends MainController {
 					if(patient.name){
 						body = body.replaceAll("#name",patient.name);
 					}
+					if(log.isDebugEnabled()){
+						log.debug("to : "+to)
+						log.debug("subject : "+subject)
+						log.debug("body : "+body)
+						log.debug("from : "+from)
+					}
+					log.info("call Service sendMails")
 					DMZMailService.sendMails(to,from,subject,body);
 			}
 			flash.message = message(code: 'user.sendEmail.successful')
@@ -62,14 +75,18 @@ class SendEmailController extends MainController {
 	}
 	
 	def selectAll(){
-	
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SendEmailController Method selectAll with params : "+params)
+		}
 		redirect(action: "show", params: [isSend: true])
 	}
 	
 	def showPreviewEmail(){   
-       
+        if(log.isTraceEnabled()){
+			log.trace(">> In class SendEmailController Method showPreviewEmail with params : "+params)
+		}
 	
-	  def patientIdToString = params.findAll({ key, value ->
+	    def patientIdToString = params.findAll({ key, value ->
 													key.startsWith("patient")
 													});
 													
@@ -88,7 +105,9 @@ class SendEmailController extends MainController {
 					sendPatients.add(patient);
 				}
 			});
-			
+		if(log.isDebugEnabled()){
+			log.debug("sendPatients : "+sendPatients)
+		}	
 		session.sendPatients = sendPatients;
 		
 		if(session.sendPatients){
@@ -99,6 +118,7 @@ class SendEmailController extends MainController {
 	}
 	
 	def cancel(){
+		log.info("In class SendEmailController Method cancel")
 		redirect(action: "show")
 	}
 	
@@ -112,13 +132,18 @@ class SendEmailController extends MainController {
 	
 	
 	def showSentEmail(){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SendEmailController Method isTraceEnabled with params : "+params)
+		}
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		def emailList = local.Emails.list(params);
 		[emailList: emailList,emailTotal: local.Emails.count()]
 	}
 	
 	def showEmailDetails(){
-		
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SendEmailController Method showEmailDetails with params : "+params)
+		}
 		def email = local.Emails.get(params.id);
 		[emailInstance: email];
 	}
