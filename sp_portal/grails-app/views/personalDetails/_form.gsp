@@ -84,7 +84,7 @@
         <g:message code="standardizedPatient.postalCode.label" default="Postal Code" />
 
     </label>
-    <g:field type="number" name="postalCode" value="${fieldValue(bean: standardizedPatientInstance, field: 'postalCode')}"/>
+    <g:field type="number" name="postalCode" value="${standardizedPatientInstance.postalCode}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'preName', 'error')} ">
