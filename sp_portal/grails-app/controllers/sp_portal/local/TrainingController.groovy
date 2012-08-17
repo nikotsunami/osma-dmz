@@ -34,10 +34,30 @@ class TrainingController extends sp_portal.MainController {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class TrainingController Method save() with params : "+params)
 		}
-		//log("params : "+params)
+		println("params : "+params)
+
         def trainingInstance = new Training(params)
-		setStartAndEndTime(trainingInstance)
 		
+		
+		def isStartTimeRight = timeStartVerification(params)
+		def isEndTimeRight = timeEndVerification(params)
+		if(isStartTimeRight){
+			setStartTime(trainingInstance)
+		}
+		if(isEndTimeRight){
+			setEndTime(trainingInstance)
+		}
+		if(isStartTimeRight == false){
+			flash.message = message(code: 'traning.start.error', args: [message(code: 'training.label', default: 'Training'), params.id])
+			render(view: "create", model: [trainingInstance: trainingInstance])
+            return
+		}		
+		
+		if(isEndTimeRight == false){
+			flash.message = message(code: 'traning.end.error', args: [message(code: 'training.label', default: 'Training'), params.id])
+			render(view: "create", model: [trainingInstance: trainingInstance])
+            return
+		}
 		
         if (!trainingInstance.save(flush: true)) {
             render(view: "create", model: [trainingInstance: trainingInstance])
@@ -93,7 +113,6 @@ class TrainingController extends sp_portal.MainController {
 			log.trace(">> In class TrainingController Method update() with params : "+params)
 		}
 
-		//log("params : "+params)
 		
         def trainingInstance = Training.get(params.id)
 		
@@ -112,7 +131,25 @@ class TrainingController extends sp_portal.MainController {
 			return
 		}
 			
-		setStartAndEndTime(trainingInstance)
+		def isStartTimeRight = timeStartVerification(params)
+		def isEndTimeRight = timeEndVerification(params)
+		if(isStartTimeRight){
+			setStartTime(trainingInstance)
+		}
+		if(isEndTimeRight){
+			setEndTime(trainingInstance)
+		}
+		if(isStartTimeRight == false){
+			flash.message = message(code: 'traning.start.error', args: [message(code: 'training.label', default: 'Training'), params.id])
+			render(view: "edit", model: [trainingInstance: trainingInstance])
+            return
+		}		
+		
+		if(isEndTimeRight == false){
+			flash.message = message(code: 'traning.end.error', args: [message(code: 'training.label', default: 'Training'), params.id])
+			render(view: "edit", model: [trainingInstance: trainingInstance])
+            return
+		}
 		
 
         if (params.version) {
@@ -183,9 +220,9 @@ class TrainingController extends sp_portal.MainController {
 	}
 	
 	/**
-	 * set timeStart and timeEnd of the training
+	 * set timeStart of the training
 	 **/
-	def setStartAndEndTime(trainingInstance){
+	def setStartTime(trainingInstance){
 		if(log.isDebugEnabled()){
 			StringBuffer sb = new StringBuffer();
 			sb.append( "\n trainingInstance.trainingDate: ");
@@ -196,15 +233,11 @@ class TrainingController extends sp_portal.MainController {
 			sb.append(trainingInstance?.timeStart);
 			sb.append( "\n trainingInstance.timeEnd: ");
 			sb.append(trainingInstance?.timeEnd);
-			log.debug( ">>In class TrainingController Method setStartAndEndTime(trainingInstance)->start this trainingInstance: " + sb.toString());
+			log.debug( ">>In class TrainingController Method setStartTime(trainingInstance)->start this trainingInstance: " + sb.toString());
 		} 
 		Date trainingDate = trainingInstance.trainingDate
-		String endHourPrame = params.timeEndHour
-		String endMinPrame = params.timeEndMin
 		String startHourPrame = params.timeStartHour
 		String startMinPrame = params.timeStartMin
-		
-		
 		if(trainingDate !=null && startHourPrame != null && !startHourPrame.equals("") && startMinPrame != null && !startMinPrame.equals("")){
 			
 			Long startHour = Long.valueOf(startHourPrame)
@@ -217,13 +250,45 @@ class TrainingController extends sp_portal.MainController {
 			trainingInstance.timeStart = null
 			
 		}
-
+		if(log.isDebugEnabled()){
+			StringBuffer sb = new StringBuffer();
+			sb.append( "\n trainingInstance.trainingDate: ");
+			sb.append(trainingInstance?.trainingDate);
+			sb.append( "\n trainingInstance.name: ");
+			sb.append(trainingInstance?.name);
+			sb.append( "\n trainingInstance.timeStart: ");
+			sb.append(trainingInstance?.timeStart);
+			sb.append( "\n trainingInstance.timeEnd: ");
+			sb.append(trainingInstance?.timeEnd);
+			log.debug( ">>In class TrainingController Method setStartTime(trainingInstance)->end this trainingInstance: " + sb.toString());
+		} 
+	}
+	
+	/**
+	 * set timeEnd of the training
+	 **/
+	def setEndTime(trainingInstance){
+		if(log.isDebugEnabled()){
+			StringBuffer sb = new StringBuffer();
+			sb.append( "\n trainingInstance.trainingDate: ");
+			sb.append(trainingInstance?.trainingDate);
+			sb.append( "\n trainingInstance.name: ");
+			sb.append(trainingInstance?.name);
+			sb.append( "\n trainingInstance.timeStart: ");
+			sb.append(trainingInstance?.timeStart);
+			sb.append( "\n trainingInstance.timeEnd: ");
+			sb.append(trainingInstance?.timeEnd);
+			log.debug( ">>In class TrainingController Method setEndTime(trainingInstance)->start this trainingInstance: " + sb.toString());
+		} 
+		Date trainingDate = trainingInstance.trainingDate
+		String endHourPrame = params.timeEndHour
+		String endMinPrame = params.timeEndMin
 		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
 			Long endHour = Long.valueOf(endHourPrame)
 			Long endMin = Long.valueOf(endMinPrame)
 			Long timeEnd = getTrainingDateWithNoHours(trainingDate)+endMin*60*1000+endHour*60*60*1000
 			if(log.isTraceEnabled()){
-				log.trace(">> In class TrainingController Method setStartAndEndTime() timeEnd : "+timeEnd)
+				log.trace(">> In class TrainingController Method setEndTime() timeEnd : "+timeEnd)
 			}
 			trainingInstance.timeEnd = new Date(timeEnd)	
 		}else{
@@ -239,9 +304,10 @@ class TrainingController extends sp_portal.MainController {
 			sb.append(trainingInstance?.timeStart);
 			sb.append( "\n trainingInstance.timeEnd: ");
 			sb.append(trainingInstance?.timeEnd);
-			log.debug( ">>In class TrainingController Method setStartAndEndTime(trainingInstance)->end this trainingInstance: " + sb.toString());
+			log.debug( ">>In class TrainingController Method setEndTime(trainingInstance)->end this trainingInstance: " + sb.toString());
 		} 
 	}
+
 	
 	/**
 	 * get 0:00 a.m of trainingDate
@@ -289,4 +355,95 @@ class TrainingController extends sp_portal.MainController {
 		}
 		return standardizedPatients;
 	}
+	
+	/**
+	 *start time and end time verification
+	 **/
+	def timeStartVerification(params){
+		boolean isTimeStartRight = true
+		def startHourStr = params.timeStartHour
+		def startMinStr = params.timeStartMin
+		//time start verification
+		if(startHourStr&&!startHourStr.equals("")){
+			if(startHourStr.startsWith("0")&&!startHourStr.equals("0")){
+				startHourStr = startHourStr.substring(1)
+			}
+			try{
+				def startHour = Long.valueOf(startHourStr)
+				if(startHour<0 || startHour>23){
+				isTimeStartRight = false
+			}
+			}catch (Exception e) {
+				isTimeStartRight = false
+				println(">>>>>>>>isTimeStartRight = "+isTimeStartRight)
+				e.printStackTrace();
+			}
+			
+			
+		}
+		if(startMinStr&&!startMinStr.equals("")){			
+			if(startMinStr.startsWith("0")&&!startMinStr.equals("0")){
+				startMinStr = startMinStr.substring(1)
+			}
+			try{
+				def startMin = Long.valueOf(startMinStr)
+				if(startMin<0 || startMin>59){
+				isTimeStartRight = false
+			}
+			}catch (Exception e) {
+				isTimeStartRight = false
+				println(">>>>>>>>isTimeStartRight = "+isTimeStartRight)
+				e.printStackTrace();
+			}
+			
+			
+		}
+		return isTimeStartRight;
+	}
+	
+	/**
+	 *end time and end time verification
+	 **/
+	def timeEndVerification(params){
+		boolean isTimeEndRight = true
+		def endHourStr = params.timeEndHour
+		def endMinStr = params.timeEndMin
+		//time end verification
+		if(endHourStr && !endHourStr.equals("")){
+			if(endHourStr.startsWith("0") && !endHourStr.equals("0")){
+				endHourStr = endHourStr.substring(1)
+			}
+			try{
+				def endHour = Long.valueOf(endHourStr)
+				if(endHour<0 || endHour>23){
+				isTimeEndRight = false
+			}
+			}catch (Exception e) {
+				isTimeEndRight = false
+				println(">>>>>>>>isTimeEndRight = "+isTimeEndRight)
+				e.printStackTrace();
+			}
+			
+			
+		}
+		if(endMinStr && !endMinStr.equals("")){			
+			if(endMinStr.startsWith("0") && !endMinStr.equals("0")){
+				endMinStr = endMinStr.substring(1)
+			}
+			try{
+				def endMin = Long.valueOf(endMinStr)
+				if(endMin<0 || endMin>59){
+				isTimeEndRight = false
+			}
+			}catch (Exception e) {
+				isTimeEndRight = false
+				println(">>>>>>>>isTimeEndRight = "+isTimeEndRight)
+				e.printStackTrace();
+			}
+			
+			
+		}
+		return isTimeEndRight;
+	}
+	
 }
