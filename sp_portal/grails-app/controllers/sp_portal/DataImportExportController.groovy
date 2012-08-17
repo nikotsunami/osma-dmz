@@ -77,7 +77,7 @@ class DataImportExportController extends MainController {
 			log.trace(">> In class DataImportExportController Method createUser entered standardizedPatient : "+standardizedPatient + "  jsonData : "+jsonData)
 		}
         def x =new User();
-        x.userName= jsonData.name;
+        x.userName= jsonData.email;
         x.passwordHash=encodePassword(""+jsonData.socialInsuranceNo,x.userName);
         x.userEmail=jsonData.email;
         x.standardizedPatient=standardizedPatient;
