@@ -42,22 +42,22 @@ public class CreateTrainingPage extends BasePage {
 
     }
 
-    def setStartHour(int timeStartHour){
-         selectDropDown("timeStartHour", timeStartHour)
+    def setStartHour(def timeStartHour){
+         fillOutField("timeStartHour", timeStartHour)
     }
 
 
-    def setStartMinute(int timeStartMinute){
-         selectDropDown("timeStartMin", timeStartMinute)
+    def setStartMinute(def timeStartMinute){
+         fillOutField("timeStartMin", timeStartMinute)
     }
 
-    def setEndHour(int timeEndHour){
-         selectDropDown("timeEndHour", timeEndHour)
+    def setEndHour(def timeEndHour){
+         fillOutField("timeEndHour", timeEndHour)
     }
 
 
-    def setEndMinute(int timeEndMinute){
-         selectDropDown("timeEndMin", timeEndMinute)
+    def setEndMinute(def timeEndMinute){
+         fillOutField("timeEndMin", timeEndMinute)
     }
 
 

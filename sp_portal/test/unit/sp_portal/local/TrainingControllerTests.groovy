@@ -48,10 +48,10 @@ class TrainingControllerTests {
 
 	    params["name"] = 'checkout'
 		params["trainingDate"] = futureCal.getTime();
-		params["timeStartHour"] = 8
-		params["timeStartMin"] = 30
-		params["timeEndHour"] = 10
-		params["timeEndMin"] = 30
+		params["timeStartHour"] = '8'
+		params["timeStartMin"] = '30'
+		params["timeEndHour"] = '10'
+		params["timeEndMin"] = '30'
     }
 
 	def setTrainingParams(training){
@@ -116,30 +116,30 @@ class TrainingControllerTests {
 	void testSaveInvalid() {
 		params["name"] = ''
 		params["trainingDate"] = new Date(new Date().getTime()+48*60*60*1000)
-		params["timeStartHour"] = 8
-		params["timeStartMin"] = 30
-		params["timeEndHour"] = 10
-		params["timeEndMin"] = 30
+		params["timeStartHour"] = '8'
+		params["timeStartMin"] = '30'
+		params["timeEndHour"] = '10'
+		params["timeEndMin"] = '30'
 		
 		controller.save()
 		assert Training.count() == 1
 		
 		params["name"] = 'traning'
 		params["trainingDate"] = new Date(new Date().getTime()+48*60*60*1000)
-		params["timeStartHour"] = 8
-		params["timeStartMin"] = 30
-		params["timeEndHour"] = 7
-		params["timeEndMin"] = 30
+		params["timeStartHour"] = '8'
+		params["timeStartMin"] = '30'
+		params["timeEndHour"] = '7'
+		params["timeEndMin"] = '30'
 		
 		controller.save()
 		assert Training.count() == 1
 		
 		params["name"] = 'traning'
 		params["trainingDate"] = null
-		params["timeStartHour"] = 8
-		params["timeStartMin"] = 30
-		params["timeEndHour"] = 10
-		params["timeEndMin"] = 30
+		params["timeStartHour"] = '8'
+		params["timeStartMin"] = '30'
+		params["timeEndHour"] = '10'
+		params["timeEndMin"] = '30'
 		
 		controller.save()
 		assert Training.count() == 1

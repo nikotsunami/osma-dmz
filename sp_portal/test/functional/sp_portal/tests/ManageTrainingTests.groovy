@@ -19,7 +19,7 @@ class ManageTrainingTests {
 
 
         // (name, dateYear,dateMonth,dateDay,timeStartHour,timeStartMinute,timeEndHour,timeEndMinute )
-        newTrainingPage.createTraining( "training1", 2012, 5, 6, 9, 15, 14, 30)
+        newTrainingPage.createTraining( "training1", 2012, 5, 6, "9", "15", "14", "30")
 
         newTrainingPage.assertTextPresent("training1")
         newTrainingPage.assertTextPresent("2012-05-06")
@@ -42,10 +42,10 @@ class ManageTrainingTests {
 
         newTrainingPage.selectDate(2012, 5, 6)
 
-        newTrainingPage.setStartHour(9)
+        newTrainingPage.setStartHour("9")
 
-        newTrainingPage.setEndHour(15)
-        newTrainingPage.setEndMinute(45)
+        newTrainingPage.setEndHour("15")
+        newTrainingPage.setEndMinute("45")
 
 
         newTrainingPage.clickButton("Create");
@@ -67,9 +67,9 @@ Some strangeness
 
         newTrainingPage.selectDate(2012, 5, 6)
 
-        newTrainingPage.setStartHour(9)
-        newTrainingPage.setEndMinute(30)
-        newTrainingPage.setEndHour(15)
+        newTrainingPage.setStartHour("9")
+        newTrainingPage.setEndMinute("30")
+        newTrainingPage.setEndHour("15")
 
 
 
