@@ -18,6 +18,7 @@
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit action="selectAll" value="${message(code: 'user.button.selectAll')}" />
+					<g:actionSubmit action="clearAll" value="${message(code: 'user.button.clearAll')}" />
                     <g:submitButton name="showPreviewEmail" value="${message(code: 'user.button.sendEmail')}" />
 					<g:link controller="sendEmail" action="showSentEmail" ><g:message code="user.button.SentEmail"/></g:link>
 				</fieldset>

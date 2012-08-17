@@ -81,6 +81,13 @@ class SendEmailController extends MainController {
 		redirect(action: "show", params: [isSend: true])
 	}
 	
+	def clearAll(){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class SendEmailController Method clearAll with params : "+params)
+		}
+		redirect(action: "show", params: [isSend: false])
+	}
+	
 	def showPreviewEmail(){   
         if(log.isTraceEnabled()){
 			log.trace(">> In class SendEmailController Method showPreviewEmail with params : "+params)
