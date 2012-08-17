@@ -529,7 +529,7 @@ class UserController extends MainController {
 
               log("1 " + user);
 
-              user.userName = newPatient.email;
+              user.userName = newPatient.name;
               user.userEmail = newPatient.email;
               user.passwordHash = hashPassword(""+newPatient.socialInsuranceNo,user.userName);
               user.isActive = true;
