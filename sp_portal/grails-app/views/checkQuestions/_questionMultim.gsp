@@ -1,7 +1,7 @@
 
 
 <div class="fieldcontain ${hasErrors(bean: question, field: 'value', 'error')} ">
-<h1><%= question.text %></h1>
+<h3><%= question.text %></h3>
 <g:each var="value" status="i" in="${question.value.split('\\|')}">
 
  <g:each var="check" status="j" in="${checkValue}">

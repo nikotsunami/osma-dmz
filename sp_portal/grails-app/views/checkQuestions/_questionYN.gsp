@@ -1,7 +1,7 @@
 <%@ page import="sp_portal.User" %>
 
 <div class="fieldcontain ${hasErrors(bean: question, field: 'value', 'error')} ">
-    <h1><%= question.text %></h1>
+    <h3><%= question.text %></h3>
      <g:each var="check" status="i" in="${checkValue}">
 				<g:if test="${check.anamnesisCheck == question}">
 				<g:set var="validValue" value="${check.truth==true ? true: false}" />
