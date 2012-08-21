@@ -67,14 +67,7 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.immagePath}">
-                <li class="fieldcontain">
-                    <span id="immagePath-label" class="property-label"><g:message code="standardizedPatient.immagePath.label" default="Immage Path" /></span>
-
-                        <span class="property-value" aria-labelledby="immagePath-label"><g:fieldValue bean="${standardizedPatientInstance}" field="immagePath"/></span>
-
-                </li>
-                </g:if>
+             
 
                 <g:if test="${standardizedPatientInstance?.maritalStatus != null}">			  
 				<g:each var="mStatus" status="i" in="${MaritalStatus?.values()}">
@@ -163,14 +156,7 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.videoPath}">
-                <li class="fieldcontain">
-                    <span id="videoPath-label" class="property-label"><g:message code="standardizedPatient.videoPath.label" default="Video Path" /></span>
-
-                        <span class="property-value" aria-labelledby="videoPath-label"><g:fieldValue bean="${standardizedPatientInstance}" field="videoPath"/></span>
-
-                </li>
-                </g:if>
+            
 
                 <g:if test="${standardizedPatientInstance?.weight}">
                 <li class="fieldcontain">
