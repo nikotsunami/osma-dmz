@@ -405,8 +405,10 @@ class CheckQuestionsController  extends MainController {
         if(checkInstance.type == AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
 			if(log.isTraceEnabled()){
 				log.trace("checkInstance type is QUESTION_OPEN ")
+				log.trace("submittedValues : "+submittedValues)
 			}
-            if(submittedValues!=null){
+			println("###############submittedValues = "+submittedValues)
+            if(submittedValues!=null){				
                 valueStr = submittedValues;
             }
         }
