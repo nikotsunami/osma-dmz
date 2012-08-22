@@ -41,7 +41,7 @@ class DMZMailService {
 		Map mail =[to: eTo,from: eFrom,subject: eSubject,body: eBody]
 		
 	
-			if (GrailsUtil.getEnvironment() == "production"){
+			if (GrailsUtil.getEnvironment() != "production"){
 				mailService.sendMail {     
 					  to mail.to
 					  from mail.from

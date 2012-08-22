@@ -287,12 +287,12 @@ class SelectAvailableDatesController extends MainController{
 		}	
 			
 			
-			String to = grailsApplication.config.grails.mail.username;
+			String to = grailsApplication.config.grails.mail.to;
 
 			String subject= grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject;
 			String body = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
 		
-			String from = patient.email;
+			String from = grailsApplication.config.grails.mail.from;
 					
 			if(patient.preName){
 				body = body.replaceAll("#preName",patient.preName);

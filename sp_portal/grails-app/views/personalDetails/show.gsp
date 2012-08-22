@@ -17,7 +17,24 @@
             <div class="message" role="status">${flash.message}</div>
             </g:if>
             <ol class="property-list standardizedPatient">
+                <g:if test="${standardizedPatientInstance?.preName}">
+                <li class="fieldcontain">
+                    <span id="preName-label" class="property-label"><g:message code="standardizedPatient.preName.label" default="Pre Name" /></span>
 
+                        <span class="property-value" aria-labelledby="preName-label"><g:fieldValue bean="${standardizedPatientInstance}" field="preName"/></span>
+
+                </li>
+                </g:if>
+			
+		        <g:if test="${standardizedPatientInstance?.name}">
+                <li class="fieldcontain">
+                    <span id="name-label" class="property-label"><g:message code="standardizedPatient.name.label" default="Name" /></span>
+
+                        <span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${standardizedPatientInstance}" field="name"/></span>
+
+                </li>
+                </g:if>
+		
                 <g:if test="${standardizedPatientInstance?.birthday}">
                 <li class="fieldcontain">
                     <span id="birthday-label" class="property-label"><g:message code="standardizedPatient.birthday.label" default="Birthday" /></span>
@@ -30,25 +47,7 @@
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.city}">
-                <li class="fieldcontain">
-                    <span id="city-label" class="property-label"><g:message code="standardizedPatient.city.label" default="City" /></span>
-
-                        <span class="property-value" aria-labelledby="city-label"><g:fieldValue bean="${standardizedPatientInstance}" field="city"/></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.email}">
-                <li class="fieldcontain">
-                    <span id="email-label" class="property-label"><g:message code="standardizedPatient.email.label" default="Email" /></span>
-
-                        <span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${standardizedPatientInstance}" field="email"/></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.gender != null}">
+				<g:if test="${standardizedPatientInstance?.gender != null}">
                 <li class="fieldcontain">
                     <span id="gender-label" class="property-label"><g:message code="standardizedPatient.gender.label" default="Gender" /></span>
 
@@ -57,8 +56,8 @@
 
                 </li>
                 </g:if>
-
-                <g:if test="${standardizedPatientInstance?.height}">
+				
+				<g:if test="${standardizedPatientInstance?.height}">
                 <li class="fieldcontain">
                     <span id="height-label" class="property-label"><g:message code="standardizedPatient.height.label" default="Height" /></span>
 
@@ -66,77 +65,18 @@
 
                 </li>
                 </g:if>
-
-             
-
-                <g:if test="${standardizedPatientInstance?.maritalStatus != null}">			  
-				<g:each var="mStatus" status="i" in="${MaritalStatus?.values()}">
-					<g:if test="${mStatus.getValue() == standardizedPatientInstance?.maritalStatus}">
-						<g:set var="value" value="${mStatus.name()}" />
-					</g:if>
-				 </g:each>
-				<li class="fieldcontain">
-                    <span id="maritalStatus-label" class="property-label"><g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" /></span>
-					
-				    <span class="property-value" aria-labelledby="maritalStatus-label">${value}
-					<!--<g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/>--></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.mobile}">
+				
+				
+                <g:if test="${standardizedPatientInstance?.weight}">
                 <li class="fieldcontain">
-                    <span id="mobile-label" class="property-label"><g:message code="standardizedPatient.mobile.label" default="Mobile" /></span>
+                    <span id="weight-label" class="property-label"><g:message code="standardizedPatient.weight.label" default="Weight" /></span>
 
-                        <span class="property-value" aria-labelledby="mobile-label"><g:fieldValue bean="${standardizedPatientInstance}" field="mobile"/></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.name}">
-                <li class="fieldcontain">
-                    <span id="name-label" class="property-label"><g:message code="standardizedPatient.name.label" default="Name" /></span>
-
-                        <span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${standardizedPatientInstance}" field="name"/></span>
+                        <span class="property-value" aria-labelledby="weight-label"><g:fieldValue bean="${standardizedPatientInstance}" field="weight"/></span>
 
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.postalCode}">
-                <li class="fieldcontain">
-                    <span id="postalCode-label" class="property-label"><g:message code="standardizedPatient.postalCode.label" default="Postal Code" /></span>
 
-                        <span class="property-value" aria-labelledby="postalCode-label"><g:formatNumber number="${standardizedPatientInstance.postalCode}"/></span></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.preName}">
-                <li class="fieldcontain">
-                    <span id="preName-label" class="property-label"><g:message code="standardizedPatient.preName.label" default="Pre Name" /></span>
-
-                        <span class="property-value" aria-labelledby="preName-label"><g:fieldValue bean="${standardizedPatientInstance}" field="preName"/></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.socialInsuranceNo}">
-                <li class="fieldcontain">
-                    <span id="socialInsuranceNo-label" class="property-label"><g:message code="standardizedPatient.socialInsuranceNo.label" default="Social Insurance No" /></span>
-
-                        <span class="property-value" aria-labelledby="socialInsuranceNo-label"><g:fieldValue bean="${standardizedPatientInstance}" field="socialInsuranceNo"/></span>
-
-                </li>
-                </g:if>
-
-                <g:if test="${standardizedPatientInstance?.street}">
-                <li class="fieldcontain">
-                    <span id="street-label" class="property-label"><g:message code="standardizedPatient.street.label" default="Street" /></span>
-
-                        <span class="property-value" aria-labelledby="street-label"><g:fieldValue bean="${standardizedPatientInstance}" field="street"/></span>
-
-                </li>
-                </g:if>
 
                 <g:if test="${standardizedPatientInstance?.telephone}">
                 <li class="fieldcontain">
@@ -155,19 +95,82 @@
 
                 </li>
                 </g:if>
-
-            
-
-                <g:if test="${standardizedPatientInstance?.weight}">
+				
+				<g:if test="${standardizedPatientInstance?.mobile}">
                 <li class="fieldcontain">
-                    <span id="weight-label" class="property-label"><g:message code="standardizedPatient.weight.label" default="Weight" /></span>
+                    <span id="mobile-label" class="property-label"><g:message code="standardizedPatient.mobile.label" default="Mobile" /></span>
 
-                        <span class="property-value" aria-labelledby="weight-label"><g:fieldValue bean="${standardizedPatientInstance}" field="weight"/></span>
+                        <span class="property-value" aria-labelledby="mobile-label"><g:fieldValue bean="${standardizedPatientInstance}" field="mobile"/></span>
+
+                </li>
+                </g:if>
+               
+                <g:if test="${standardizedPatientInstance?.email}">
+                <li class="fieldcontain">
+                    <span id="email-label" class="property-label"><g:message code="standardizedPatient.email.label" default="Email" /></span>
+
+                        <span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${standardizedPatientInstance}" field="email"/></span>
+
+                </li>
+                </g:if>
+				
+				<g:if test="${standardizedPatientInstance?.nationality}">
+                <li class="fieldcontain">
+                    <span id="nationality-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Nationality" /></span>
+
+                        <span class="property-value" aria-labelledby="nationality-label">
+                        <g:fieldValue bean="${standardizedPatientInstance}" field="nationality"/></span>
 
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.workPermission != null}">
+                <g:if test="${standardizedPatientInstance?.city}">
+                <li class="fieldcontain">
+                    <span id="city-label" class="property-label"><g:message code="standardizedPatient.city.label" default="City" /></span>
+
+                        <span class="property-value" aria-labelledby="city-label"><g:fieldValue bean="${standardizedPatientInstance}" field="city"/></span>
+
+                </li>
+                </g:if>
+
+
+                <g:if test="${standardizedPatientInstance?.street}">
+                <li class="fieldcontain">
+                    <span id="street-label" class="property-label"><g:message code="standardizedPatient.street.label" default="Street" /></span>
+
+                        <span class="property-value" aria-labelledby="street-label"><g:fieldValue bean="${standardizedPatientInstance}" field="street"/></span>
+
+                </li>
+                </g:if>
+				
+				<g:if test="${standardizedPatientInstance?.postalCode}">
+                <li class="fieldcontain">
+                    <span id="postalCode-label" class="property-label"><g:message code="standardizedPatient.postalCode.label" default="Postal Code" /></span>
+
+                        <span class="property-value" aria-labelledby="postalCode-label"><g:formatNumber number="${standardizedPatientInstance.postalCode}"/></span></span>
+
+                </li>
+                </g:if>
+
+
+
+                <g:if test="${standardizedPatientInstance?.maritalStatus != null}">			  
+				<g:each var="mStatus" status="i" in="${MaritalStatus?.values()}">
+					<g:if test="${mStatus.getValue() == standardizedPatientInstance?.maritalStatus}">
+						<g:set var="value" value="${mStatus.name()}" />
+					</g:if>
+				 </g:each>
+				<li class="fieldcontain">
+                    <span id="maritalStatus-label" class="property-label"><g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" /></span>
+					
+				    <span class="property-value" aria-labelledby="maritalStatus-label">${value}
+					<!--<g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/>--></span>
+
+                </li>
+                </g:if>
+
+
+                 <g:if test="${standardizedPatientInstance?.workPermission != null}">
                 <g:each var="permission" status="i" in="${WorkPermission?.values()}">
 					<g:if test="${permission.getKey() == standardizedPatientInstance?.workPermission}">
 						<g:set var="value" value="${permission.name()}" />
@@ -182,18 +185,6 @@
                 </li>
                 </g:if>
 
-
-                <g:if test="${standardizedPatientInstance?.description}">
-                <li class="fieldcontain">
-                    <span id="description-label" class="property-label"><g:message code="standardizedPatient.description.label" default="Description" /></span>
-
-                        <span class="property-value" aria-labelledby="description-label">
-                          <g:fieldValue bean="${standardizedPatientInstance}" field="description"/>
-                        </span>
-
-                </li>
-                </g:if>
-
                 <g:if test="${standardizedPatientInstance?.profession}">
                 <li class="fieldcontain">
                     <span id="profession-label" class="property-label"><g:message code="standardizedPatient.profession.label" default="Profession" /></span>
@@ -204,18 +195,28 @@
 
                 </li>
                 </g:if>
-
-                <g:if test="${standardizedPatientInstance?.nationality}">
+				
+				<g:if test="${standardizedPatientInstance?.description}">
                 <li class="fieldcontain">
-                    <span id="nationality-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Nationality" /></span>
+                    <span id="description-label" class="property-label"><g:message code="standardizedPatient.description.label" default="Description" /></span>
 
-                        <span class="property-value" aria-labelledby="nationality-label">
-                        <g:fieldValue bean="${standardizedPatientInstance}" field="nationality"/></span>
+                        <span class="property-value" aria-labelledby="description-label">
+                          <g:fieldValue bean="${standardizedPatientInstance}" field="description"/>
+                        </span>
+
+                </li>
+                </g:if>
+				
+                <g:if test="${standardizedPatientInstance?.socialInsuranceNo}">
+                <li class="fieldcontain">
+                    <span id="socialInsuranceNo-label" class="property-label"><g:message code="standardizedPatient.socialInsuranceNo.label" default="Social Insurance No" /></span>
+
+                        <span class="property-value" aria-labelledby="socialInsuranceNo-label"><g:fieldValue bean="${standardizedPatientInstance}" field="socialInsuranceNo"/></span>
 
                 </li>
                 </g:if>
 
-                <g:if test="${standardizedPatientInstance?.bankaccount}">
+				<g:if test="${standardizedPatientInstance?.bankaccount}">
                 <li class="fieldcontain">
                     <span id="bankaccount-label" class="property-label"><g:message code="standardizedPatient.bankaccount.label" default="Bankaccount" /></span>
 
@@ -224,6 +225,8 @@
 
                 </li>
                 </g:if>
+
+
 
 
 

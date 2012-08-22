@@ -135,10 +135,12 @@ grails {
    mail {
      host = "192.168.2.2"
      port = 25
-     username = "marvin@jserver"
-     password = "marvin_123"
+     to = "elaine@jserver"
+     password = "qhx123"
+	 from = "paul@jserver"
      props = ["mail.smtp.auth":"false"]
 
 } }
 
 grails.converters.json.default.deep=true
+
