@@ -56,6 +56,9 @@ class CheckQuestionsController  extends MainController {
 
     def index() {
 		log.info("index of CheckQuestions")
+		log.info("user show CheckQuestions")
+       titleIndex = 0;
+       session.titleIndex = titleIndex;
         redirect(action: "show", params: params)
     }
     
@@ -75,9 +78,45 @@ class CheckQuestionsController  extends MainController {
     
 
     def show() {
-	   log.info("user show CheckQuestions")
-       titleIndex = 0;
-       session.titleIndex = titleIndex;
+	   
+	   
+	   log.info("user showPage of CheckQuestions")
+        def patient = getCurrentPatient();
+		
+        int index =  Math.min(params.index ? params.int('index') : 0, 100);
+        def currentTitle = null;
+        if(params.index == null){
+             params.index = 0;
+        }
+
+        currentTitle = titles()[index];
+		if(log.isDebugEnabled()){
+			log.debug("get currentTitle : "+currentTitle)
+		}
+        if(currentTitle){
+
+            def questions = [];
+            def validValue = [];
+            def checkValue = [];
+            if (currentTitle != null){
+			    questions = local.AnamnesisCheck.findAllByAnamnesisCheckTitle(currentTitle,[sort:"sortOrder"]);
+                checkValue = local.AnamnesisChecksValue.findAllByAnamnesisForm(patient.standardizedPatient.anamnesisForm);
+				if(log.isDebugEnabled()){
+					log.debug("find questions : "+questions)
+					log.debug("find checkValue : "+checkValue)
+				}
+            }
+            if(checkValue!=null){
+
+                [title: currentTitle , questions: questions,titleSize: titles().size(),checkValue: checkValue]
+
+            }
+
+
+        }else{
+            render message(code: 'checkquestion.noneavailable');
+        }
+		
 
 
     }
@@ -145,7 +184,7 @@ class CheckQuestionsController  extends MainController {
         }else{
             setSessionTitleIndex();
             saveData();
-            redirect(action: "showPage", params: [index: titleIndex])
+            redirect(action: "show", params: [index: titleIndex])
         }
 
     }
@@ -161,7 +200,7 @@ class CheckQuestionsController  extends MainController {
 		}
         setSessionTitleIndex();
         saveData();
-        redirect(action: "showPage", params: [index: titleIndex])
+        redirect(action: "show", params: [index: titleIndex])
     }
 
     def showFirst(){
@@ -169,7 +208,7 @@ class CheckQuestionsController  extends MainController {
         titleIndex = 0;
         setSessionTitleIndex();
         saveData();
-        redirect(action: "showPage", params: [index: titleIndex])
+        redirect(action: "show", params: [index: titleIndex])
     }
 
     def showEnd(){
@@ -180,7 +219,7 @@ class CheckQuestionsController  extends MainController {
 		}
         setSessionTitleIndex();
         saveData();
-        redirect(action: "showPage", params: [index: titleIndex])
+        redirect(action: "show", params: [index: titleIndex])
     }
 
 
@@ -194,7 +233,7 @@ class CheckQuestionsController  extends MainController {
 			redirect(controller:"thank", action:"thank")
 		}else{
 			saveData();
-			redirect(action: "showPage",params: [index: titleIndex])
+			redirect(action: "show",params: [index: titleIndex])
 		}
     }
 
@@ -330,7 +369,10 @@ class CheckQuestionsController  extends MainController {
 			log.trace(">> In class CheckQuestionsController Method setValueStr entered checkInstance : "+checkInstance+"  "+"questionId : "+questionId+"  "+"value : "+value)
 		}
         boolean isTrue = false;
-        String [] possibleValues = checkInstance.value.split("\\|");
+		String [] possibleValues = []
+		if(checkInstance.value){
+			possibleValues = checkInstance.value.split("\\|");
+		}
 
         def submittedValues = value;
 		
@@ -405,10 +447,8 @@ class CheckQuestionsController  extends MainController {
         if(checkInstance.type == AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
 			if(log.isTraceEnabled()){
 				log.trace("checkInstance type is QUESTION_OPEN ")
-				log.trace("submittedValues : "+submittedValues)
 			}
-			println("###############submittedValues = "+submittedValues)
-            if(submittedValues!=null){				
+            if(submittedValues!=null){
                 valueStr = submittedValues;
             }
         }

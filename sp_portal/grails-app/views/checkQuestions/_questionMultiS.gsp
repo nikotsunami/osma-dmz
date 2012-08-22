@@ -1,6 +1,6 @@
 <div class="fieldcontain ${hasErrors(bean: question, field: 'value', 'error')} ">
 <h3><%= question.text %></h3>
-
+<g:if test="${question.value != null && question.value != ""}">
 <g:each var="value" status="i" in="${question.value.split('\\|')}">
 
 	  <g:each var="check" status="j" in="${checkValue}">
@@ -17,4 +17,5 @@
 	   </g:each>
    <g:radio name="question.${question.id}" value="${value}" checked="${validValue}"/>&nbsp;&nbsp;<%= value %>&nbsp;&nbsp;
 </g:each>
+</g:if>
 </div>
