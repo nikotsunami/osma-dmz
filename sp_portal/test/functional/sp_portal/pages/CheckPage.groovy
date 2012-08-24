@@ -18,10 +18,46 @@ public class CheckPage extends BasePage {
         super(driver);
 
     }
+	/*
 	def find(){
 		findIframe();
 		//assertTextPresent("Konsumverhalten");
 		return new ShowQuestionPage(driver)
+	}
+	*/
+	
+	
+	def clickSave(){
+		
+		clickButton("Save");
+	}
+	
+	def clickNextBtn(){
+		clickButton(">");
+	}
+	def clickPrevious(){
+		
+		clickButton("<");
+	}
+	
+	def clickLast(){
+		
+		clickButton(">>|");
+	}
+	def clickFirst(){
+		
+		clickButton("|<<");
+	}
+	
+	
+	
+	def clickRadio(id,str){
+		
+		clickRadioQuestion(id,str);
+	}
+	def clickCheckBox(id,str){
+		
+		clickCheckBoxQuestion(id,str);
 	}
 
 

@@ -96,12 +96,12 @@ class CheckQuestionTests {
 
         CheckPage showpage=userHomePage.clickQuestions();
 
-        ShowQuestionPage showQuestionPage=showpage.find();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
-        showQuestionPage.clickRadio("question.1","true");
-        showQuestionPage.clickNextBtn();
-        showQuestionPage.clickNextBtn();
-        showQuestionPage.assertTextPresent("Thank you for your participation");
+        //ShowQuestionPage showQuestionPage=showpage.find();
+        showpage.assertTextPresent("Konsumverhalten");
+        showpage.clickRadio("question.1","true");
+        showpage.clickNextBtn();
+        showpage.clickNextBtn();
+        showpage.assertTextPresent("Thank you for your participation");
 
 
 
@@ -118,15 +118,15 @@ class CheckQuestionTests {
 
         CheckPage showpage=userHomePage.clickQuestions();
 
-        ShowQuestionPage showQuestionPage=showpage.find();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
+       // ShowQuestionPage showQuestionPage=showpage.find();
+        showpage.assertTextPresent("Konsumverhalten");
 
-        showQuestionPage.clickNextBtn();
-        showQuestionPage.clickCheckBox("question.4","oft");
-        showQuestionPage.clickCheckBox("question.4","selten");
-        showQuestionPage.clickRadio("question.3","oft");
-        showQuestionPage.clickSave();
-        showQuestionPage.assertTextPresent("Thank you for your participation");
+        showpage.clickNextBtn();
+        showpage.clickCheckBox("question.4","oft");
+        showpage.clickCheckBox("question.4","selten");
+        showpage.clickRadio("question.3","oft");
+        showpage.clickSave();
+        showpage.assertTextPresent("Thank you for your participation");
 
 
 
@@ -143,13 +143,13 @@ class CheckQuestionTests {
 
         CheckPage showpage=userHomePage.clickQuestions();
 
-        ShowQuestionPage showQuestionPage=showpage.find();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
+        //ShowQuestionPage showQuestionPage=showpage.find();
+        showpage.assertTextPresent("Konsumverhalten");
 
-        showQuestionPage.clickNextBtn();
-        showQuestionPage.assertTextPresent("Krankengeschichte");
-        showQuestionPage.clickPrevious();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
+        showpage.clickNextBtn();
+        showpage.assertTextPresent("Krankengeschichte");
+        showpage.clickPrevious();
+        showpage.assertTextPresent("Konsumverhalten");
 
 
 
@@ -166,13 +166,13 @@ class CheckQuestionTests {
 
         CheckPage showpage=userHomePage.clickQuestions();
 
-        ShowQuestionPage showQuestionPage=showpage.find();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
+        //ShowQuestionPage showQuestionPage=showpage.find();
+        showpage.assertTextPresent("Konsumverhalten");
 
-        showQuestionPage.clickLast();
-        showQuestionPage.assertTextPresent("Krankengeschichte");
-        showQuestionPage.clickFirst();
-        showQuestionPage.assertTextPresent("Konsumverhalten");
+        showpage.clickLast();
+        showpage.assertTextPresent("Krankengeschichte");
+        showpage.clickFirst();
+        showpage.assertTextPresent("Konsumverhalten");
 
 
 

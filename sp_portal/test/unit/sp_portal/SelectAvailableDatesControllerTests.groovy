@@ -326,8 +326,8 @@ class SelectAvailableDatesControllerTests {
 		
 
 		def currentSP = datasetup.normalUser.standardizedPatient
-		String excptedFrom = currentSP.email;
-		String excptedTo = grailsApplication.config.grails.mail.username;
+		String excptedFrom = grailsApplication.config.grails.mail.from;
+		String excptedTo = grailsApplication.config.grails.mail.to;
 		String excptedSubject = grailsApplication.config.sp_portal.mail.inviteStandardizedPatients.subject;
 		String excptedBody = grailsApplication.config.sp_portal.mail.saveTraningDate.defaultText;
 		excptedBody = excptedBody.replaceAll("#preName",currentSP.preName);
