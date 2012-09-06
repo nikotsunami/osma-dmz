@@ -61,7 +61,7 @@ class SyncSPTests {
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("beddebu@hss.ch", "123.4567.8911")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
@@ -81,7 +81,7 @@ class SyncSPTests {
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 		
-        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "123.4567.8911");
 		
 		
         MyAccountPage accountPage = userPage.clickMyAccount();
@@ -109,7 +109,7 @@ class SyncSPTests {
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 		
-        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "123.4567.8911");
 		
 		
         MyAccountPage accountPage = userPage.clickMyAccount();
@@ -124,7 +124,7 @@ class SyncSPTests {
 		
 		userPage.clickLogout()
 		
-        userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+        userPage = loginPage.loginUser("beddebu@hss.ch", "123.4567.8911");
 
 
     }	
@@ -136,7 +136,7 @@ class SyncSPTests {
 
         LoginPage loginPage = webdriver.open('/', LoginPage)
 		
-        def userPage = loginPage.loginUser("beddebu@hss.ch", "1234567891234");
+        def userPage = loginPage.loginUser("beddebu@hss.ch", "123.4567.8911");
 		
 		
         MyAccountPage accountPage = userPage.clickMyAccount();
@@ -286,7 +286,7 @@ class SyncSPTests {
                       "profession":"Florist/in",
                       "version":0
                    },
-                   "socialInsuranceNo":"1234567891234",
+                   "socialInsuranceNo":"123.4567.8911",
                    "status":null,
                    "street":"Rankenbergweg 1",
                    "telephone":null,

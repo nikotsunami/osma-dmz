@@ -73,7 +73,7 @@ class CheckQuestionTests {
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "123.4567.8911")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
@@ -91,7 +91,7 @@ class CheckQuestionTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "123.4567.8911")
 
 
         CheckPage showpage=userHomePage.clickQuestions();
@@ -113,7 +113,7 @@ class CheckQuestionTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "123.4567.8911")
 
 
         CheckPage showpage=userHomePage.clickQuestions();
@@ -138,7 +138,7 @@ class CheckQuestionTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "123.4567.8911")
 
 
         CheckPage showpage=userHomePage.clickQuestions();
@@ -161,7 +161,7 @@ class CheckQuestionTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("CheckQuestionsTest@user.ch", "123.4567.8911")
 
 
         CheckPage showpage=userHomePage.clickQuestions();
@@ -388,7 +388,7 @@ class CheckQuestionTests {
                       "profession":"Florist/in",
                       "version":0
                    },
-                   "socialInsuranceNo":"1234567891234",
+                   "socialInsuranceNo":"123.4567.8911",
                    "status":null,
                    "street":"Rankenbergweg 1",
                    "telephone":null,

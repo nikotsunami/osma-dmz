@@ -73,7 +73,7 @@ class SelectAvailableDatesTests {
         LoginPage loginPage = webdriver.open('/', LoginPage)
 
         //qqq
-        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
 
         userHomePage.clickMyAccount()
         userHomePage.clickPersonalDetails()
@@ -108,7 +108,7 @@ class SelectAvailableDatesTests {
 
 
          LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
         selectPage.chooseDays("training.1");
         selectPage.chooseDays("osce.1");
@@ -142,7 +142,7 @@ class SelectAvailableDatesTests {
 
 
          LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
         selectPage.chooseDays("training.1");
         selectPage.clickSave();
@@ -174,7 +174,7 @@ class SelectAvailableDatesTests {
 
 
          LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
         selectPage.chooseDays("osce.1");
         selectPage.clickSave();
@@ -205,7 +205,7 @@ class SelectAvailableDatesTests {
 
 
          LoginPage loginPage = webdriver.open('/', LoginPage)
-        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "1234567891234")
+        UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
         selectPage.clickSave();
         selectPage.assertTextPresent("Thank you for your participation");
@@ -374,7 +374,7 @@ class SelectAvailableDatesTests {
                       "profession":"Florist/in",
                       "version":0
                    },
-                   "socialInsuranceNo":"1234567891234",
+                   "socialInsuranceNo":"123.4567.8911",
                    "status":null,
                    "street":"Rankenbergweg 1",
                    "telephone":null,

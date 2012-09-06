@@ -29,6 +29,7 @@ class StandardizedPatient {
     Integer postalCode
     String preName
     String socialInsuranceNo
+	Integer status
     String street
     String telephone
     String telephone2
@@ -70,7 +71,8 @@ class StandardizedPatient {
         name nullable: true, maxSize: 40
         postalCode nullable: true
         preName nullable: true, maxSize: 40
-        socialInsuranceNo nullable: true, maxSize: 13,matches: "[0-9]{13,13}"
+        socialInsuranceNo nullable: true, maxSize: 13,matches: "[0-9.]{13,13}"
+		status nullable:true
         street nullable: true, maxSize: 60
         telephone nullable: true, maxSize: 30
         telephone2 nullable: true, maxSize: 30
