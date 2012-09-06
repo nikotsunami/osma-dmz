@@ -21,7 +21,7 @@ class SendEmailController extends MainController {
 
     def show() {
 		log.info("show sendEmail")
-	    def patientInstanceList = local.StandardizedPatient.findAll();
+	    def patientInstanceList = local.StandardizedPatient.list(params);
 	    [patientInstanceList: patientInstanceList]
     }
 	
