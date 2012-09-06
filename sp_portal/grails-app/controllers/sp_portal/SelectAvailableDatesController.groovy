@@ -25,8 +25,17 @@ class SelectAvailableDatesController extends MainController{
 		def acceptedOsceDays = [];
 
 		
-		availableOsceDays = local.OsceDay.findAll();
-		availableTrainingDays = local.Training.findAll();
+		if(params.sort.equals("trainingDate")||params.sort.equals("timeStart")||params.sort.equals("timeEnd")){
+			availableTrainingDays = local.Training.list(params);
+		}else{
+			availableTrainingDays = local.Training.list();
+		}
+		if(params.sort.equals("osceDate")){
+			availableOsceDays = local.OsceDay.list(params);
+		}else{
+			availableOsceDays = local.OsceDay.list();
+		}
+		
 		def currentUser = User.findById(session.user.id);
 		if(log.isDebugEnabled()){
 			log.debug("find availableOsceDays : "+availableOsceDays)
