@@ -98,10 +98,71 @@ class DataImportExportController extends MainController {
             if (patient){
 			def json = patient as JSON;
 			
-			println("json: "+json);
-			
-			def jsonObject = JSON.parse(json);
-			
+				//def backaccount = patient.bankaccount
+				//backaccount.delete(flush: true);.
+				//
+				//def description = patient.description
+				//description.delete(flush: true);
+				
+				def anamnesisForm = patient.anamnesisForm
+				
+				def checkValues = anamnesisForm.anamnesisChecksValues
+				
+				for(local.AnamnesisChecksValue value : checkValues){
+					if(value){
+						def anamnesisCheckValue = local.AnamnesisChecksValue.get(value.id);
+						anamnesisCheckValue.delete()
+					}
+				}
+				
+				def scars = anamnesisForm.scars;
+				
+				for(local.Scar scar : scars){
+					scar.delete();
+				}
+				
+				def description = patient.description;
+				
+				if(description){
+					description.delete();
+				}
+				
+				def bankaccount = patient.bankaccount;
+				
+				if(bankaccount){
+					bankaccount.delete();
+				}
+				
+				def user = User.findByStandardizedPatient(patient)
+				
+				if(user){
+					user.delete()
+				
+				}
+				
+				def semester = local.PatientlnSemester.findByStandardizedPatient(patient)
+				if(semester){
+					def osceDays = semester.acceptedOsceDay
+					for(local.OsceDay osceday : osceDays){
+						if(osceday){
+							osceday.delete();
+						}
+					}
+					
+					def trainings = semester.acceptedTraining
+					for(local.Training training : trainings){
+						if(training){
+							training.delete();
+						}
+					}
+				}
+				
+				patient.delete();
+				
+				if(anamnesisForm){
+					anamnesisForm.delete();
+				}
+				
 						
 			
                  render json;
