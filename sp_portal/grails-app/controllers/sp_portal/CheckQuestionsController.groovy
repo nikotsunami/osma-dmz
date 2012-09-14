@@ -57,8 +57,9 @@ class CheckQuestionsController  extends MainController {
     def index() {
 		log.info("index of CheckQuestions")
 		log.info("user show CheckQuestions")
-       titleIndex = 0;
-       session.titleIndex = titleIndex;
+        titleIndex = 0;
+        session.titleIndex = titleIndex;
+	    log.info(params)
         redirect(action: "show", params: params)
     }
     
@@ -79,7 +80,7 @@ class CheckQuestionsController  extends MainController {
 
     def show() {
 	   
-	   
+	   log.info(params)
 	   log.info("user showPage of CheckQuestions")
         def patient = getCurrentPatient();
 		

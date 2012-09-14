@@ -34,8 +34,7 @@ class UserController extends MainController {
     def list() {
         log.info("list of user")
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-
-
+		//log.info(params)
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
 
     }
@@ -71,10 +70,10 @@ class UserController extends MainController {
     def importData() {
 		log.info("import Data Pressed")
         def messages = [];
-
+		
         def needsTitleChecks = [];
 
-         def scars =  remote.Scar.list();
+        def scars =  remote.Scar.list();
          for (remote.Scar scar : scars ){
           if(!(local.Scar.findByOrigId(scar.id))){
 
@@ -88,6 +87,7 @@ class UserController extends MainController {
 			 }
              newScar.save();
              importMessage(messages,"${message(code: 'default.scar.message')}",""+scar.id);
+			 
           } else {
             existsMessage(messages,"${message(code: 'default.scar.message')}", ""+scar.id);
           }
@@ -613,14 +613,14 @@ class UserController extends MainController {
         if(passwordsMatch){
 
              def userInstance = new User(params)
-
+			 
              handleInboundPassword(userInstance);
-
+			 
                     if (!userInstance.save(flush: true)) {
                         render(view: "create", model: [userInstance: userInstance])
                         return
                     }
-                    flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
                 redirect(action: "show", id: userInstance.id)
         }else{
             flash.message = message(code: 'default.password.message')
@@ -633,10 +633,16 @@ class UserController extends MainController {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class UserController Method show() with params : "+params)
 		}
+		//log.info("<<"+params)
+		
+		
         def userInstance = User.get(params.id)
-        if (!userInstance) {
+	    //log.info(userInstance)
+        if (!userInstance) {     	
+		
            // flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "list")
+			
             return
         }
 

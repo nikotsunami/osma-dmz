@@ -113,21 +113,23 @@ class MainController {
 
         if (params.passwordHash) {
               if(session.user!=null){
-              User user = session.user;
-              user = User.findById(user.id);
-              def result = user.roles.findAll{ role -> role.roleName.contains(ADMIN_ROLE) }
-              if(result.size()>0){
-                 params.passwordHash = hashPassword(params.passwordHash,params.userName);
-            }
-            else{
-             params.passwordHash = hashPassword(params.passwordHash,session.user.userName);
-
+				  User user = session.user;
+				  user = User.findById(user.id);
+				  def result = user.roles.findAll{ role -> role.roleName.contains(ADMIN_ROLE) }
+				  if(result.size()>0){
+					 params.passwordHash = hashPassword(params.passwordHash,params.userName);
+					// log.info(">>>>>>>")
+					}
+				  else{
+				     params.passwordHash = hashPassword(params.passwordHash,session.user.userName);
+					 //log.info(">>>>>>>>>>>>>>>>>")
+					}
                 }
-            }
         } else {
             def userInstance = User.get(params.id);
             if (userInstance){
                 params.passwordHash = userInstance.passwordHash;
+				//log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
             }
         }
 		if(log.isTraceEnabled()){

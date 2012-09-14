@@ -2,6 +2,7 @@ package sp_portal;
 import sp_portal.*;
 import sp_portal.local.*;
 import org.joda.time.LocalDate;
+import sp_portal.remote.*;
 
 class DataSetupHelper {
 
@@ -15,6 +16,11 @@ class DataSetupHelper {
     def standardizedPatient1
 	def standardizedPatient2
     def bankaccount1
+	def description1
+	def spokenLanguage1
+	def nationality1
+	def profession1
+	def langSkill1
 	
 	def anamnesisForm1	
 	def anamnesisCheckTitle1	
@@ -34,6 +40,8 @@ class DataSetupHelper {
 	def email1
 	def email2
 	
+	def remote
+	def local
 	
 	// is standardizedPatient2 has no osces or trainings
 	def emptyPatientInSemester 
@@ -44,25 +52,35 @@ class DataSetupHelper {
     def getDataSetA(){
         setupRoles()
         setupUsers()
+		
+		setupScar()
+		setupDescription()
+		setupSpokenLanguage()
+		setupNationality()
+		setupProfession()
+		setupLangSkill()
+		
         standardizedPatient1 =  setupStandardizedPatients("")
 		setupAnamnesisCheckTitle()
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
-		setupAnamnesisCheck3()
+		setupAnamnesisCheck3()		
 //		setUpTraining1()
 //		setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
+		anamnesisCheck2.title = anamnesisCheck1
 		setupAnamnesisForm()
+		
 
         assertNotNull normalUser
 
-        normalUser.standardizedPatient = standardizedPatient1
+        //normalUser.standardizedPatient = standardizedPatient1
 
 
         normalUser.save()
 
-        assertNotNull normalUser.standardizedPatient
+        //assertNotNull normalUser.standardizedPatient
 
         setupBankAccounts()
 
@@ -73,9 +91,10 @@ class DataSetupHelper {
 		
 		setupAnamnesisCheckValue1()
 
-        assertNotNull normalUser.standardizedPatient.bankaccount
-
-
+        //assertNotNull normalUser.standardizedPatient.bankaccount
+		
+		langSkill1.standardizedPatient = standardizedPatient1
+		langSkill1.spokenLanguage = spokenLanguage1
 
     }
 
@@ -94,18 +113,19 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
+		setupScar()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
 
         assertNotNull normalUser
 
-        normalUser.standardizedPatient = standardizedPatient1
-		normalUser2.standardizedPatient = standardizedPatient2
+        //normalUser.standardizedPatient = standardizedPatient1
+		//normalUser2.standardizedPatient = standardizedPatient2
 
         normalUser.save()
 
-        assertNotNull normalUser.standardizedPatient
+        //assertNotNull normalUser.standardizedPatient
 
         setupBankAccounts()
 
@@ -116,11 +136,9 @@ class DataSetupHelper {
         standardizedPatient2.bankaccount = bankaccount1
 		standardizedPatient2.anamnesisForm = anamnesisForm1
         standardizedPatient2.save()
-
 		
 		setupAnamnesisCheckValue1()
-
-        assertNotNull normalUser.standardizedPatient.bankaccount
+        //assertNotNull normalUser.standardizedPatient.bankaccount
 
 		email1 = setupEmail("1")
 		email2 = setupEmail("2")
@@ -168,6 +186,7 @@ class DataSetupHelper {
 		admin.save();
 
         adminUser = admin
+		
 
 //////////////////////////////////////////////////////////////////
         User user1 = new User();
@@ -202,12 +221,14 @@ class DataSetupHelper {
         user2.save();
 
         normalUser2 = user2
+		
+		
     }
 
     def setupStandardizedPatients(def prefix){
-        StandardizedPatient standardizedPatient = new StandardizedPatient();
-        standardizedPatient.origId = 1;
-        standardizedPatient.birthday = new LocalDate();
+        def standardizedPatient = new remote.StandardizedPatient();
+        //standardizedPatient.origId = 1;
+        standardizedPatient.birthday = new Date();
         standardizedPatient.city = "${prefix}Wuhu"
         standardizedPatient.email = "${prefix}sp1@test.com"
         standardizedPatient.gender = 1
@@ -240,14 +261,14 @@ class DataSetupHelper {
 	 
 
     def setupBankAccounts(){
-        def bankaccount = new Bankaccount()
+        def bankaccount = new remote.Bankaccount()
         bankaccount.bic = 'jfskhfsdhj'
         bankaccount.iban = '132654987454654'
         bankaccount.bankName = 'ICBC'
         bankaccount.city = 'Wuhu'
         bankaccount.ownerName = 'owner'
         bankaccount.postalCode = 234567891
-        bankaccount.origId = 5
+        //bankaccount.origId = 5
 
         bankaccount.save();
 
@@ -256,9 +277,10 @@ class DataSetupHelper {
     }
 
 	def setupAnamnesisForm(){
-		def anamnesisForm = new AnamnesisForm()
+		def anamnesisForm = new remote.AnamnesisForm()
 		anamnesisForm.createDate = new Date()
-		anamnesisForm.origId = 2
+		anamnesisForm.version = 3
+		//anamnesisForm.origId = 2
 		
 		anamnesisForm.save();
 		
@@ -266,7 +288,7 @@ class DataSetupHelper {
 	}
 	
 	def setupAnamnesisCheckTitle(){
-		def anamnesisCheckTitle = new AnamnesisCheckTitle();
+		def anamnesisCheckTitle = new remote.AnamnesisCheckTitle();
 		anamnesisCheckTitle.text = 'title1'
 		anamnesisCheckTitle.sortOrder = 1
 		
@@ -276,28 +298,28 @@ class DataSetupHelper {
 	}
 	
 	def setupAnamnesisCheck1(){
-		def anamnesisCheck = new AnamnesisCheck();
-		anamnesisCheck.text = 'Rauchen Sie?'
-		anamnesisCheck.value = ''
+		def anamnesisCheck = new remote.AnamnesisCheck();
+		anamnesisCheck.text = "Rauchen Sie?"
+		anamnesisCheck.value = ""
 		anamnesisCheck.sortOrder = 1
 		anamnesisCheck.type = 1   // should be a boolean type
 		anamnesisCheck.anamnesisCheckTitle = null
-		anamnesisCheck.origId = 2
+		//anamnesisCheck.origId = 2
 		
 		anamnesisCheck.save();
-		
+	
 		anamnesisCheck1 = anamnesisCheck;
 
 	}
 	
 	def setupAnamnesisCheck2(){
-		def anamnesisCheck = new AnamnesisCheck();
+		def anamnesisCheck = new remote.AnamnesisCheck();
 		anamnesisCheck.text = 'Leiden Sie unter Diabetes?'
 		anamnesisCheck.value = ''
 		anamnesisCheck.sortOrder = 1
 		anamnesisCheck.type = 1
 		anamnesisCheck.anamnesisCheckTitle = null
-		anamnesisCheck.origId = 2
+		//anamnesisCheck.origId = 2
 		
 		anamnesisCheck.save();
 		
@@ -306,13 +328,13 @@ class DataSetupHelper {
 	}
 	
 	def setupAnamnesisCheck3(){
-		def anamnesisCheck = new AnamnesisCheck();
+		def anamnesisCheck = new remote.AnamnesisCheck();
 		anamnesisCheck.text = 'Describe your best ever holiday'
 		anamnesisCheck.value = ''
 		anamnesisCheck.sortOrder = 1
 		anamnesisCheck.type = 0 // should be a string type according to yyb
 		anamnesisCheck.anamnesisCheckTitle = null
-		anamnesisCheck.origId = 2
+		//anamnesisCheck.origId = 2
 		
 		anamnesisCheck.save();
 		
@@ -322,8 +344,8 @@ class DataSetupHelper {
 	
 	
 	def setupAnamnesisCheckValue1(){
-		def anamnesisChecksValue = new AnamnesisChecksValue();
-		anamnesisChecksValue.origId = 5
+		def anamnesisChecksValue = new remote.AnamnesisChecksValue();
+		//anamnesisChecksValue.origId = 5
 		anamnesisChecksValue.comment = null;
 		anamnesisChecksValue.truth = false
 		anamnesisChecksValue.anamnesisForm = anamnesisForm1
@@ -435,4 +457,52 @@ class DataSetupHelper {
 		email.save();
 		return email;
 	}
+	
+	def setupScar(){
+	    def scar = new remote.Scar();
+		//scar.traitType = "TATTOO";
+		scar.traitType = 8;
+		scar.bodypart = "Oberschenkel (links)";
+	    scar.save();
+	}
+	
+	def setupDescription(){
+	    def description = new remote.Description();
+		description.version = 1;
+		description.description = "have a lot of time";
+		description.save();
+		description1 = description;
+	}
+	def setupSpokenLanguage(){
+	    def spokenLanguage = new remote.SpokenLanguage();
+		spokenLanguage.version = 1;
+		spokenLanguage.languageName = "English";
+		spokenLanguage.save();
+		spokenLanguage1 = spokenLanguage;
+	}
+	
+	def setupNationality(){
+	    def nationality = new remote.Nationality();
+		nationality.version  = 1;
+		nationality.nationality = "british";
+		nationality.save();
+		nationality1 = nationality;
+	}
+	def setupProfession(){
+	    def profession = new remote.Profession();
+		profession.version = 1;
+        profession.profession = "teacher";
+		profession.save();
+		profession1 = profession;
+	}
+	def setupLangSkill(){
+	    def langSkill = new remote.LangSkill();
+		langSkill.version = 1;
+        langSkill.skill = 1;
+        langSkill.standardizedPatient = null;
+        langSkill.spokenLanguage = null;
+		langSkill.save();
+		langSkill1 = langSkill;
+	}
+
 }
