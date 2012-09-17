@@ -18,7 +18,7 @@ class UserControllerTests{
 	
 	@Before
 	void setUp(){
-       dataSetUp = new DataSetupHelper()
+       dataSetUp = new RemoteDataSetupHelper()
 	   dataSetUp.getDataSetA()
 	   //dataSetUp.getDataSetB()
 	} 
@@ -197,12 +197,12 @@ class UserControllerTests{
 		
 		
 		//test import a new scar data
-	    assert scarLocal.id == scarRemote.id
+	    assert scarLocal.origId == scarRemote.id
 		assert scarLocal.traitType == scarRemote.traitType
 		assert model.messages[0] == " imported default.scar.message 1"
 		
 		//test import a new anamnesisCheckTitle data
-		assert anamnesisCheckTitleLocal.id == anamnesisCheckTitleRemote.id
+		assert anamnesisCheckTitleLocal.origId == anamnesisCheckTitleRemote.id
 		assert anamnesisCheckTitleLocal.text == anamnesisCheckTitleRemote.text
 		assert anamnesisCheckTitleLocal.sortOrder == anamnesisCheckTitleRemote.sortOrder
 		assert model.messages[1] == " imported default.AnamnesisCheckTitle.message 1"
@@ -217,13 +217,13 @@ class UserControllerTests{
 		assert model.messages[4] == " imported default.AnamnesisCheck.message 3"
 		
 		//test import anamnesisForm data
-		assert anamnesisFormLocal.id == anamnesisFormRemote.id
+		assert anamnesisFormLocal.origId == anamnesisFormRemote.id
 		//assert anamnesisFormLocal.version == 3 //didn't insert field 'version'  into local.AnamnesisForm
 		assert anamnesisFormLocal.createDate == anamnesisFormRemote.createDate
 		assert model.messages[5] == " imported default.AnamnesisForm.message 1"
 		
 		//test import a bankaccout data
-		assert bankaccountLocal.id == bankaccountRemote.id
+		assert bankaccountLocal.origId == bankaccountRemote.id
 		assert bankaccountLocal.bic == bankaccountRemote.bic
         assert bankaccountLocal.iban == bankaccountRemote.iban
         assert bankaccountLocal.bankName == bankaccountRemote.bankName
@@ -233,29 +233,29 @@ class UserControllerTests{
 		assert model.messages[6] == " imported default.Bankaccount.message 1"
 		
 		//test import a description data
-		assert descriptionLocal.id == 1
+		assert descriptionLocal.origId == 1
 		//assert descriptionLocal.version == 1 //didn't insert field 'version' into local.Description
 		assert descriptionLocal.description == "have a lot of time"
 		assert model.messages[7] == " imported default.Description.message 1"
 		
 		//test import a SpokenLanguage data
-		assert spokenLanguageLocal.id == spokenLanguageRemote.id
+		assert spokenLanguageLocal.origId == spokenLanguageRemote.id
 		//assert spokenLanguageLocal.version == 1 //didn't insert field 'version' into local.SpokenLanguage
 		assert spokenLanguageLocal.languageName == spokenLanguageRemote.languageName
 		assert model.messages[8] == " imported default.SpokenLanguage.message 1"
 		
 		//test import a nationality data
-		assert nationalityLocal.id == nationalityRemote.id
+		assert nationalityLocal.origId == nationalityRemote.id
 		assert nationalityLocal.nationality == nationalityRemote.nationality
 		assert model.messages[9] == " imported default.Nationality.message 1"
 		
 		//test import a profession data
-		assert professionLocal.id == professionRemote.id
+		assert professionLocal.origId == professionRemote.id
 		assert professionLocal.profession == professionRemote.profession
 		assert model.messages[10] == " imported default.Profession.message 1"
 		
 		//test import anamnesisCheckValue data
-		assert anamnesisCheckValueLocal.id == anamnesisCheckValueRemote.id
+		assert anamnesisCheckValueLocal.origId == anamnesisCheckValueRemote.id
 		assert anamnesisCheckValueLocal.comment == anamnesisCheckValueRemote.comment
 		assert anamnesisCheckValueLocal.truth == anamnesisCheckValueRemote.truth
 		if(anamnesisCheckValueRemote.anamnesisForm){
@@ -269,7 +269,7 @@ class UserControllerTests{
 		assert model.messages[11] == " imported default.AnamnesisChecksValue.message 1"
 		
 		//test import standardizedpatient data
-		assert standardizedPatientLocal.id == standardizedPatientRemote.id
+		assert standardizedPatientLocal.origId == standardizedPatientRemote.id
         assert standardizedPatientLocal.city == standardizedPatientRemote.city
         assert standardizedPatientLocal.email == standardizedPatientRemote.email
         assert standardizedPatientLocal.gender == standardizedPatientRemote.gender
@@ -320,7 +320,7 @@ class UserControllerTests{
 		assert model.messages[13].contains(" created user with username ${user.userName}")
 		
 		//test import langSkill data
-		assert langSkillLocal.id == langSkillRemote.id
+		assert langSkillLocal.origId == langSkillRemote.id
         assert langSkillLocal.skill == langSkillRemote.skill
 		if(langSkillRemote.standardizedPatient){
 		    assert langSkillLocal.standardizedPatient == local.StandardizedPatient.
@@ -354,7 +354,7 @@ class UserControllerTests{
 	}
 	
 	def compareAnamnesisCheckTitle(titleLocal,titleRemote){
-	    assert titleLocal.id ==  titleRemote.id
+	    assert titleLocal.origId ==  titleRemote.id
 		assert titleLocal.text == titleRemote.text
 		assert titleLocal.value == titleRemote.value
 		assert titleLocal.sortOrder == titleRemote.sortOrder
