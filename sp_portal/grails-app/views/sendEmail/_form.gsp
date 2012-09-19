@@ -4,7 +4,7 @@
 	<table>
 		<thead>
 			<tr>			
-				<g:sortableColumn property="is Send" title="${message(code: 'user.label.isSend')}" />
+				<g:sortableColumn property="email" title="${message(code: 'user.label.isSend')}" />
 				<g:sortableColumn property="email" title="${message(code: 'user.userEmail.label', default: 'User Email')}" />
 				<g:sortableColumn property="name" title="${message(code: 'user.userName.label', default: 'User Name')}" />
 			</tr>
