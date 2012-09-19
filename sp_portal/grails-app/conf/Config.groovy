@@ -70,7 +70,7 @@ environments {
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
     test {
-        grails.serverURL = "http://localhost:8090/${appName}"
+        grails.serverURL = "http://localhost:8080/${appName}"
     }
 }
 

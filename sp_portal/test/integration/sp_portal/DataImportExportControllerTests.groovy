@@ -876,7 +876,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                              }
                           ]
                        },
-                       "birthday":"1981-08-04",
+                       "birthday":new Date(1279382400000),
                        "city":"Metz",
                        "description":{"description":"this is a description", "id":35},
                        "email":"qqq@rrr.com",

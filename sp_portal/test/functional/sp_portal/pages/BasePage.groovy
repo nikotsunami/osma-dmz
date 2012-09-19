@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.support.ui.Select;
 
 abstract class BasePage extends WebDriverPage {
-    def baseUrl = "http://localhost:8090/sp_portal"
+    def baseUrl = "http://localhost:8080/sp_portal"
 
 
     def BasePage(){
