@@ -83,7 +83,6 @@ class DataImportExportService  {
 			roles.add(Role.findByRoleName("USER_ROLE"));
 			x.roles = roles;
 			x.save(flush:true);
-			if(log.isDebugEnabled()){
 				StringBuffer sb = new StringBuffer();
 				sb.append( "\n userName: ");
 				sb.append(x?.userName);
@@ -99,33 +98,7 @@ class DataImportExportService  {
 				sb.append(x?.roles);
 				log.debug( "new user : " + sb.toString());
 			}
-		}else{
-			x.userName= jsonData.email;
-			x.passwordHash=MainController.encodePassword(""+jsonData.socialInsuranceNo,x.userName);
-			x.userEmail=jsonData.email;
-			x.standardizedPatient=standardizedPatient;
-			x.isActive=true;
-			def roles = [];
-			roles.add(Role.findByRoleName("USER_ROLE"));
-			x.roles = roles;
-			x.save(flush:true);
-			if(log.isDebugEnabled()){
-				StringBuffer sb = new StringBuffer();
-				sb.append( "\n userName: ");
-				sb.append(x?.userName);
-				sb.append( "\n passwordHash: ");
-				sb.append(x?.passwordHash);
-				sb.append( "\n userEmail: ");
-				sb.append(x?.userEmail);
-				sb.append( "\n standardizedPatient: ");
-				sb.append(x?.standardizedPatient);
-				sb.append( "\n isActive: ");
-				sb.append(x?.isActive);
-				sb.append( "\n roles: ");
-				sb.append(x?.roles);
-				log.debug( "new user : " + sb.toString());
-			}
-		}
+		
 
     }
 

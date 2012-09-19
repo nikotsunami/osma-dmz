@@ -180,6 +180,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
    }
 
 
+   
     void testImportSP2(){
 
                 def controller = new DataImportExportController()
@@ -338,6 +339,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 assertEquals "Oberschenkel (links)", scar.bodypart;
 
    }
+  
   
 
 
@@ -874,7 +876,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                              }
                           ]
                        },
-                       "birthday":new Date(1279382400000),
+                       "birthday":"1981-08-04",
                        "city":"Metz",
                        "description":{"description":"this is a description", "id":35},
                        "email":"qqq@rrr.com",

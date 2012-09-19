@@ -97,14 +97,21 @@ class DataImportExportController extends MainController {
 			}
             if (patient){
 			def json = patient as JSON;
-			
-				//def backaccount = patient.bankaccount
-				//backaccount.delete(flush: true);.
-				//
-				//def description = patient.description
-				//description.delete(flush: true);
+			deleteAll(patient)
 				
-				def anamnesisForm = patient.anamnesisForm
+				
+						
+			
+                 render json;
+            } else {
+                render params.id +"not found"
+            }
+        }
+    }
+	
+	
+	def deleteAll(patient){
+		def anamnesisForm = patient.anamnesisForm
 				
 				def checkValues = anamnesisForm.anamnesisChecksValues
 				
@@ -133,12 +140,7 @@ class DataImportExportController extends MainController {
 					bankaccount.delete();
 				}
 				
-				def user = User.findByStandardizedPatient(patient)
 				
-				if(user){
-					user.delete()
-				
-				}
 				
 				def semester = local.PatientlnSemester.findByStandardizedPatient(patient)
 				if(semester){
@@ -157,23 +159,19 @@ class DataImportExportController extends MainController {
 					}
 				}
 				
+				def user = User.findByStandardizedPatient(patient)
+				
+				if(user){
+					user.delete()
+				
+				}
 				patient.delete();
 				
 				if(anamnesisForm){
 					anamnesisForm.delete();
 				}
 				
-						
-			
-                 render json;
-            } else {
-                render params.id +"not found"
-            }
-        }
-    }
-	
-	
-	
+	}
 	
 	
 
