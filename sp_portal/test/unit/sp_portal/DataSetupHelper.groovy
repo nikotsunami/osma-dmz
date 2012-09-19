@@ -49,8 +49,8 @@ class DataSetupHelper {
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
 		setupAnamnesisCheck3()
-//		setUpTraining1()
-//		setUpOsceDay1()
+		//setUpTraining1()
+    	//setUpOsceDay1()
 		anamnesisCheck1.anamnesisCheckTitle = anamnesisCheckTitle1
 		anamnesisCheck2.anamnesisCheckTitle = anamnesisCheckTitle1
 		setupAnamnesisForm()
@@ -344,6 +344,7 @@ class DataSetupHelper {
 		training.save()
 		training1 = training;
 	}
+
 	
 	def setUpOsceDay1(){
 		def osceDay = new OsceDay()
@@ -383,24 +384,37 @@ class DataSetupHelper {
 		training2.id=2L
 		training2.name="bbbbb"
 		training2.trainingDate = new Date(new Date().getTime()+12*60*60*1000)
-		training2.timeStart = new Date(new Date().getTime()+24*60*60*1000)
-		training2.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		training2.timeStart = new Date(new Date().getTime()+7*60*60*1000)
+		training2.timeEnd = new Date(new Date().getTime()+7*60*60*1000+120*60*1000)
 		
 
 		training3=new Training();
 		training3.id=3L
 		training3.name="ccc"
 		training3.trainingDate = new Date(new Date().getTime()+8*60*60*1000)
-		training3.timeStart = new Date(new Date().getTime()+24*60*60*1000)
-		training3.timeEnd = new Date(new Date().getTime()+24*60*60*1000+120*60*1000)
+		training3.timeStart = new Date(new Date().getTime()+9*60*60*1000)
+		training3.timeEnd = new Date(new Date().getTime()+9*60*60*1000+120*60*1000)
 		
 		training2.save();
 		training3.save();
 		
 		
-		assertTrue 2 == local.Training.findAll().size();
+		assert 2 == local.Training.findAll().size();
 	
 	}
+	def setUpTrainingDays1(){
+
+
+		training1=new Training();
+		training1.id=4L
+		training1.name="aaaa"
+		training1.trainingDate = new Date(new Date().getTime()+12*60*60*1000)
+		training1.timeStart = new Date(new Date().getTime()+8*60*60*1000)
+		training1.timeEnd = new Date(new Date().getTime()+8*60*60*1000+120*60*1000)
+	
+		training1.save();
+	}
+	
 	def setUpPatientLnSemester(){
 		patientInSemester =new PatientlnSemester();
 		patientInSemester.standardizedPatient =standardizedPatient1;
