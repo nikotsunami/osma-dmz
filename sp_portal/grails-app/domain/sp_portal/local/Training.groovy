@@ -16,10 +16,11 @@ class Training {
     Date timeEnd
 
     static constraints = {
-        name nullable: false, validator: {val,obj -> !val?.equals("")}
+        name nullable: false, validator: {val,obj -> !val?.equals("") }
 		timeStart nullable: true
 		timeEnd nullable: true, validator: { val, obj ->
-        (obj.timeStart!=null&&(val?.after(obj.timeStart)||val==null))||(obj.timeStart==null)
+        if(!((obj.timeStart!=null&&(val?.after(obj.timeStart)||val==null))||(obj.timeStart==null))) return ["timeEndError"]
+		
         }
 		trainingDate nullable: false
     }
