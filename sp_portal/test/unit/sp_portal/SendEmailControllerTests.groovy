@@ -41,6 +41,62 @@ class SendEmailControllerTests{
 		assertEquals 2, model.patientInstanceList.size()
 		
     }
+	
+	/**
+	*  test Bug786: Send emails has sorting head but does not work.
+	*/
+	void testBug786(){
+	
+	    def model = null
+		def list = null
+		
+		datasetup.setupStandardizedPatients("a")
+	    
+		params.sort = "email"
+		params.order = "asc"
+	    model = controller.show()
+		list = model.patientInstanceList
+		testDataAsc(list,"email",3)
+
+		
+		params.order = "desc"
+		model = controller.show()
+		list = model.patientInstanceList
+		testDataDesc(list,"email",3)
+		
+		params.sort = "name"
+		model = controller.show()
+		list = model.patientInstanceList
+		testDataDesc(list,"name",3)
+		
+		params.order = "asc"
+		model = controller.show()
+		list = model.patientInstanceList
+		testDataAsc(list,"name",3)
+		
+	}
+	
+	/**
+	* this method is used for test Bug786:test the size of data and that it is sorted ascendingly according to the supplied field 
+	*/
+	private void testDataAsc(list,field,expectedSize){
+	    assertEquals ("Incorrect data size",list.size(),expectedSize)
+		for(int i=0;i<list.size()-1;i++){
+			assert list[i][field].getAt(0) <= list[i+1][field].getAt(0)
+		}
+	}
+	
+	/**
+	* this method is used for testBug786:check the size of data and  that it is sorted descendingly according to the supplied field
+	*/
+	private void testDataDesc(list,field,expectedSize){
+	    assertEquals ("Incorrect data size",list.size(),expectedSize)
+		for(int i=0;i<list.size()-1;i++){
+			assert list[i][field].getAt(0) >= list[i+1][field].getAt(0)
+		}
+
+	}
+
 
 	void testSelectAll(){
 		def model = controller.selectAll();
@@ -148,7 +204,7 @@ class SendEmailControllerTests{
 		
 	}
 	
-		void testSendEmail2(){
+	void testSendEmail2(){
 	
 		params.editedEmailSubject = "this is a test subject"
 		def patients = local.StandardizedPatient.findAll();

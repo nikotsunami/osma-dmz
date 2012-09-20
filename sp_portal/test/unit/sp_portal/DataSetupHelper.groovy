@@ -14,7 +14,8 @@ class DataSetupHelper {
 
     def standardizedPatient1
 	def standardizedPatient2
-    def bankaccount1
+    def standardizedPatient3
+	def bankaccount1
 	
 	def anamnesisForm1	
 	def anamnesisCheckTitle1	
@@ -90,6 +91,7 @@ class DataSetupHelper {
         setupUsers()
         standardizedPatient1 =  setupStandardizedPatients("")
 		standardizedPatient2 =  setupStandardizedPatients("B")
+		//standardizedPatient3 =  setupStandardizedPatients("a")
 		setupAnamnesisCheckTitle()
 		setupAnamnesisCheck1()
 		setupAnamnesisCheck2()
@@ -116,6 +118,10 @@ class DataSetupHelper {
         standardizedPatient2.bankaccount = bankaccount1
 		standardizedPatient2.anamnesisForm = anamnesisForm1
         standardizedPatient2.save()
+		
+		//standardizedPatient3.bankaccount = bankaccount1
+		//standardizedPatient3.anamnesisForm = anamnesisForm1
+        //standardizedPatient3.save()
 
 		
 		setupAnamnesisCheckValue1()
