@@ -25,7 +25,7 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
             username = "root"
-            password = "root"
+            password = "admin"
         }
     
 /*       dataSource_original {
@@ -56,8 +56,13 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
             username = "root"
-            password = "root"
+            password = "admin"
         }
 
+        dataSource_original {
+            dbCreate = "update"
+            url = "jdbc:h2:mem:testDb;MVCC=TRUE"
+        }
+       
     }
 }
