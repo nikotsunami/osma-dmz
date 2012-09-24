@@ -47,11 +47,17 @@ class SendEmailControllerTests{
 	*/
 	void testBug786(){
 	
-	    def model = null
-		def list = null
+        datasetup.setupStandardizedPatients("a") 	
 		
-		datasetup.setupStandardizedPatients("a")
+        def model = null
+		def list = null
 	    
+		
+		model = controller.show()
+		list = model.patientInstanceList
+		assertEquals list.size(),3
+		assert list[1].email == "Bsp1@test.com"
+		
 		params.sort = "email"
 		params.order = "asc"
 	    model = controller.show()
