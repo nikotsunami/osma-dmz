@@ -15,6 +15,7 @@ class StdPntController  extends MainController {
 
     def index() {
 		log.info("index of StdPntController")
+		log.info(session.user)
          redirect(action: "welcome")
     }
 

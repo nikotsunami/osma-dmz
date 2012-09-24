@@ -180,7 +180,8 @@ class DataImportExportControllerTests extends GroovyTestCase{
    }
 
 
-    /*void testImportSP2(){
+   
+    void testImportSP2(){
 
                 def controller = new DataImportExportController()
                 Role role1 = new Role();
@@ -198,18 +199,18 @@ class DataImportExportControllerTests extends GroovyTestCase{
 
                 def list = local.StandardizedPatient.list();
 
-                def anamnesisForm = local.AnamnesisForm.findByOrigId(3);
+                def anamnesisForm = local.AnamnesisForm.findByOrigId(2);
                 def scar = local.Scar.findByOrigId(9);
 
-                def anamnesisChecksValue1 = local.AnamnesisChecksValue.findByOrigId(9);
+                def anamnesisChecksValue1 = local.AnamnesisChecksValue.findByOrigId(12);
                 def anamnesisCheck1 = local.AnamnesisCheck.findByOrigId(3);
                 def anamnesisChecksTitle1 = anamnesisCheck1.anamnesisCheckTitle
 
-                def anamnesisChecksValue2 = local.AnamnesisChecksValue.findByOrigId(8);
+                def anamnesisChecksValue2 = local.AnamnesisChecksValue.findByOrigId(13);
                 def anamnesisCheck2 = local.AnamnesisCheck.findByOrigId(1);
                 def anamnesisChecksTitle2 = anamnesisCheck2.anamnesisCheckTitle
 
-                def anamnesisChecksValue3 = local.AnamnesisChecksValue.findByOrigId(80);
+                def anamnesisChecksValue3 = local.AnamnesisChecksValue.findByOrigId(14);
                 def anamnesisCheck3 = local.AnamnesisCheck.findByOrigId(2);
                 def anamnesisChecksTitle3 = anamnesisCheck3.anamnesisCheckTitle
 
@@ -232,7 +233,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 assertEquals 3,standardizedPatient.maritalStatus
                 assertEquals "078 427 24 85",standardizedPatient.mobile
                 assertEquals "Lamarie",standardizedPatient.name
-                assertEquals 5711,standardizedPatient.origId
+                assertEquals 5713,standardizedPatient.origId
                 assertEquals 4057,standardizedPatient.postalCode
                 assertEquals "Marianne",standardizedPatient.preName
                 assertEquals "123.4567.8911",standardizedPatient.socialInsuranceNo
@@ -338,7 +339,8 @@ class DataImportExportControllerTests extends GroovyTestCase{
                 assertEquals "Oberschenkel (links)", scar.bodypart;
 
    }
-   */
+  
+  
 
 
    
@@ -874,7 +876,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                              }
                           ]
                        },
-                       "birthday":"1981-08-04",
+                       "birthday":new Date(1279382400000),
                        "city":"Metz",
                        "description":{"description":"this is a description", "id":35},
                        "email":"qqq@rrr.com",

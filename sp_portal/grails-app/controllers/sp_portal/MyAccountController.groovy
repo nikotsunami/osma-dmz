@@ -21,14 +21,14 @@ class MyAccountController extends MainController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-		log.info("index of myAccount")
+        log.info("index of myAccount")
         redirect(action: "show", params: params)
     }
 
     def save() {
-		if(log.isTraceEnabled()){
-			log.trace(">> In class MyAccountController Method save() with params : "+params)
-		}
+        if(log.isTraceEnabled()){
+            log.trace(">> In class MyAccountController Method save() with params : "+params)
+        }
         handleInboundPassword(params);
 
         def userInstance = new User(params)
@@ -42,44 +42,44 @@ class MyAccountController extends MainController {
     }
 
     def show() {
-		log.info("user show myAccount")
-		def user = User.findById(session.user.id)
-		if(log.isDebugEnabled()){
-			log.debug("find user : "+user)
-		}
+        log.info("user show myAccount")
+        def user = User.findById(session.user.id)
+        if(log.isDebugEnabled()){
+            log.debug("find user : "+user)
+        }
         def userInstance = user
 
         handleOutboundPassword(userInstance);
 
         [userInstance: userInstance]
-		
+
     }
 
     def edit() {
-		log.info("user edit myAccount")
-		def user = User.findById(session.user.id)
-		if(log.isDebugEnabled()){
-			log.debug("find user : "+user)
-		}
+        log.info("user edit myAccount")
+        def user = User.findById(session.user.id)
+        if(log.isDebugEnabled()){
+            log.debug("find user : "+user)
+        }
         def userInstance = user
-		
+        
         if (!userInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
             redirect(action: "show")
 
         }
-		
+        
         [userInstance: userInstance]
     }
 
     def update() {
-		if(log.isTraceEnabled()){
-			log.trace(">> In class MyAccountController Method update() with params : "+params)
-		}
+        if(log.isTraceEnabled()){
+            log.trace(">> In class MyAccountController Method update() with params : "+params)
+        }
         def user = User.findById(session.user.id)
-		if(log.isDebugEnabled()){
-			log.debug("find user : "+user)
-		}
+        if(log.isDebugEnabled()){
+            log.debug("find user : "+user)
+        }
         def userInstance = user
         boolean passwordsMatch = comparePasswords(params.confirmPassword,params.passwordHash);
 
@@ -122,9 +122,9 @@ class MyAccountController extends MainController {
     }
 
     private boolean comparePasswords(String p1,String p2){
-		if(log.isTraceEnabled()){
-			log.trace(">> In class MyAccountController Method comparePasswords() Comparing passwords " + p1 + "  and " + p2  )
-		}
+        if(log.isTraceEnabled()){
+            log.trace(">> In class MyAccountController Method comparePasswords() Comparing passwords " + p1 + "  and " + p2  )
+        }
         if ( p1 != p2) {
              flash.message = message(code: 'default.password.match.message');
              log.info("Comparing passwords returning false");

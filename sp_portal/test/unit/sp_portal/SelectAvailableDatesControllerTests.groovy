@@ -34,6 +34,7 @@ class SelectAvailableDatesControllerTests {
 		datasetup.getDataSetB()
 		datasetup.setUpOsceDays();
 		datasetup.setUpTrainingDays()
+		datasetup.setUpTrainingDays1()
 		datasetup.setupStandardizedPatients();
 		datasetup.setUpPatientLnSemester();
 		datasetup.setUpEmptyPatientLnSemester();
@@ -52,17 +53,16 @@ class SelectAvailableDatesControllerTests {
 	 *Unit test the contents of these lists. both empty and full and when PatientInSemester does not exist.
 	 */
 	@Test
-    void testShow() {
+  
+	void testShow() {
 		def mod = controller.show();
-
-
 		assertNotNull	mod
 
 		assertNotNull	mod.availableOsceDays
         assertEquals 3, mod.availableOsceDays.size()
 
 		assertNotNull	mod.availableTrainingDays
-        assertEquals 2, mod.availableTrainingDays.size()
+        assertEquals 3, mod.availableTrainingDays.size()
 		
 		assertNotNull	mod.acceptedTrainingDays
         assertEquals 1, mod.acceptedTrainingDays.size()
@@ -73,9 +73,120 @@ class SelectAvailableDatesControllerTests {
 
 		
     }
+
+	
+   //test the Bug(787) : "select available Dates sorting doesn't work"
+   void testBug787(){
+		def model = null;
+		def list = null;
+	
+        params.sort = "trainingDate"
+		params.order = "asc"     	
+		
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data ascending
+		testDataASC(list, "trainingDate", 3)		
+		
+		params.order = "desc"
+		
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data decending
+		testDataDESC(list, "trainingDate", 3)
+		
+		params.sort = "timeStart"
+		params.order = "asc"
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data ascending
+		testDataASC(list, "timeStart", 3)
+		
+		params.order = "desc"
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data decending
+		testDataDESC(list, "timeStart", 3)
+		
+		params.sort = "timeEnd"
+		params.order = "asc"
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data ascending
+		testDataASC(list, "timeEnd", 3)
+		
+		params.order = "desc"	
+		// run class under test
+		model = controller.show()
+		list = model.availableTrainingDays
+		// test data decending
+		testDataDESC(list, "timeEnd", 3)
 	
 	
+		
+		// Test that data is returned even if no sort order is specified
+		params.sort = "other"
+		params.order = "asc"
+		model = controller.show()
+	    list = model.availableTrainingDays
+		assert list.size() == 3		
 	
+	
+	    params.sort = "osceDate"
+		params.order = "asc"
+		// run class under test
+		model = controller.show()
+		list = model.availableOsceDays
+		// test data ascending
+		testDataASC(list, "osceDate", 3)		
+		
+		params.order = "desc"
+		// run class under test
+		model = controller.show()
+		list = model.availableOsceDays
+		// test data decending
+		testDataDESC(list, "osceDate", 3)
+		
+		
+		// Test that data is returned even if no sort order is specified
+		params.sort = "other"
+		params.order = "other"
+		model = controller.show()
+	    list = model.availableOsceDays
+		assert list.size() == 3
+   }	
+	
+  
+   /**
+    * This method check the size of the data and that it is sorted ascendingly according to the supplied field
+	*/
+   private void testDataASC(list, field, expectedSize){
+		assertEquals ("Incorrect Data size", expectedSize, list.size());
+   
+		for(int i = 0;i<list.size()-1;i++){
+			assert list[i][field] <= list[i+1][field]	
+		}
+   
+   }
+   
+	/**
+    * This method check the size of the data and that it is sorted descendingly according to the supplied field
+	*/   
+   private void testDataDESC(list, field, expectedSize){
+		assertEquals ("Incorrect Data size", expectedSize, list.size());
+
+		for(int i = 0;i<list.size()-1;i++){
+			assert list[i][field] >= list[i+1][field]	
+		}
+   
+   }//test the Bug(787) end
+   
+ 
 	void testupdate(){
 	
 		params["osce.1.id"] = "on"
@@ -119,7 +230,7 @@ class SelectAvailableDatesControllerTests {
 	/**
 	 * Verify that if the user selects at least on osce AND at least on Training then the accepted flag in patientInSemester will be set to true
 	 */
-	void testAcceptedSetToTrue(){
+	void testxAcceptedSetToTrue(){
 				
         session.user= datasetup.normalUser2;
 				
@@ -169,7 +280,7 @@ class SelectAvailableDatesControllerTests {
 	/**
 	 * Verify that if the user selects at least on osce AND and no Training then the accepted flag in patientInSemester will be set to false
 	 */
-	void testAcceptedSetToFalseNoTraining(){
+	void testxAcceptedSetToFalseNoTraining(){
 				
         session.user= datasetup.normalUser2;
 				
@@ -211,7 +322,7 @@ class SelectAvailableDatesControllerTests {
 	/**
 	 * Verify that if the user selects at least one Training AND and no osce then the accepted flag in patientInSemester will be set to false
 	 */
-	void testAcceptedSetToFalseNoOsce(){
+	void testxAcceptedSetToFalseNoOsce(){
 				
         session.user= datasetup.normalUser2;
 				
@@ -257,7 +368,7 @@ class SelectAvailableDatesControllerTests {
 	/**
 	 * Verify that if the user selects no Training AND and no osce then the accepted flag in patientInSemester will be set to false
 	 */
-	void testAcceptedSetToFalseNothingSelected(){
+	void testxAcceptedSetToFalseNothingSelected(){
 				
         session.user= datasetup.normalUser2;
 				
@@ -298,7 +409,7 @@ class SelectAvailableDatesControllerTests {
 	}
 	
 		
-	void testHasSendEmailToAdmin(){
+	void testxHasSendEmailToAdmin(){
 			def sendMailByChangeDays = [];
 
 		controller.DMZMailService = [
