@@ -1,6 +1,6 @@
 dataSource {
     pooled = true
-    driverClassName = "org.h2.Driver"
+    driverClassName = " com.mysql.jdbc.Driver"
     username = "sa"
     password = ""
 }
@@ -12,31 +12,15 @@ hibernate {
 // environment specific settings
 environments {
     development {
-/*        dataSource_original {
-            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE"
-        }
-*/      
-
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
             dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
-            username = "root"
+            username = "teeeeest"
             password = "admin"
         }
     
-/*       dataSource_original {
-            configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-           dbCreate = "validate"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/osce"
-            username = "root"
-            password = "admin"
-        }
-  */
         dataSource_original {
             dbCreate = "update"
             url = "jdbc:h2:mem:testDb;MVCC=TRUE"
@@ -52,11 +36,11 @@ environments {
     production {
         dataSource {
             configClass = "org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsAnnotationConfiguration"
-            dbCreate = "validate"
             driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/osce_public"
-            username = "root"
-            password = "admin"
+            dbCreate = "validate"
+            url = ""
+            username = ""
+            password = ""
         }
 
         dataSource_original {
