@@ -10,6 +10,58 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+environments {
+    development {
+        grails.logging.jul.usebridge = true
+        grails.serverURL = "http://localhost:8080/${appName}"
+	// log4j configuration
+	log4j = {
+	    // Example of changing the log pattern for the default console
+	    // appender:
+	    //
+	    appenders {
+	        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+	    }
+
+	    debug 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+	           'org.codehaus.groovy.grails.web.pages',    //  GSP
+	           'sp_portal'
+	
+	    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+	           'org.codehaus.groovy.grails.web.pages', //  GSP
+	           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+	           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+	           'org.codehaus.groovy.grails.web.mapping', // URL mapping
+	           'org.codehaus.groovy.grails.commons', // core / classloading
+	           'org.codehaus.groovy.grails.plugins', // plugins
+	           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+	           'org.springframework',
+	           'org.hibernate',
+	           'net.sf.ehcache.hibernate'
+	    }	
+    }
+    production {
+	log4j = {
+		appenders {
+			'null' name: 'stacktrace'
+		}
+	}
+        grails.logging.jul.usebridge = false
+	if (System.getenv("SP_PORTAL_CONFIG")) {
+		println( "Including configuration file: " + System.getenv("SP_PORTAL_CONFIG"));
+		if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+			grails.config.locations = []
+		}
+		grails.config.locations << "file:" + System.getenv("SP_PORTAL_CONFIG")
+	} else {
+		println "No external configuration file defined."
+	}
+        // TODO: grails.serverURL = "http://www.changeme.com"
+    }
+    test {
+        grails.serverURL = "http://localhost:8080/${appName}"
+    }
+}
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
@@ -60,45 +112,9 @@ grails.exceptionresolver.params.exclude = ['password']
 grails.hibernate.cache.queries = true
 
 // set per-environment serverURL stem for creating absolute links
-environments {
-    development {
-        grails.logging.jul.usebridge = true
-        grails.serverURL = "http://localhost:8080/${appName}"
-    }
-    production {
-        grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
-    }
-    test {
-        grails.serverURL = "http://localhost:8080/${appName}"
-    }
-}
 
-// log4j configuration
-log4j = {
-    // Example of changing the log pattern for the default console
-    // appender:
-    //
-    appenders {
-        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    }
 
-    debug 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages',    //  GSP
-           'sp_portal'
 
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
-}
 
 
 sp_portal.admin.username = "admin"
@@ -110,10 +126,7 @@ Dear #preName #name
 The University of Basel would like to invite you to attend our medical examinations as a paid actor/ress. Select dates that you can attend by logging into our
 site at www.xxxxx with you username which is this email address and pasword which is your health insurace number.
 
-
 Yours sincerely
-
-
 
 """
 sp_portal.mail.saveTraningDate.defaultText = """
@@ -123,13 +136,9 @@ You are receiving this because you are an administrator for the UNIBAS Osce DMZ 
 
 The user #preName #name has recently updated their availability for attending training and osce days.
 Their acceptance may need to be syncronized with the main Osce system.
-
-
 """
 
 sp_portal.mail.inviteStandardizedPatients.subject = "UNIBAS Osce Examinations"
-
-
 
 grails {
    mail {
