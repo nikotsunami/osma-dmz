@@ -1,37 +1,60 @@
 
 <%@ page import="sp_portal.User" %>
 
+
+
 <!DOCTYPE html>
 <head>
 <meta name="layout" content="stdpnt">
+<g:javascript library="jquery" />
 <title>show select Available Dates</title>
 </head>
 
 <body>
-	<g:form action="update">
-		<a href="#show-Patients" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+	<a href="#show-Patients" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		  <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
-	<div id="Layer1">
-		<h1>Training Days</h1>
-		<div id="Layer2" align="center">
+	<div>
+		<table width="90%">
+			<tr>
+				<td align="left" width="70%"><h1>Training Days</h1> </td>
+				<td align="right"><h1>semester</h1></td>
+				<td>
+				<g:form controller = "SelectAvailableDates" action="showSemester">
+				<h3>
+				<g:select name="semester" from="${sp_portal.local.Semester.list()}" optionKey="id" optionValue="${{it.showSemester()}}" value="${session.semester}" noSelection="['': '']" 
+					onchange="this.form.submit()"
+										/></h3>
+				</g:form>				 
+				</td>
+			</tr>
+		</table>
+	</div>
+		
+		
+		
+		<div  align="center">
   		<p>Plase Select Which of the</p>
   		<p>following date you can attend</p>
   		<p>Thank you.</p>
 		</div>
-		<div id="Layer3">
-			<g:if test="${availableTrainingDays!=null}">
+
+		<g:form controller = "SelectAvailableDates" action="update">
+			<div>				
   				<table>
 					<tr>
+					
 							<g:sortableColumn property="trainingDate" title="${message(code: 'training.date',default: 'Date')}" defaultOrder="desc"/>
 							<g:sortableColumn property="timeStart" title="${message(code: 'training.startTime', default: 'StartTime')}" />
 							<g:sortableColumn property="timeEnd" title="${message(code: 'trining.endTime', default: 'EndTime')}" />
 							<g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'Accepted')}" />
 					</tr>
+			<g:if test="${availableTrainingDays!=null}">
   			<g:each in="${availableTrainingDays}" status="i" var="availableTrainingDay">
     				<tr in="${availableTrainingDays}" status="i" var="availableTrainingDay">
-						  <td align="center"><g:formatDate format="yyyy-MM-dd" date="${availableTrainingDay.trainingDate}"/></td>
+				
+	  <td align="center"><g:formatDate format="yyyy-MM-dd" date="${availableTrainingDay.trainingDate}"/></td>
 						  <td align="center"><g:formatDate type="time" date="${availableTrainingDay.timeStart}"/></td>
 						  <td align="center"><g:formatDate type="time" date="${availableTrainingDay.timeEnd}"/></td>
 						  <g:if test="${acceptedTrainingDays!=null}">
@@ -46,16 +69,17 @@
 	  
     				</tr>
 			</g:each>
+			</g:if>
   				</table>
-  			</g:if>
+  			
 		</div>
-		<div id="Layer4">
+		<div >
   			<h1>OSCE Exams</h1></div>
 		<div id="Layer5" align="center">
   			<p>Plase Select Which of the</p>
   			<p>following osce date you can attend</p>
 		</div>
-  		<div id="Layer6">
+  		<div>
     		<table>
 				<tr>
 					<g:sortableColumn property="osceDate" title="${message(code: 'osce.date', default: 'Date')}"defaultOrder="desc"/><g:sortableColumn property="trainingDate" title="${message(code: 'IsAccepted',default: 'Accepted')}"/></tr>	
@@ -80,15 +104,17 @@
 							</g:if>
     		</table>
   		</div>
-  		<div id="Layer7">
+  		<div >
 				<fieldset class="buttons">		
                     <g:submitButton name="update" value="Save" />
 				</fieldset>
             
 		</div>
+
+		</g:form>
+
 </div>
 
-</g:form>
 
 </body>
 </html>

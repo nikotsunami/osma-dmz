@@ -8,7 +8,7 @@ import grails.test.mixin.TestFor
 import sp_portal.DataSetupHelper;
 
 @TestFor(OsceDayController)
-@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester,Osce,Semester])
 class OsceDayControllerTests {
 	def datasetup = new DataSetupHelper()
 	def Calendar baseTime = null;
@@ -16,6 +16,8 @@ class OsceDayControllerTests {
 	@Before
 	void setUp() {
         // Setup logic here
+		datasetup.setUpSemesters();
+		datasetup.setUpOsces();
 		datasetup.setUpTraining1()
 		datasetup.setUpOsceDay1()
 		datasetup.getDataSetA()
@@ -34,8 +36,21 @@ class OsceDayControllerTests {
     }
 
 
-    def populateValidParams(params) {
+    def popuLateValidParamsSave(params) {
       assert params != null
+	  params.osce = 1L;
+	  def futureCal = baseTime.clone()
+		
+		futureCal.add(Calendar.DAY_OF_MONTH,2)
+		futureCal.set(Calendar.HOUR_OF_DAY,0)
+		futureCal.set(Calendar.MINUTE,0)
+	  params["osceDate"] = futureCal.getTime();
+      
+    }
+	
+	def populateValidParams(params) {
+      assert params != null
+	  params.osce = Osce.get(1L);
 	  def futureCal = baseTime.clone()
 		
 		futureCal.add(Calendar.DAY_OF_MONTH,2)
@@ -65,14 +80,15 @@ class OsceDayControllerTests {
     }
 
     void testSave() {
+		
         controller.save()
 
-        assert model.osceDayInstance != null
+        assert model.osceDayInstance == null
         assert view == '/osceDay/create'
 
         response.reset()
 
-        populateValidParams(params)
+        popuLateValidParamsSave(params)
         controller.save()
 
         assert response.redirectedUrl == '/osceDay/show/2'
@@ -140,6 +156,7 @@ class OsceDayControllerTests {
         // test invalid parameters in update
         params.id = osceDay.id
 		params["osceDate"] = null
+		params.osce = null
 
         controller.update()
 
@@ -148,7 +165,7 @@ class OsceDayControllerTests {
 
         osceDay.clearErrors()
 
-        populateValidParams(params)
+        popuLateValidParamsSave(params)
         controller.update()
 
         assert response.redirectedUrl == "/osceDay/show/$osceDay.id"
@@ -167,7 +184,7 @@ class OsceDayControllerTests {
         response.reset()
         osceDay.clearErrors()
 
-        populateValidParams(params)
+        popuLateValidParamsSave(params)
         params.id = osceDay.id
         params.version = -1
         controller.update()
@@ -185,6 +202,7 @@ class OsceDayControllerTests {
 		params["standardizedPatient"] = datasetup.standardizedPatient1
 	    params["acceptedOsceDay"] = osceDay
 	    params["acceptedTraining"] = datasetup.training1
+	    params["semester"] = datasetup.semester
 	    def patientlnSemester = new PatientlnSemester(params)
         assert patientlnSemester.save() != null
 		
@@ -231,6 +249,7 @@ class OsceDayControllerTests {
 		 params["standardizedPatient"] = datasetup.standardizedPatient1
 	    params["acceptedOsceDay"] = datasetup.osceDay1
 	    params["acceptedTraining"] = datasetup.training1
+	    params["semester"] = datasetup.semester
 	    def patientlnSemester = new PatientlnSemester(params)
         assert patientlnSemester.save() != null
 	  

@@ -20,7 +20,7 @@ public class SelectAvailableDatesPage extends BasePage {
 	
 	def chooseDays(id){
 		clickCheckDay(id);		
-		assertTextPresent("Training Days");
+		//assertTextPresent("Training Days");
 		
 		
 	}
@@ -28,6 +28,10 @@ public class SelectAvailableDatesPage extends BasePage {
 	def clickSave(){
 		clickButton("Save");
 	
+	}
+	def chooseSemester(str){
+		selectDropDown("semester",str);
+		
 	}
 
 

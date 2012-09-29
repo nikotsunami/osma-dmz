@@ -7,6 +7,7 @@ class ThankController extends MainController{
 	def thank(){
 	}
 	def thankPatientInSemester(){
+		session.semester=null;
 	}
 	
 }

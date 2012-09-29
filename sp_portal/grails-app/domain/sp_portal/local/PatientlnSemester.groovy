@@ -7,24 +7,29 @@ class PatientlnSemester {
        standardizedPatient column: 'standardized_patient'
        acceptedOsceDay column: 'accepted_osce_day'
        acceptedTraining column: 'accepted_training'
+	   semester column:'semester'
     }
     Long id
     Integer version
     StandardizedPatient standardizedPatient
 	boolean accepted 
+	Semester semester
+	
+	
 
 
     static constraints = {
     }
 
 
-    static hasMany = [  acceptedOsceDay: OsceDay,
-					  acceptedTraining: Training
+    static hasMany = [acceptedOsceDay: OsceDay,
+					  acceptedTraining: Training,
+					  semester:Semester
                        ]
 
-  /*  static mappedBy = [
-                       acceptedOsceDay: 'id',
-					   acceptedTraining: 'id'
+    /*static mappedBy = [
+                       Semester: 'id'
+					   
 			  
 			 ]*/
 }

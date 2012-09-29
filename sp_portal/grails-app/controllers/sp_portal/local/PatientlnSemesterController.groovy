@@ -47,29 +47,68 @@ class PatientlnSemesterController extends sp_portal.MainController {
 			log.debug( "find patientlnSemesterInstance by "+sp +" : " + sb.toString());
 		} 
 		
-				if(patientlnSemesterInstance!=null){
+		if(patientlnSemesterInstance!=null){
 		
-					if(params.acceptedOsceDay!=null || params.acceptedTraining!=null){
-						accepted=false
-						
-						
-					}
-					 if(params.acceptedOsceDay!=null && params.acceptedTraining!=null){
-						patientlnSemesterInstance.accepted=true;
-						accepted=true
+				if(params.acceptedOsceDay!=null || params.acceptedTraining!=null){
+					accepted=false
 					
-					}
 					
-					 if(params.acceptedOsceDay==null && params.acceptedTraining==null){
-						accepted=false
-						
-						
-					}
+				}
+				 if(params.acceptedOsceDay!=null && params.acceptedTraining!=null){
+					patientlnSemesterInstance.accepted=true;
+					accepted=true
+				
+				}
+				
+				if(params.acceptedOsceDay==null && params.acceptedTraining==null){
+					accepted=false
+					
+					
+				}
+
+				if(!params.semester){
+					accepted=false
+					
+				}
+				
+				
 				if(accepted==true){
-						def osce=OsceDay.findAllById(params.acceptedOsceDay)
-						def training=Training.findAllById(params.acceptedTraining)
-						patientlnSemesterInstance.acceptedOsceDay.addAll(osce);
-						patientlnSemesterInstance.acceptedTraining.addAll(training);
+						def osces = [];
+						def trainings=[];
+						
+						def osce=params.findAll({ key, value ->
+													key.startsWith("acceptedOsceDay");
+													});
+													
+						osce.each({ key, value ->
+								for(int i =0; i< value.size();i++){
+		
+									def osceDay = OsceDay.findById(Long.valueOf(value[i]));
+									osces.add(osceDay);
+								}
+								
+						});
+
+						def training=params.findAll({ key, value ->
+													key.startsWith("acceptedTraining");
+													});
+													
+						training.each({ key, value ->
+						
+								for(int i =0; i< value.size();i++){
+						
+									def train = Training.findById(Long.valueOf(value[i]));
+									trainings.add(train);
+								}
+						});		
+						
+						def semester = Semester.get(params.semester);
+						patientlnSemesterInstance.acceptedOsceDay.clear();
+						patientlnSemesterInstance.acceptedOsceDay.addAll(osces);
+						patientlnSemesterInstance.acceptedTraining.clear();
+						patientlnSemesterInstance.acceptedTraining.addAll(trainings);
+
+						patientlnSemesterInstance.semester= semester;
 						patientlnSemesterInstance.save()
 						redirect(action: "show", id: patientlnSemesterInstance.id)
 				}else{
@@ -89,29 +128,42 @@ class PatientlnSemesterController extends sp_portal.MainController {
 				} 
 				
 				
-			}else{
+			}else{				
+			
+			
+				if(params.semester){
+					params.semester = Semester.get(params.semester);
+				}
+			
 				def patient =new PatientlnSemester(params);
 				patient.standardizedPatient=patient.standardizedPatient						
 								
 				if(patient.acceptedOsceDay!=null || patient.acceptedTraining!=null){
 						accepted=false
 						
-					}
-					if(patient.acceptedOsceDay!=null && patient.acceptedTraining!=null){
-						patient.accepted=true;
-						accepted=true
-					}
+				}
+				if(patient.acceptedOsceDay!=null && patient.acceptedTraining!=null){
+					patient.accepted=true;
+					accepted=true
+				}
+				
+				if(patient.acceptedOsceDay==null && patient.acceptedTraining==null){
+					accepted=false
 					
-					if(patient.acceptedOsceDay==null && patient.acceptedTraining==null){
-						accepted=false
-						
-					}
+				}
+				
+				if(patient.semester==null && patient.semester==null){
+					accepted=false
+					
+				}
+				
+				
+				
 				if(accepted==true){
 						
 						patient.acceptedOsceDay=patient.acceptedOsceDay;
 						patient.acceptedTraining=patient.acceptedTraining;
 						patient.save()
-						
 						redirect(action:"show");
 
 				}else{
@@ -199,6 +251,14 @@ class PatientlnSemesterController extends sp_portal.MainController {
                 return
             }
         }
+		
+		def semester;
+		if(params.semester){
+			params.semester = Semester.get(params.semester);
+		}else{
+		    render(view: "edit", model: [patientlnSemesterInstance: patientlnSemesterInstance])
+			return
+		}
 
         patientlnSemesterInstance.properties = params
 

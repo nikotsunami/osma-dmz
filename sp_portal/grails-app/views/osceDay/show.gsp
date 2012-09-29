@@ -31,6 +31,16 @@
 					
 				</li>
 				</g:if>
+				
+				<g:if test="${osceDayInstance?.osce}">
+                <li class="fieldcontain">
+                    <span id="osce-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Osce" /></span>
+
+                        <span class="property-value" aria-labelledby="nationality-label">
+						${osceDayInstance?.osce?.name}
+						
+                </li>
+                </g:if>
 			
 			</ol>
 			<g:form>

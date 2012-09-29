@@ -14,7 +14,6 @@ class TrainingController extends sp_portal.MainController {
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	 
     def index() {
-	println("" + this.class.getCanonicalName())
 		log.info("index of training")
         redirect(action: "list", params: params)
     }
@@ -34,9 +33,19 @@ class TrainingController extends sp_portal.MainController {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class TrainingController Method save() with params : "+params)
 		}
-		println("params : "+params)
-
-        def trainingInstance = new Training(params)
+		
+		def semester;
+		def trainingInstance
+		if(params.semester){
+			semester = Semester.get(params.semester);
+			params.semester = semester;
+			
+			trainingInstance = new Training(params)
+		}else{
+			flash.message = message(code: 'default.null.message', args: [message(code: 'Semester.label', default: 'Semester')])
+			 render(view: "create", model: [trainingInstance: trainingInstance])
+			 return;
+		}
 		
 		
 		def isStartTimeRight = timeStartVerification(params)
@@ -112,7 +121,7 @@ class TrainingController extends sp_portal.MainController {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class TrainingController Method update() with params : "+params)
 		}
-
+		
 		
         def trainingInstance = Training.get(params.id)
 		
@@ -162,8 +171,19 @@ class TrainingController extends sp_portal.MainController {
                 return
             }
         }
-
-        trainingInstance.properties = params
+		
+		def semester;
+		if(params.semester){
+			semester = Semester.get(params.semester);
+			params.semester = semester;
+			
+		}else{
+			flash.message = message(code: 'default.null.message', args: [message(code: 'Semester.label', default: 'Semester')])
+			 render(view: "edit", model: [trainingInstance: trainingInstance])
+			 return;
+		}
+        
+		trainingInstance.properties = params
 
         if (!trainingInstance.save(flush: true)) {
             render(view: "edit", model: [trainingInstance: trainingInstance])
@@ -375,7 +395,6 @@ class TrainingController extends sp_portal.MainController {
 			}
 			}catch (Exception e) {
 				isTimeStartRight = false
-				println(">>>>>>>>isTimeStartRight = "+isTimeStartRight)
 				e.printStackTrace();
 			}
 			
@@ -392,7 +411,6 @@ class TrainingController extends sp_portal.MainController {
 			}
 			}catch (Exception e) {
 				isTimeStartRight = false
-				println(">>>>>>>>isTimeStartRight = "+isTimeStartRight)
 				e.printStackTrace();
 			}
 			
@@ -420,7 +438,6 @@ class TrainingController extends sp_portal.MainController {
 			}
 			}catch (Exception e) {
 				isTimeEndRight = false
-				println(">>>>>>>>isTimeEndRight = "+isTimeEndRight)
 				e.printStackTrace();
 			}
 			
@@ -437,7 +454,6 @@ class TrainingController extends sp_portal.MainController {
 			}
 			}catch (Exception e) {
 				isTimeEndRight = false
-				println(">>>>>>>>isTimeEndRight = "+isTimeEndRight)
 				e.printStackTrace();
 			}
 			

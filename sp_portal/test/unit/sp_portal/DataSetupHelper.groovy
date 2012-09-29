@@ -35,6 +35,9 @@ class DataSetupHelper {
 	def email1
 	def email2
 	
+	def osce
+	def semester
+	
 	
 	// is standardizedPatient2 has no osces or trainings
 	def emptyPatientInSemester 
@@ -363,26 +366,49 @@ class DataSetupHelper {
 		osce1=new OsceDay();
 		osce1.id=1L
 		osce1.osceDate=new Date(new Date().getTime()+24*60*60*1000);
+		def osce = Osce.findByOrigId(1L);
+		osce1.osce = osce;
 		
 		osce2=new OsceDay();
 		osce2.id=2L
 		osce2.osceDate=new Date(new Date().getTime()+12*60*60*1000);
+		osce2.osce = osce;
 		
 		osce3=new OsceDay();
 		osce3.id=3L
-		osce3.osceDate=new Date(new Date().getTime()+15*60*60*1000);
+		osce3.osceDate=new Date(new Date().getTime()+15*60*60*1000);	
+		osce3.osce = osce;
 		
 		osce1.save();
 		osce2.save();
 		osce3.save();
 		
 		assertTrue 3 == local.OsceDay.findAll().size();
-		
-		
-		
-	
 	
 	}
+	
+	def setUpOsces(){
+		osce = new Osce();
+		
+		osce.id=1L;
+		
+		osce.origId = 1L;
+		osce.semester = semester;
+		osce.studyYear = 3;
+		osce.numberRooms = 16;
+		osce.name = "Test 1";
+		osce.save();
+	}
+	
+	def setUpSemesters(){
+		semester = new Semester();
+		semester.origId = 1L;
+		semester.semester = 0;
+		semester.calYear = 2011;
+		
+		semester.save();
+	}
+
 	def setUpTrainingDays(){
 
 
@@ -393,6 +419,8 @@ class DataSetupHelper {
 		training2.timeStart = new Date(new Date().getTime()+7*60*60*1000)
 		training2.timeEnd = new Date(new Date().getTime()+7*60*60*1000+120*60*1000)
 		
+		def semester = Semester.findByOrigId(1L);
+		training2.semester = semester;
 
 		training3=new Training();
 		training3.id=3L
@@ -400,6 +428,8 @@ class DataSetupHelper {
 		training3.trainingDate = new Date(new Date().getTime()+8*60*60*1000)
 		training3.timeStart = new Date(new Date().getTime()+9*60*60*1000)
 		training3.timeEnd = new Date(new Date().getTime()+9*60*60*1000+120*60*1000)
+		
+		training3.semester = semester;
 		
 		training2.save();
 		training3.save();
@@ -418,6 +448,7 @@ class DataSetupHelper {
 		training1.timeStart = new Date(new Date().getTime()+8*60*60*1000)
 		training1.timeEnd = new Date(new Date().getTime()+8*60*60*1000+120*60*1000)
 	
+		training1.semester = semester;
 		training1.save();
 	}
 	
@@ -427,6 +458,9 @@ class DataSetupHelper {
 		patientInSemester.acceptedOsceDay=[osce1]
 		patientInSemester.acceptedTraining=[training2]
 		patientInSemester.accepted=true;
+		def semester = Semester.findByOrigId(1L);
+		patientInSemester.semester = semester;
+		
 		patientInSemester.save();
 	
 	
@@ -438,6 +472,10 @@ class DataSetupHelper {
 		emptyPatientInSemester.acceptedOsceDay=[]
 		emptyPatientInSemester.acceptedTraining=[]
 		emptyPatientInSemester.accepted=false;
+		
+		def semester = Semester.findByOrigId(1L);
+		emptyPatientInSemester.semester = semester;
+		
 		emptyPatientInSemester.save();
 	
 	

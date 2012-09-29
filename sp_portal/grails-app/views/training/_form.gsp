@@ -50,6 +50,14 @@
 	</g:else>  
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: trainingInstance, field: 'semester', 'error')} ">
+    <label for="semester">
+        <g:message code="standardizedPatient.nationality.label" default="Semester" />
+		<span class="required-indicator">*</span>
+    </label>
+
+    <g:select name="semester" from="${sp_portal.local.Semester.list()}" optionKey="id" value="${trainingInstance?.semester?.id}" noSelection="['': '']"/>
+</div>
 
 
 

@@ -19,7 +19,7 @@ public class CreateTrainingPage extends BasePage {
       //  assertTextPresent(expectedHeading);
     }
 
-    def createTraining(name, dateYear,dateMonth,dateDay,timeStartHour,timeStartMinute,timeEndHour,timeEndMinute ){
+    def createTraining(name, dateYear,dateMonth,dateDay,timeStartHour,timeStartMinute,timeEndHour,timeEndMinute,str ){
         enterName(name)
 
         selectDate(dateYear,dateMonth,dateDay);
@@ -28,6 +28,7 @@ public class CreateTrainingPage extends BasePage {
         setStartMinute(timeStartMinute)
         setEndHour(timeEndHour)
         setEndMinute(timeEndMinute)
+		setSelectSemester(str);
 
         clickButton("Create");
 
@@ -59,6 +60,11 @@ public class CreateTrainingPage extends BasePage {
     def setEndMinute(def timeEndMinute){
          fillOutField("timeEndMin", timeEndMinute)
     }
+	def setSelectSemester(def str){
+		selectDropDown("semester",str);
+	}
+	
+	
 
 
 

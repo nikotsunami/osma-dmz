@@ -110,9 +110,10 @@ class SelectAvailableDatesTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
         UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+		selectPage.chooseSemester("2013 FS");
         selectPage.chooseDays("training.1");
         selectPage.chooseDays("osce.1");
-
+	
         selectPage.clickSave();
         selectPage.assertTextPresent("Thank you for your participation");
 
@@ -144,6 +145,7 @@ class SelectAvailableDatesTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
         UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+		selectPage.chooseSemester("2013 FS");
         selectPage.chooseDays("training.1");
         selectPage.clickSave();
         selectPage.assertTextPresent("Training Days");
@@ -169,6 +171,7 @@ class SelectAvailableDatesTests {
         String dataDay=getTestData2();
         dataDay = dataDay.replaceAll("\n", "")
         dataDay = dataDay.replaceAll("  ", "")
+		
         def dataImpDays=webdriver.open('/osceSync/test',OsceSynPage)
         dataImpDays.submitData(dataDay);
 
@@ -176,6 +179,7 @@ class SelectAvailableDatesTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
         UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+		selectPage.chooseSemester("2013 FS");
         selectPage.chooseDays("osce.1");
         selectPage.clickSave();
         selectPage.assertTextPresent("Training Days");
@@ -207,6 +211,7 @@ class SelectAvailableDatesTests {
          LoginPage loginPage = webdriver.open('/', LoginPage)
         UserHomePage userHomePage = loginPage.loginUser("SelectAvailableDatesTests@user.ch", "123.4567.8911")
         SelectAvailableDatesPage selectPage=userHomePage.clickSelectAvailableDates()
+		selectPage.chooseSemester("2013 FS");
         selectPage.clickSave();
         selectPage.assertTextPresent("Thank you for your participation");
 
@@ -216,37 +221,161 @@ class SelectAvailableDatesTests {
 
 
     private String getTestData2(){
-        def json  = $/
+        def json  = """
         {
-              languages :[{language: "en"}],
-              osceDay : [ {osceDate: "2010-08-01T08:00:00Z"},
-                            {osceDate: ""}
-                            ],
-              trainings : [ {name: "",
-                            trainingDate: "2000-06-10T00:00:00Z",
-                            timeStart: "2000-06-10T09:20:00Z",
-                            timeEnd: "2000-06-10T11:00:00Z"},
-                            {name: "test6",
-                            trainingDate: "",
-                            timeStart: "2000-05-10T09:20:00Z",
-                            timeEnd: "2000-05-10T11:00:00Z"},
-                            {name: "test2",
-                            trainingDate: "2012-05-10T00:00:00Z",
-                            timeStart: "2012-05-10T09:20:00Z",
-                            timeEnd: "2012-05-10T11:00:00Z"},
-                            {name: "test7",
-                            trainingDate: "2010-07-10T00:00:00Z",
-                            timeStart: "2010-07-10T05:15:00Z",
-                            timeEnd: "2010-07-10T09:00:00Z"}],
-           standardizedPatient: []
-
+		   "semesters":[
+				  {
+					 "id":1,
+					 "semester":1,
+					 "calYear":2013,
+					 "maximalYearEarnings":null,
+					 "pricestatist":null,
+					 "priceStandardizedPartient":null,
+					 "preparationRing":null
+				  }
+		   ],
+		   "osces":[
+			  {
+				 "id":1,
+				 "studyYear":1,
+				 "maxNumberStudents":130,
+				 "name":"Test 1",
+				 "shortBreak":1,
+				 "LongBreak":15,
+				 "lunchBreak":45,
+				 "middleBreak":5,
+				 "numberPosts":null,
+				 "numberCourses":0,
+				 "postLength":13,
+				 "isRepeOsce":false,
+				 "numberRooms":17,
+				 "isValid":true,
+				 "osceStatus":2,
+				 "security":1,
+				 "osceSecurityTypes":1,
+				 "patientAveragePerPost":null,
+				 "semester":1,
+				 "shortBreakSimpatChange":3,
+				 "copiedOsce":null
+			  }
+		   ],
+		   "osceDay":[
+			  {
+				 "osceDate": "2010-08-01T08:00:00Z",
+				 "timeStart":"2012-06-18T09:00:00Z",
+				 "timeEnd":"2012-06-18T19:00:00Z",
+				 "lunchBreakStart":null,
+				 "lunchBreakAfterRotation":null,
+				 "osce":1,
+				 "value":null
+			  },
+			  {	"osceDate": "",
+				"timeStart":null,
+				 "timeEnd":null,
+				 "lunchBreakStart":null,
+				 "lunchBreakAfterRotation":null,
+				 "osce":1,
+				 "value":null}
+		   ],
+		   
+            "trainings" : [ {"name": "",
+                            "trainingDate": "2000-06-10T00:00:00Z",
+                            "timeStart": "2000-06-10T09:20:00Z",
+                            "timeEnd": "2000-06-10T11:00:00Z",
+							"semester":1},
+                            {"name": "test6",
+                            "trainingDate": "",
+                            "timeStart": "2000-05-10T09:20:00Z",
+                            "timeEnd": "2000-05-10T11:00:00Z",
+							"semester":1},
+                            {"name": "test2",
+                            "trainingDate": "2012-05-10T00:00:00Z",
+                            "timeStart": "2012-05-10T09:20:00Z",
+                            "timeEnd": "2012-05-10T11:00:00Z",
+							"semester":1},
+                            {"name": "test7",
+                            "trainingDate": "2010-07-10T00:00:00Z",
+                            "timeStart": "2010-07-10T05:15:00Z",
+                            "timeEnd": "2010-07-10T09:00:00Z",
+							"semester":1}],
+				"language":"en"
             }
 
-            /$
+            """
 
 
         return json.toString();
     }
+	
+//		private String getTestData2(){
+//		def json  = """
+//		{
+//		   "semesters":[
+//				  {
+//					 "id":1,
+//					 "semester":1,
+//					 "calYear":2013,
+//					 "maximalYearEarnings":null,
+//					 "pricestatist":null,
+//					 "priceStandardizedPartient":null,
+//					 "preparationRing":null
+//				  }
+//		   ],
+//		   "osces":[
+//			  {
+//				 "id":1,
+//				 "studyYear":1,
+//				 "maxNumberStudents":130,
+//				 "name":"Test 1",
+//				 "shortBreak":1,
+//				 "LongBreak":15,
+//				 "lunchBreak":45,
+//				 "middleBreak":5,
+//				 "numberPosts":null,
+//				 "numberCourses":0,
+//				 "postLength":13,
+//				 "isRepeOsce":false,
+//				 "numberRooms":17,
+//				 "isValid":true,
+//				 "osceStatus":2,
+//				 "security":1,
+//				 "osceSecurityTypes":1,
+//				 "patientAveragePerPost":null,
+//				 "semester":1,
+//				 "shortBreakSimpatChange":3,
+//				 "copiedOsce":null
+//			  }
+//		   ],
+//		   "osceDay":[
+//			  {
+//				 "osceDate":"2012-06-18T00:00:00Z",
+//				 "timeStart":"2012-06-18T09:00:00Z",
+//				 "timeEnd":"2012-06-18T19:00:00Z",
+//				 "lunchBreakStart":null,
+//				 "lunchBreakAfterRotation":null,
+//				 "osce":1,
+//				 "value":null
+//			  }
+//		   ],
+//		   "trainings":[
+//			  {
+//				 "name":"Test 1",
+//				 "trainingDate":"2012-09-29T10:59:54Z",
+//				 "timeStart":"2012-09-29T08:59:46Z",
+//				 "timeEnd":"2012-09-29T10:59:37Z",
+//				 "semester":1
+//              }
+//
+//		   ],
+//		   "language":"en"
+//		}
+//
+//		
+//		""";
+//		return json;
+//	}
+	
+	
 
 
    private String getTestData(){

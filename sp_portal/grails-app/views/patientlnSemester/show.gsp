@@ -53,6 +53,17 @@
 					
 				</li>
 				</g:if>
+				
+				<g:if test="${patientlnSemesterInstance?.semester}">
+                <li class="fieldcontain">
+                    <span id="semester-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Semester" /></span>
+
+                        <span class="property-value" aria-labelledby="nationality-label">
+						${patientlnSemesterInstance?.semester?.showSemester()}
+						
+                </li>
+                </g:if>
+
 			
 			</ol>
 			<g:form>

@@ -31,7 +31,24 @@ class OsceDayController extends sp_portal.MainController {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class OsceDayController Method save() with params : "+params)
 		}
-        def osceDayInstance = new OsceDay(params)
+        
+		
+		def osce;
+		def osceDayInstance ;
+		
+		if(params.osce){
+			osce = Osce.get(params.osce);
+			params.osce = osce;
+			
+			osceDayInstance  = new OsceDay(params);
+		}else{
+			flash.message = message(code: 'default.null.message', args: [message(code: 'Osce.label', default: 'osce')])
+			 render(view: "create", model: [osceDayInstance: osceDayInstance])
+			 return;
+		}
+		
+			
+		
 		if(log.isDebugEnabled()){
 			log.debug("new OsceDay : "+osceDayInstance)
 		}
@@ -104,6 +121,16 @@ class OsceDayController extends sp_portal.MainController {
                 return
             }
         }
+		
+		def osce;
+		if(params.osce){
+			osce = Osce.get(params.osce);
+			params.osce = osce;
+		}else{
+			flash.message = message(code: 'default.null.message', args: [message(code: 'Osce.label', default: 'osce'), osceDayInstance.id])
+			 render(view: "edit", model: [osceDayInstance: osceDayInstance])
+			 return;
+		}
 
         osceDayInstance.properties = params
 

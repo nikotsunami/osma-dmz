@@ -15,54 +15,89 @@ class SelectAvailableDatesController extends MainController{
 
 	}
 
+	def showSemester(){
+	
+		session["semester"] = params.semester;
+		redirect(controller:'SelectAvailableDates',action: "show",params: params);
+	
+	}
 
 	def show(){
+				
 		log.info("show selectAvailableDates")
+		
 		def acceptedPatinetln;
 		def availableOsceDays =[]; 
 		def availableTrainingDays= [];
 		def acceptedTrainingDays = [];
 		def acceptedOsceDays = [];
-
 		
-		if(params.sort.equals("trainingDate")||params.sort.equals("timeStart")||params.sort.equals("timeEnd")){
-			availableTrainingDays = local.Training.list(params);
-		}else{
-			availableTrainingDays = local.Training.list();
-		}
-		if(params.sort.equals("osceDate")){
-			availableOsceDays = local.OsceDay.list(params);
-		}else{
-			availableOsceDays = local.OsceDay.list();
-		}
+		def semester;
 		
-		def currentUser = User.findById(session.user.id);
-		if(log.isDebugEnabled()){
-			log.debug("find availableOsceDays : "+availableOsceDays)
-			log.debug("find availableTrainingDays :"+availableTrainingDays)
-			log.debug("find currentUser : "+currentUser)
-		}
+		if(session.semester){
 		
-		if(currentUser!=null){
-			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);
-			if(log.isDebugEnabled()){
-				log.debug("find acceptedPatinetln : "+acceptedPatinetln)
-			}
-			if(acceptedPatinetln!=null){
+			semester = local.Semester.get(session.semester);
+		}
+			if(semester){
+				def trainingSort = "trainingDate";
+				def trainingOrder = "desc";
+				def osceDaySort = "osceDate";
+				def	osceDayOrder = "desc";
 				
-				acceptedOsceDays = acceptedPatinetln.acceptedOsceDay
-				acceptedTrainingDays = acceptedPatinetln.acceptedTraining;
-				if(log.isDebugEnabled()){
-					log.debug("acceptedOsceDays : "+acceptedOsceDays)
-					log.debug("acceptedTrainingDays :"+acceptedTrainingDays)
+				params.max = Math.min(params.max ? params.int('max') : 10, 100)
+				
+				if(params.sort.equals("trainingDate")||params.sort.equals("timeStart")||params.sort.equals("timeEnd")){
+				
+					trainingSort = params.sort;
+					trainingOrder = params.order;
+					
+					
+				}
+				
+				if(params.sort.equals("osceDate")){
+					osceDaySort = params.sort;
+					osceDayOrder = params.order;
+				}
+				
+				availableTrainingDays = local.Training.list(fetch: [semester:semester],max: params.max, offset: params.offset,sort: trainingSort, order: trainingOrder);
+				
+			
+				def osceDaysOsce = local.Osce.findAllBySemester(semester);
+				
+				
+				if(osceDaysOsce){
+				
+					availableOsceDays = local.OsceDay.list(fetch: [osce:osceDaysOsce],max: params.max, offset: params.offset,sort: osceDaySort, order: osceDayOrder);
+					
 				}
 			}
+									
+			def currentUser = User.findById(session.user.id);
+			if(log.isDebugEnabled()){
+				log.debug("find availableOsceDays : "+availableOsceDays)
+				log.debug("find availableTrainingDays :"+availableTrainingDays)
+				log.debug("find currentUser : "+currentUser)
+			}
+			
+			if(currentUser!=null){
+				acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);
+				if(log.isDebugEnabled()){
+					log.debug("find acceptedPatinetln : "+acceptedPatinetln)
+				}
+				if(acceptedPatinetln!=null){
+					
+					acceptedOsceDays = acceptedPatinetln.acceptedOsceDay
+					acceptedTrainingDays = acceptedPatinetln.acceptedTraining;
+					if(log.isDebugEnabled()){
+						log.debug("acceptedOsceDays : "+acceptedOsceDays)
+						log.debug("acceptedTrainingDays :"+acceptedTrainingDays)
+					}
+				}
 
 		}
-		[availableTrainingDays:availableTrainingDays , availableOsceDays:availableOsceDays, acceptedTrainingDays:acceptedTrainingDays , acceptedOsceDays:acceptedOsceDays]
-
-	
-	
+		
+		[semester: session.semester,availableTrainingDays:availableTrainingDays , availableOsceDays:availableOsceDays, acceptedTrainingDays:acceptedTrainingDays , acceptedOsceDays:acceptedOsceDays]		
+		
 	}
 
 
@@ -116,9 +151,9 @@ class SelectAvailableDatesController extends MainController{
 		if(log.isDebugEnabled()){
 			log.debug("find currentUser : "+currentUser)
 		}
-	
 		if(currentUser!=null){
 			acceptedPatinetln = local.PatientlnSemester.findByStandardizedPatient(currentUser.standardizedPatient);	
+			
 			if(log.isDebugEnabled()){
 				log.debug("find acceptedPatinetln : "+acceptedPatinetln)
 			}
@@ -186,12 +221,16 @@ class SelectAvailableDatesController extends MainController{
 						
 				
 				}
-					
+				
 				if(updateDays==true && updateTrain==true){
 						acceptedPatinetln.acceptedOsceDay.clear();
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
 						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						if(session.semester){
+							def patinetSemester=local.Semester.get(session.semester);
+							acceptedPatinetln.semester=patinetSemester
+						}
 						acceptedPatinetln.save()
 						//sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
@@ -201,6 +240,11 @@ class SelectAvailableDatesController extends MainController{
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
 						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						if(session.semester){
+
+							def patinetSemester=local.Semester.get(session.semester);
+							acceptedPatinetln.semester=patinetSemester
+						}
 						acceptedPatinetln.save()
 						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
@@ -210,6 +254,10 @@ class SelectAvailableDatesController extends MainController{
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
 						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						if(session.semester){
+							def patinetSemester=local.Semester.get(session.semester);
+							acceptedPatinetln.semester=patinetSemester
+						}
 						acceptedPatinetln.save()
 						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
@@ -219,6 +267,10 @@ class SelectAvailableDatesController extends MainController{
 						acceptedPatinetln.acceptedTraining.clear();
 						acceptedPatinetln.acceptedOsceDay.addAll(acceptedOsceDays)
 						acceptedPatinetln.acceptedTraining.addAll(acceptedTrainingDays);
+						if(session.semester){
+							def patinetSemester=local.Semester.get(session.semester);
+							acceptedPatinetln.semester=patinetSemester
+						}
 						acceptedPatinetln.save()
 						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");
@@ -263,6 +315,10 @@ class SelectAvailableDatesController extends MainController{
 						
 						patient.acceptedOsceDay=acceptedOsceDays;
 						patient.acceptedTraining=acceptedTrainingDays;
+						if(session.semester){
+							def patinetSemester=local.Semester.get(session.semester);
+							patient.semester=patinetSemester
+						}
 						patient.save()
 						sendEmail(currentUser);
 						redirect(controller:"thank", action:"thankPatientInSemester");

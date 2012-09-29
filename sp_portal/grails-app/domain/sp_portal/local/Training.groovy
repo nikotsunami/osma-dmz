@@ -14,6 +14,13 @@ class Training {
     Date trainingDate
     Date timeStart
     Date timeEnd
+	Semester semester
+	
+	static hasMany = [semester: Semester
+					 ]
+
+   static mappedBy = [semester: 'id'
+					]
 
     static constraints = {
         name nullable: false, validator: {val,obj -> !val?.equals("") }
@@ -23,6 +30,7 @@ class Training {
 		
         }
 		trainingDate nullable: false
+		semester nullable:true
     }
 
     public String toString(){

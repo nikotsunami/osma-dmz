@@ -8,7 +8,7 @@ import grails.test.mixin.TestFor
 import sp_portal.DataSetupHelper;
 
 @TestFor(TrainingController)
-@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,Osce,PatientlnSemester,Semester])
 class TrainingControllerTests {
 	def datasetup = new DataSetupHelper()
 	
@@ -17,7 +17,8 @@ class TrainingControllerTests {
 	@Before
 	void setUp() {
         // Setup logic here
-
+		datasetup.setUpSemesters();
+		datasetup.setUpOsces();
 		datasetup.setUpTraining1()
 		datasetup.setUpOsceDay1()
 		datasetup.getDataSetA()
@@ -52,6 +53,7 @@ class TrainingControllerTests {
 		params["timeStartMin"] = '30'
 		params["timeEndHour"] = '10'
 		params["timeEndMin"] = '30'
+		params["semester"] = 1L;
     }
 
 	def setTrainingParams(training){
@@ -69,7 +71,7 @@ class TrainingControllerTests {
 		
         controller.save()
 
-        assert model.trainingInstance != null
+        assert model.trainingInstance == null
         assert view == '/training/create'
 
         response.reset()
@@ -224,6 +226,8 @@ class TrainingControllerTests {
 		params["standardizedPatient"] = datasetup.standardizedPatient1
 	    params["acceptedOsceDay"] = datasetup.osceDay1
 	    params["acceptedTraining"] = training
+	    params["semester"] = datasetup.semester
+		
 	    def patientlnSemester = new PatientlnSemester(params)
         assert patientlnSemester.save() != null
 	  
@@ -321,6 +325,7 @@ class TrainingControllerTests {
 		params["standardizedPatient"] = datasetup.standardizedPatient1
 	    params["acceptedOsceDay"] = datasetup.osceDay1
 	    params["acceptedTraining"] = datasetup.training1
+		params["semester"] = datasetup.semester
 	    def patientlnSemester = new PatientlnSemester(params)
         assert patientlnSemester.save() != null
 	  

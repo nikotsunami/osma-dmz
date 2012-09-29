@@ -17,33 +17,77 @@ class OsceSyncController extends MainController {
 	
 	private static final log = LogFactory.getLog(this)
 
-    def oneMsg = [];
-
-
+    
 
     def syncJson(){
 		log.info("user sync json")
-        def jsonObject = jsonToGroovy(params.data);
+        String jsonData = params.data;		
+		def jsonObject = jsonToGroovy(jsonData);
         sync(jsonObject)
+        
     }
 
 
     def jsonToGroovy(json){
+		json = preProcessData(json);
 		if(log.isTraceEnabled()){
 			log.trace(">> In class OsceSyncController Method jsonToGroovy(json) entered json : "+json)
 		}
 		log.info("parse json to jsonObject")
-        def jsonObject = JSON.parse(json);		
+        def jsonObject = JSON.parse(json);	
+	
         return jsonObject ;
     }
 
-    private void importMessage(def key){
+    private void importMessage(def oneMsg, def key){
         oneMsg << ["key":key]
 
     }
 	def test(){
 
-    }
+    } 
+	
+	private String preProcessData(String jsonStr){
+		jsonStr = jsonStr.replaceAll("\"semester\":\"HS\"", "\"semester\":0");
+		jsonStr = jsonStr.replaceAll("\"semester\":\"FS\"", "\"semester\":1");
+		
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ1\"", "\"studyYear\":0");
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ2\"", "\"studyYear\":1");
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ3\"", "\"studyYear\":2");
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ4\"", "\"studyYear\":3");
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ5\"", "\"studyYear\":4");
+		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ6\"", "\"studyYear\":5");
+		
+		jsonStr = jsonStr.replaceAll("\"osceStatus\":\"OSCE_NEW\"", "\"osceStatus\":0");
+		jsonStr = jsonStr.replaceAll("\"osceStatus\":\"OSCE_BLUEPRINT\"", "\"osceStatus\":1");
+		jsonStr = jsonStr.replaceAll("\"osceStatus\":\"OSCE_GENRATED\"", "\"osceStatus\":2");
+		jsonStr = jsonStr.replaceAll("\"osceStatus\":\"OSCE_FIXED\"", "\"osceStatus\":3");
+		jsonStr = jsonStr.replaceAll("\"osceStatus\":\"OSCE_CLOSED\"", "\"osceStatus\":4");
+		
+		jsonStr = jsonStr.replaceAll("\"security\":\"SIMPLE\"", "\"security\":0");
+		jsonStr = jsonStr.replaceAll("\"security\":\"FEDERAL_EXAM\"", "\"security\":1");
+		
+		jsonStr = jsonStr.replaceAll("\"osceSecurityTypes\":\"simple\"", "\"osceSecurityTypes\":0");
+		jsonStr = jsonStr.replaceAll("\"osceSecurityTypes\":\"federal\"", "\"osceSecurityTypes\":1");
+		
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a1\"", "\"patientAveragePerPost\":1");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a2\"", "\"patientAveragePerPost\":2");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a3\"", "\"patientAveragePerPost\":3");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a4\"", "\"patientAveragePerPost\":4");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a5\"", "\"patientAveragePerPost\":5");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a6\"", "\"patientAveragePerPost\":6");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a7\"", "\"patientAveragePerPost\":7");
+		jsonStr = jsonStr.replaceAll("\"patientAveragePerPost\":\"a8\"", "\"patientAveragePerPost\":8");
+		
+		
+		
+		
+		
+		return jsonStr;
+			
+	}
+	
+
 
     /**
      *OscdDay synchronise database and Training and validate Patient is present
@@ -53,6 +97,7 @@ class OsceSyncController extends MainController {
 			log.trace(">> In class OsceSyncController Method sync entered data : "+data)
 		}
         def key = [];
+		def oneMsg = [];		
 
         if(data){
             //get locale from osce
@@ -62,6 +107,200 @@ class OsceSyncController extends MainController {
 				locale = new Locale(language)
                 
             }
+			//Synchronise Semester
+			log.info("Synchronise Semester");
+			for(int i = 0 ; i<data.semesters.size();i++){
+				def semesters = data.semesters[i];
+				def semester = local.Semester.findByOrigId(semesters.id);
+				if(!semester){
+					semester = new local.Semester();
+					if(semesters.id != JSONObject.NULL){
+						semester.origId= semesters.id;
+					}
+					
+					if(semesters.semester != JSONObject.NULL){
+						semester.semester= semesters.semester;
+					}
+					
+					if(semesters.calYear != JSONObject.NULL){
+						semester.calYear= semesters.calYear;
+					}
+					
+					//if(semesters.maximalYearEarnings != JSONObject.NULL){
+					//	semester.maximalYearEarnings= semesters.maximalYearEarnings;
+					//}
+					//
+					//if(semesters.pricestatist != JSONObject.NULL){
+					//	semester.pricestatist= semesters.pricestatist;
+					//}
+					//if(semesters.priceStandardizedPartient != JSONObject.NULL){
+					//	semester.priceStandardizedPartient= semesters.priceStandardizedPartient;
+					//}
+					//if(semesters.preparationRing != JSONObject.NULL){
+					//	semester.preparationRing= semesters.preparationRing;
+					//}					
+					semester.save(flush:true);
+					key = message(code: 'default.notFound.Semester.message', args: [semesters.id.toString()],locale: locale)
+					importMessage(oneMsg,key)
+					
+				}else{
+					if(semesters.id != JSONObject.NULL){
+						semester.origId= semesters.id;
+					}
+					
+					if(semesters.semester != JSONObject.NULL){
+						semester.semester= semesters.semester;
+					}
+					
+					if(semesters.calYear != JSONObject.NULL){
+						semester.calYear= semesters.calYear;
+					}
+					semester.save(flush:true);
+					key = message(code: 'default.found.Semester.message', args: [semesters.id.toString()],locale: locale)
+					importMessage(oneMsg,key)
+				}
+				
+			}
+	
+			//Synchronise Osce
+			log.info("Synchronise Osce");
+			for(int i = 0 ; i<data.osces.size();i++){
+				def osces = data.osces[i];
+				def osce = local.Osce.findByOrigId(osces.id);
+				
+				if(!osce){
+					osce=new local.Osce();
+					
+					if(osces.id != JSONObject.NULL){
+						osce.origId= osces.id;
+					}
+					
+					if(osces.studyYear != JSONObject.NULL){
+						osce.studyYear=osces.studyYear
+					}
+					//if(osces.maxNumberStudents != JSONObject.NULL){
+					//	osce.maxNumberStudents=osces.maxNumberStudents
+					//}
+					if(osces.name != JSONObject.NULL){
+						osce.name=osces.name
+					}
+					
+					//if(osces.shortBreak != JSONObject.NULL){
+					//	osce.shortBreak=osces.shortBreak
+					//}
+					//
+					//if(osces.LongBreak != JSONObject.NULL){
+					//	osce.longBreak=osces.LongBreak
+					//}
+					//
+					//if(osces.lunchBreak != JSONObject.NULL){
+					//	osce.lunchBreak=osces.lunchBreak
+					//}
+					//
+					//if(osces.middleBreak != JSONObject.NULL){
+					//	osce.middleBreak=osces.middleBreak
+					//}
+					//
+					//if(osces.numberPosts != JSONObject.NULL){
+					//	osce.numberPosts=osces.numberPosts
+					//}
+					//
+					//if(osces.numberCourses != JSONObject.NULL){
+					//	osce.numberCourses=osces.numberCourses
+					//}
+					//
+					//if(osces.postLength != JSONObject.NULL){
+					//	osce.postLength=osces.postLength
+					//}
+					//
+					//if(osces.isRepeOsce != JSONObject.NULL){
+					//	osce.isRepeOsce=osces.isRepeOsce
+					//}
+					//
+					if(osces.numberRooms != JSONObject.NULL){
+						osce.numberRooms=osces.numberRooms
+					}
+					//
+					//if(osces.isValid != JSONObject.NULL){
+					//	osce.isValid=osces.isValid
+					//}
+					//
+					//if(osces.osceStatus != JSONObject.NULL){
+					//	osce.osceStatus=osces.osceStatus
+					//}
+					//
+					//if(osces.security != JSONObject.NULL){
+					//	osce.security=osces.security
+					//}
+					//
+					//if(osces.osceSecurityTypes != JSONObject.NULL){
+					//	osce.osceSecurityTypes=osces.osceSecurityTypes
+					//}
+					//
+					//if(osces.patientAveragePerPost != JSONObject.NULL){
+					//	osce.patientAveragePerPost=osces.patientAveragePerPost
+					//}
+					
+					if(osces.semester != JSONObject.NULL){
+						local.Semester oscesSemester = local.Semester.findByOrigId(osces.semester);
+						
+						if(oscesSemester){
+							osce.semester=oscesSemester
+						}
+					}
+					
+					if(osces.copiedOsce != JSONObject.NULL){
+					local.Osce copiedOsce = local.Osce.findByOrigId(osces.copiedOsce);
+						if(copiedOsce){
+							osce.copiedOsce=copiedOsce
+						}
+					}
+					
+					//if(osces.shortBreakSimpatChange != JSONObject.NULL){
+					//	osce.shortBreakSimpatChange=osces.shortBreakSimpatChange
+					//}
+					osce.save(flush:true);
+					key = message(code: 'default.notFound.Osce.message', args: [osces.id.toString()],locale: locale)
+					importMessage(oneMsg,key)
+					
+				}else{
+					if(osces.id != JSONObject.NULL){
+						osce.origId= osces.id;
+					}
+					
+					if(osces.numberRooms != JSONObject.NULL){
+						osce.numberRooms=osces.numberRooms
+					}
+					
+					if(osces.studyYear != JSONObject.NULL){
+						osce.studyYear=osces.studyYear
+					}
+					
+					if(osces.name != JSONObject.NULL){
+						osce.name=osces.name
+					}
+					
+					if(osces.semester != JSONObject.NULL){
+						local.Semester oscesSemester = local.Semester.findByOrigId(osces.semester);
+						
+						if(oscesSemester){
+							osce.semester=oscesSemester
+						}
+					}
+					
+					if(osces.copiedOsce != JSONObject.NULL){
+					local.Osce copiedOsce = local.Osce.findByOrigId(osces.copiedOsce);
+						if(copiedOsce){
+							osce.copiedOsce=copiedOsce
+						}
+					}
+					osce.save(flush:true);
+					key = message(code: 'default.found.Osce.message', args: [osces.id.toString()],locale: locale)
+					importMessage(oneMsg,key)
+				}
+				
+			}
+			
             //Synchronise OsceDay
 			log.info("Synchronise OsceDay")
             for(int i = 0; i<data.osceDay.size();i++){
@@ -71,20 +310,48 @@ class OsceSyncController extends MainController {
                     def osceDay = local.OsceDay.findOsceDaysByOsceDate(date);
                     if(!osceDay){
                         osceDay = new local.OsceDay();
+						if(day.timeStart != JSONObject.NULL && !day.timeStart.equals("")){
+							osceDay.timeStart=convertToDate(day.timeStart)
+						}
+						
+						if(day.osce != JSONObject.NULL){
+							def osce=local.Osce.findByOrigId(day.osce)
+							if(osce){
+								osceDay.osce=osce
+							}
+						}
+							
+						if(day.timeEnd != JSONObject.NULL && !day.timeEnd.equals("")){
+							osceDay.timeEnd=convertToDate(day.timeEnd)
+						}
+						
+						if(day.lunchBreakStart != JSONObject.NULL && !day.lunchBreakStart.equals("")){
+							osceDay.lunchBreakStart=convertToDate(day.lunchBreakStart)
+						}
+						
+						if(day.lunchBreakAfterRotation != JSONObject.NULL){
+							osceDay.lunchBreakAfterRotation=day.lunchBreakAfterRotation
+						}
+						
+						if(day.value != JSONObject.NULL){
+							osceDay.value=day.value
+						}
+						
                         osceDay.osceDate = date;
                         osceDay.save(flush:true);
                         key = message(code: 'default.notFound.OsceDay.message', args: [convertToString(date)],locale: locale);
-                        importMessage(key)
+                        importMessage(oneMsg,key)
                     }else{
                         key = message(code: 'default.found.OsceDay.message', args: [convertToString(date)],locale: locale)
-                        importMessage(key)
+                        importMessage(oneMsg,key)
                     }
                 }else{
 
-                    key = message(code: 'default.cannotSave.OsceDay.message',locale: locale)
-                    importMessage(key)
+                   key = message(code: 'default.cannotSave.OsceDay.message',locale: locale)
+                    importMessage(oneMsg,key)
                 }
             }
+			
 
             //Synchronise Training
 			log.info("Synchronise Training")
@@ -109,6 +376,13 @@ class OsceSyncController extends MainController {
                                 training.trainingDate = convertToDate(jsonTraining.trainingDate);
                                 training.timeStart = convertToDate(jsonTraining.timeStart);
                                 training.timeEnd = convertToDate(jsonTraining.timeEnd);
+								if(jsonTraining.semester != JSONObject.NULL){
+									def semesterTraining = local.Semester.findByOrigId(jsonTraining.semester);
+									if(semesterTraining){
+										training.semester=semesterTraining
+									}
+									
+								}
                                 training.save(flush:true);
                                 if(start){
                                     key = message(code: 'default.notFound.Training.message', args: [convertToString(start)],locale: locale)
@@ -118,41 +392,25 @@ class OsceSyncController extends MainController {
                             }else{
                                 key = message(code: 'default.cannotSave.Training.message',locale: locale)
                             }
-                            importMessage(key)
+                            importMessage(oneMsg,key)
                         }else{
                             if(start){
                                 key = message(code: 'default.foundExist.Training.message', args: [convertToString(start)],locale: locale)
                             }else{
                                 key = message(code: 'default.foundExist.Training.message', args: [convertTrainingDateToString(date)],locale: locale)
                             }
-                            importMessage(key)
+                            importMessage(oneMsg,key)
 
                         }
                     }else{
                         key = message(code: 'default.cannotSave.Training.message',locale: locale)
-                        importMessage(key)
+                        importMessage(oneMsg,key)
                     }
                 }
 
             }
+		}	
 
-
-
-
-            //Validate standardizedPatient is present
-			log.info("Validate standardizedPatient is exist")
-            for(int i = 0; i<data.standardizedPatient.size();i++){
-                def jsonPatient = data.standardizedPatient[i];
-                if(jsonPatient.id != JSONObject.NULL){
-                    def patient = local.StandardizedPatient.findByOrigId(jsonPatient.id)
-                    if(!patient){
-                        key = message(code: 'default.notFound.Patient.message',args:[jsonPatient.preName,jsonPatient.name],locale: locale)
-                        importMessage(key)
-
-                    }
-                }
-
-            }
 
 
             //set json date and send to OSCE
@@ -182,12 +440,13 @@ class OsceSyncController extends MainController {
 			if(log.isDebugEnabled()){
 				log.debug("render jsonStr : "+jsonStr)
 			}
+			
             render text:jsonStr ,contentType:"application/json",encoding:"UTF-8"
-
-
-        }
+		   
 
     }
+
+    
 
     /**
      * get the response json data of PatientInSemester
@@ -203,7 +462,9 @@ class OsceSyncController extends MainController {
             String patientJson ="{\"standarizedPatientId\":"+semeter.standardizedPatient.getOrigId()+",";
             patientJson += "\"acceptedTrainings\":"+ getTrainingJson(semeter.acceptedTraining)+",";
             patientJson += "\"acceptedOsce\":"+ getOsceDayJson(semeter.acceptedOsceDay)+",";
-            patientJson += "\"accepted\":"+ semeter.accepted;
+            patientJson += "\"accepted\":"+ semeter.accepted+",";
+			patientJson += "\"semester\":"+ semeter.semester.getOrigId();
+			
             patientImSemesterListJson +=patientJson+"}";
             if(count != patientImSemesterList.size()){
                 patientImSemesterListJson += ",";
@@ -217,7 +478,7 @@ class OsceSyncController extends MainController {
         return patientImSemesterListJson;
 
     }
-
+	
 
     /**
      * get the response Json data of OsceDay
@@ -231,8 +492,57 @@ class OsceSyncController extends MainController {
         int i = 0;
         for(  local.OsceDay day : osceDayList){
             i++
-            String oneDayJson = "{\"osceDate\":\""+convertToString(day.getOsceDate())+"\"}";
-            osceDayListJson+=oneDayJson;
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("{");
+			
+			sb.append("\"osceDate\":"); 
+			if(day.getOsceDate()){
+				sb.append("\""+convertToString(day.getOsceDate())+"\"");
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			
+			sb.append("\"timeStart\":");
+			if(day.getTimeStart()){
+				sb.append("\""+convertToString(day.getTimeStart())+"\"");
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			
+			sb.append("\"timeEnd\":");
+			if(day.getTimeEnd()){
+				sb.append("\""+convertToString(day.getTimeEnd())+"\"");
+			}else{
+				sb.append("null");
+			}			
+			sb.append(",");
+			
+			sb.append("\"lunchBreakStart\":");
+			if(day.getLunchBreakStart()){
+				sb.append("\""+convertToString(day.getLunchBreakStart())+"\"");
+			}else{
+				sb.append("null");
+			}	
+			sb.append(",");
+			
+			sb.append("\"lunchBreakAfterRotation\":"+day.getLunchBreakAfterRotation());
+			sb.append(",");
+			sb.append("\"osce\":");
+			if(day.getOsce()){
+				sb.append(day.getOsce().getOrigId().toString());
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			sb.append("\"value\":"+day.getValue());
+			
+			sb.append("}");
+			
+			
+            osceDayListJson+=sb.toString();
             if(i != osceDayList.size()){
                 osceDayListJson+=",";
             }
@@ -255,12 +565,42 @@ class OsceSyncController extends MainController {
 
         int i = 0;
         for( local.Training training : trainingList){
-        i++
-        String oneTrainingJson = "{\"name\":\""+training.getName()+"\",";
-                   oneTrainingJson += "\"trainingDate\":\""+convertToString(training.getTrainingDate())+"\",";
-                   oneTrainingJson += "\"timeStart\":\""+convertToString(training.getTimeStart())+"\",";
-                   oneTrainingJson += "\"timeEnd\":\""+convertToString(training.getTimeEnd())+"\"}";
-            trainingListJson+=oneTrainingJson;
+			i++  
+				   
+			StringBuilder sb = new StringBuilder();
+			sb.append("{");
+			String name = "";
+			if(training.getName() !=null ){
+				name = training.getName();
+			}
+			sb.append("\"name\" : "+"\""+name+"\",");
+			sb.append("\"trainingDate\" :");
+			if(training.getTrainingDate() != null){
+				sb.append("\""+convertToString(training.getTrainingDate())+"\"");
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			
+			sb.append("\"timeStart\":");
+			if(training.getTimeStart() != null){
+				sb.append("\""+convertToString(training.getTimeStart())+"\"");
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			
+			sb.append("\"timeEnd\":");
+			if(training.getTimeEnd() != null){
+				sb.append("\""+convertToString(training.getTimeEnd())+"\"");
+			}else{
+				sb.append("null");
+			}
+			sb.append(",");
+			sb.append("\"semester\":"+training.getSemester().getOrigId());
+			sb.append("}");
+	   
+            trainingListJson+=sb.toString();
             if(i != trainingList.size()){
                 trainingListJson+=",";
             }

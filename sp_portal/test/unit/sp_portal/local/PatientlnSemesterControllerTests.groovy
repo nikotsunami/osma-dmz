@@ -7,13 +7,15 @@ import grails.test.mixin.*
 import sp_portal.DataSetupHelper;
 
 @TestFor(PatientlnSemesterController)
-@Mock([sp_portal.User,Bankaccount,sp_portal.Role,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
+@Mock([sp_portal.User,Bankaccount,sp_portal.Role,Osce,Semester,StandardizedPatient,AnamnesisForm,AnamnesisCheckTitle,AnamnesisCheck,AnamnesisChecksValue,Training,OsceDay,PatientlnSemester])
 class PatientlnSemesterControllerTests {
 	def datasetup = new DataSetupHelper()
 
 	@Before
 	void setUp() {
         // Setup logic here
+		datasetup.setUpSemesters();
+		datasetup.setUpOsces();
 		datasetup.setUpTraining1()
 		datasetup.setUpOsceDay1()
 		datasetup.getDataSetA()
@@ -33,6 +35,16 @@ class PatientlnSemesterControllerTests {
       params["standardizedPatient"] = datasetup.standardizedPatient1
 	  params["acceptedOsceDay"] = datasetup.osceDay1
 	  params["acceptedTraining"] = datasetup.training1
+	  params["semester"] = datasetup.semester
+
+    }
+	
+	 def populateValidParamsId(params) {
+		  assert params != null
+		  params["standardizedPatient"] = datasetup.standardizedPatient1
+		  params["acceptedOsceDay"] = datasetup.osceDay1
+		  params["acceptedTraining"] = datasetup.training1
+		  params["semester"] = 1L;
 
     }
 	
@@ -75,7 +87,7 @@ class PatientlnSemesterControllerTests {
 
         response.reset()
 
-        populateValidParams(params)
+        populateValidParamsId(params)
         controller.save()
 
        // assert response.redirectedUrl == '/patientlnSemester/show'
@@ -142,6 +154,7 @@ class PatientlnSemesterControllerTests {
         // test invalid parameters in update
         params.id = patientlnSemester.id
         params["standardizedPatient"] = null
+        params["semester"] = 1L
 
         controller.update()
 
@@ -150,7 +163,7 @@ class PatientlnSemesterControllerTests {
 
         patientlnSemester.clearErrors()
 
-        populateValidParams(params)
+        populateValidParamsId(params)
         controller.update()
 
         assert response.redirectedUrl == "/patientlnSemester/show/$patientlnSemester.id"
@@ -206,7 +219,7 @@ class PatientlnSemesterControllerTests {
 	*
 	*/
 	void testSaveAccectedIsTrue(){
-		populateValidParams(params)
+		populateValidParamsId(params)
         controller.save()
 
        // assert response.redirectedUrl == '/patientlnSemester/show'

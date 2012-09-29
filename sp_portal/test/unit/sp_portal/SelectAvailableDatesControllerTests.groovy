@@ -22,7 +22,9 @@ import sp_portal.DataSetupHelper;
 								local.OsceDay,
 									local.Training,
 										local.PatientlnSemester,
-											local.Emails])
+											local.Emails,
+											local.Semester,
+											local.Osce])
 class SelectAvailableDatesControllerTests {
    def  datasetup;
  
@@ -32,6 +34,8 @@ class SelectAvailableDatesControllerTests {
 		datasetup= new DataSetupHelper()
 
 		datasetup.getDataSetB()
+		datasetup.setUpSemesters();
+		datasetup.setUpOsces();
 		datasetup.setUpOsceDays();
 		datasetup.setUpTrainingDays()
 		datasetup.setUpTrainingDays1()
@@ -50,12 +54,41 @@ class SelectAvailableDatesControllerTests {
 
 	/**
 	 *
-	 *Unit test the contents of these lists. both empty and full and when PatientInSemester does not exist.
+	 *Unit test the empty semester has patientinsemester
 	 */
 	@Test
   
 	void testShow() {
 		def mod = controller.show();
+		
+		assertNotNull	mod
+
+		assertNotNull	mod.availableOsceDays
+        assertEquals 0, mod.availableOsceDays.size()
+
+		assertNotNull	mod.availableTrainingDays
+        assertEquals 0, mod.availableTrainingDays.size()
+		
+		assertNotNull	mod.acceptedTrainingDays
+        assertEquals 1, mod.acceptedTrainingDays.size()
+		
+		assertNotNull	mod.acceptedOsceDays
+        assertEquals 1, mod.acceptedOsceDays.size()
+				
+    }
+	
+	/**
+	 *
+	 *Unit test has the semester
+	 */
+	@Test
+  
+	void testShowOfSemester() {
+
+		session.semester = 1L;
+		println();
+		def mod = controller.show();
+		
 		assertNotNull	mod
 
 		assertNotNull	mod.availableOsceDays
@@ -70,13 +103,14 @@ class SelectAvailableDatesControllerTests {
 		assertNotNull	mod.acceptedOsceDays
         assertEquals 1, mod.acceptedOsceDays.size()
 		
-
-		
+		session.semester = null;
+				
     }
 
 	
    //test the Bug(787) : "select available Dates sorting doesn't work"
    void testBug787(){
+		session.semester = 1L;
 		def model = null;
 		def list = null;
 	
@@ -159,6 +193,8 @@ class SelectAvailableDatesControllerTests {
 		model = controller.show()
 	    list = model.availableOsceDays
 		assert list.size() == 3
+		
+		session.semester = null;
    }	
 	
   
