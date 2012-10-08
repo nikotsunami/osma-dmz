@@ -746,6 +746,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                           "profession":"Bauarbeiter/in"
                        },
                        "socialInsuranceNo":"123.4567.8911",
+					   "status":"ACTIVE",
                        "street":"Feldbergstrasse 145",
                        "telephone":null,
                        "telephone2":";kjlkjlj",
@@ -900,6 +901,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                           "profession":"Bauarbeiter/in"
                        },
                        "socialInsuranceNo":"123.4567.8911",
+					   "status":"ACTIVE",
                        "street":"Feldbergstrasse 145",
                        "telephone":"123456789",
                        "telephone2":";kjlkjlj",
@@ -1051,6 +1053,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                           "profession":"Bauarbeiter/in"
                        },
                        "socialInsuranceNo":"123.4567.8911",
+					   "status":"ACTIVE",
                        "street":"Feldbergstrasse 145",
                        "telephone":"123456789",
                        "telephone2":";kjlkjlj",
@@ -1202,6 +1205,7 @@ class DataImportExportControllerTests extends GroovyTestCase{
                        "id":5712,
                        "postalCode":4057,
                        "preName":"Marianne",
+					   "status":"ACTIVE",
                        "profession":{
                           "class":"ch.unibas.medizin.osce.domain.Profession",
                           "id":3,
