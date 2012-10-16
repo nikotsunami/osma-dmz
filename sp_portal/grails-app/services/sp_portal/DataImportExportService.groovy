@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import java.util.Locale;
 
 class DataImportExportService  {
+
 	private static final log = LogFactory.getLog(this)
 
 	def messageSource
@@ -113,13 +114,13 @@ class DataImportExportService  {
 	def errorsRep =  ""
 		
 	def synchronized importSP(params) throws Exception{
+		
 		errorsRep =  ""
  		if(log.isTraceEnabled()){
 			log.trace(">> In class DataImportExportController Method importSP with params.data : "+params.data)
 		}
         if (params.data){
 		
-		println("json; "+params.data);
 			
             String data = params.data;
 
@@ -206,6 +207,32 @@ class DataImportExportService  {
                             }
                     }
              }
+			 
+
+
+			 String standardizedPatientStatus = jsonObject.get("status");
+            if(jsonObject.containsKey("status")){
+                    if(standardizedPatientStatus){
+                        jsonObject.remove("status");
+                      int status = -1;
+                    if (standardizedPatientStatus.toUpperCase().equals("INACTIVE")) {
+                                status = 0;
+                            } else if(standardizedPatientStatus.toUpperCase().equals("ACTIVE")){
+                                status = 1;
+                            } else if(standardizedPatientStatus.toUpperCase().equals("EXPORTED")){
+                                status = 2;
+                            } else if(standardizedPatientStatus.toUpperCase().equals("ANONYMIZED")){
+                                status = 3;
+                            } 
+
+                            if (status == -1){
+                                jsonObject.put("status",null);
+                            } else {
+                                jsonObject.put("status",status);
+                            }
+                    }
+             }
+
 
              String workPermission = jsonObject.get("workPermission");
             if (jsonObject.containsKey("workPermission")){
