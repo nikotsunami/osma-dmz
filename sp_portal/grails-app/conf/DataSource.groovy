@@ -17,8 +17,8 @@ environments {
             dbCreate = "create-drop"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/osce_public"
-            username = "teeeeest"
-            password = "admin"
+            username = "root"
+            password = ""
         }
     
         dataSource_original {
