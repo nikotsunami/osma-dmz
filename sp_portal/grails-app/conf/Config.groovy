@@ -47,15 +47,22 @@ environments {
 		}
 	}
         grails.logging.jul.usebridge = false
-	if (System.getenv("SP_PORTAL_CONFIG")) {
+
+	if(!grails.config.locations || !(grails.config.locations instanceof List)) {
+		grails.config.locations = []
+	}
+
+	if (System.getProperty("SP_PORTAL_CONFIG")) {
+		println( "Including configuration file (by command line): " 
+			+ System.getProperty("SP_PORTAL_CONFIG"));
+		grails.config.locations << "file:" + System.getProperty("SP_PORTAL_CONFIG");
+	} else if (System.getenv("SP_PORTAL_CONFIG")) {
 		println( "Including configuration file: " + System.getenv("SP_PORTAL_CONFIG"));
-		if(!grails.config.locations || !(grails.config.locations instanceof List)) {
-			grails.config.locations = []
-		}
 		grails.config.locations << "file:" + System.getenv("SP_PORTAL_CONFIG")
 	} else {
 		println "No external configuration file defined."
 	}
+
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
     test {
