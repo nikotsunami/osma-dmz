@@ -52,7 +52,9 @@ environments {
 		grails.config.locations = []
 	}
 
-	if (System.getProperty("SP_PORTAL_CONFIG")) {
+	grails.config.locations << "file:${userHome}/.grails/${appName}-config.groovy"
+
+	/*if (System.getProperty("SP_PORTAL_CONFIG")) {
 		println( "Including configuration file (by command line): " 
 			+ System.getProperty("SP_PORTAL_CONFIG"));
 		grails.config.locations << "file:" + System.getProperty("SP_PORTAL_CONFIG");
@@ -61,7 +63,7 @@ environments {
 		grails.config.locations << "file:" + System.getenv("SP_PORTAL_CONFIG")
 	} else {
 		println "No external configuration file defined."
-	}
+	}*/
 
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
