@@ -33,7 +33,7 @@ class BankaccountController extends sp_portal.MainController{
             render(view: "create", model: [bankaccountInstance: bankaccountInstance])
             return
         }
-        flash.message = message(code: 'default.created.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), bankaccountInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), bankaccountInstance.id])
         redirect(action: "show", id: bankaccountInstance.id)
     }
 
@@ -56,7 +56,7 @@ class BankaccountController extends sp_portal.MainController{
 		}
         if (!bankaccountInstance) {
 
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
             return
         }
         [bankaccountInstance: bankaccountInstance]
@@ -80,7 +80,7 @@ class BankaccountController extends sp_portal.MainController{
 			log.debug("get bankaccountInstance : "+bankaccountInstance)
 		}
         if (!bankaccountInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
 			redirect(action: "show")
             return
         }
@@ -105,7 +105,7 @@ class BankaccountController extends sp_portal.MainController{
 			log.debug("get bankaccountInstance : "+bankaccountInstance)
 		}
         if (!bankaccountInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
             redirect(action: "list")
             return
         }
@@ -114,7 +114,7 @@ class BankaccountController extends sp_portal.MainController{
             def version = params.version.toLong()
             if (bankaccountInstance.version > version) {
                 bankaccountInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'bankaccount.label', default: 'Bankaccount')] as Object[],
+                          [message(code: 'bankaccount.label', default: 'Bankkonto')] as Object[],
                           "Another user has updated this Bankaccount while you were editing")
                 render(view: "edit", model: [bankaccountInstance: bankaccountInstance])
                 return
@@ -128,7 +128,7 @@ class BankaccountController extends sp_portal.MainController{
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), bankaccountInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), bankaccountInstance.id])
         redirect(action: "show", id: bankaccountInstance.id)
     }
 
@@ -151,18 +151,18 @@ class BankaccountController extends sp_portal.MainController{
 			log.debug("get bankaccountInstance : "+bankaccountInstance)
 		}
         if (!bankaccountInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
             redirect(action: "list")
             return
         }
 
         try {
             bankaccountInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'bankaccount.label', default: 'Bankaccount'), params.id])
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'bankaccount.label', default: 'Bankkonto'), params.id])
             redirect(action: "show", id: params.id)
         }
     }

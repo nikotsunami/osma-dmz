@@ -620,7 +620,7 @@ class UserController extends MainController {
                         render(view: "create", model: [userInstance: userInstance])
                         return
                     }
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'Benutzer'), userInstance.id])
                 redirect(action: "show", id: userInstance.id)
         }else{
             flash.message = message(code: 'default.password.message')
@@ -658,7 +658,7 @@ class UserController extends MainController {
 
         def userInstance = User.get(params.id)
         if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'Benutzer'), params.id])
             redirect(action: "list")
             return
         }
@@ -687,7 +687,7 @@ class UserController extends MainController {
 
 
         if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'Benutzer'), params.id])
             redirect(action: "list")
             return
         }

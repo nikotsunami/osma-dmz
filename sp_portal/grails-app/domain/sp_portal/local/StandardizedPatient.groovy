@@ -26,7 +26,7 @@ class StandardizedPatient {
     Integer maritalStatus
     String mobile
     String name
-    Integer postalCode
+    String postalCode
     String preName
     String socialInsuranceNo
 	Integer status

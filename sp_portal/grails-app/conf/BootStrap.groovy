@@ -32,7 +32,8 @@ class BootStrap {
 	dataSource.setTestWhileIdle(false)
 	dataSource.setTestOnReturn(false)
 	dataSource.setValidationQuery("SELECT 1")
-		   
+	
+	Locale.setDefault(Locale.GERMAN);
     }
     def destroy = { }
 }

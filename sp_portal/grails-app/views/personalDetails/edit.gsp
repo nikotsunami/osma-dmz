@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="stdpnt">
-        <g:set var="entityName" value="${message(code: 'standardizedPatient.label', default: 'StandardizedPatient')}" />
+        <g:set var="entityName" value="${message(code: 'default.personalDetails.link', default: 'Persoenliche Informationen')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
     </head>
     <body>

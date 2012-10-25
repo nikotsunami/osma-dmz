@@ -9,7 +9,7 @@
     </head>
     <body>
 
-         <h1><g:message code="default.welcome.message"/>&nbsp;&nbsp;&nbsp;<%= session.user.userName %> </h1>
+         <h1><g:message code="default.welcome.message"/> <%= session.user.userName %> </h1>
 
     </body>
 </html>

@@ -5,8 +5,8 @@
 		<thead>
 			<tr>			
 				<g:sortableColumn property="email" title="${message(code: 'user.label.isSend')}" />
-				<g:sortableColumn property="email" title="${message(code: 'user.userEmail.label', default: 'User Email')}" />
-				<g:sortableColumn property="name" title="${message(code: 'user.userName.label', default: 'User Name')}" />
+				<g:sortableColumn property="email" title="${message(code: 'user.userEmail.label', default: 'Benutzer Email')}" />
+				<g:sortableColumn property="name" title="${message(code: 'user.userName.label', default: 'Benutzer Name')}" />
 			</tr>
 		</thead>
 		<tbody>

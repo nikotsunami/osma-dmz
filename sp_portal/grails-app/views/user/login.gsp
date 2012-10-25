@@ -1,11 +1,11 @@
 <html>
   <head>
     <meta name="layout" content="userMain" />
-    <title>Login</title>
+    <title>SP Portal - Anmeldung</title>
   </head>
   <body>
     <div class="body">
-      <h1>Login</h1>
+      <h1>SP Portal - Anmeldung</h1>
       <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
       </g:if>
@@ -15,7 +15,7 @@
             <tbody>
               <tr class="prop">
                 <td class="name">
-                  <label for="login">Login:</label>
+                  <label for="login">Benutzername:</label>
                 </td>
                 <td>
                   <input type="text" id="userName" name="userName"/>
@@ -24,7 +24,7 @@
 
               <tr class="prop">
                 <td class="name">
-                  <label for="password">Password:</label>
+                  <label for="password">Passwort:</label>
                 </td>
                 <td>
                   <input type="password" id="passwordHash" name="passwordHash"/>

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="stdpnt">
-        <g:set var="entityName" value="${message(code: 'bankaccount.label', default: 'Bankaccount')}" />
+        <g:set var="entityName" value="${message(code: 'bankaccount.label', default: 'Bankkonto')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>

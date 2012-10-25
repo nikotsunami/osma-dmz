@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta name="layout" content="userMain">
-		<g:set var="entityName" value="${message(code: 'osceDay.label', default: 'Osce Day')}" />
+		<g:set var="entityName" value="${message(code: 'osceDay.label', default: 'OSCE Termin')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>

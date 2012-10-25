@@ -37,7 +37,7 @@ class MyAccountController extends MainController {
             return
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'Benutzer'), userInstance.id])
         redirect(action: "show", id: userInstance.id)
     }
 
@@ -64,7 +64,7 @@ class MyAccountController extends MainController {
         def userInstance = user
         
         if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'Benutzer'), params.id])
             redirect(action: "show")
 
         }
@@ -91,7 +91,7 @@ class MyAccountController extends MainController {
         handleInboundPassword(params);
 
         if (!userInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'Benutzer'), params.id])
             redirect(action: "list")
             return
         }
@@ -101,7 +101,7 @@ class MyAccountController extends MainController {
 
             if (userInstance.version > version) {
                 userInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'user.label', default: 'User')] as Object[],
+                          [message(code: 'user.label', default: 'Benutzer')] as Object[],
                           "Another user has updated this User while you were editing")
                 render(view: "edit", model: [userInstance: userInstance])
                 return
@@ -117,7 +117,7 @@ class MyAccountController extends MainController {
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'Benutzer'), userInstance.id])
         redirect(action: "show", id: userInstance.id)
     }
 

@@ -1,6 +1,6 @@
 .stdpnt-menu {
     background-color : #96BEFC;
-    width: 190px;
+    min-width: 240px;
     height: 100%;
     float: left;
     padding-top: 30px;
@@ -9,8 +9,10 @@
 
 .stdpnt-main-panel {
     background-color : white ;
-    width: 618px;
-    float: left;
+    /*width: 618px;*/
+    /*float: left;*/    
+    margin-left: 250px;
+    max-width: 930px;
     padding-left: 10px;
 }
 

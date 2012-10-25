@@ -44,7 +44,7 @@ public class AdminPage extends BasePage {
         clickLink("Send Emails");
         assertTextPresent("Is Send");
         assertTextPresent("User Email");
-        assertTextPresent("User Name");
+        assertTextPresent("Username");
     }
 
     def clickAcceptedDays(){

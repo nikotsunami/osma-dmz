@@ -41,11 +41,11 @@ body {
 	color: #000;
 	margin: 0 auto;
 	margin-top:10px;
-	max-width: 960px;
+	max-width: 1200px;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
-	-moz-box-shadow: 0 0 0.3em #000;
-	-webkit-box-shadow: 0 0 0.3em #000;
-	box-shadow: 0 0 0.3em #000;
+	-moz-box-shadow: 4px 4px 0.3em #888;
+	-webkit-box-shadow: 4px 4px 0.3em #888;
+	box-shadow: 4px 4px 0.3em #888;
 }
 
 #grailsLogo {
@@ -277,8 +277,8 @@ select[multiple] {
 }
 
 textarea {
-	width: 250px;
-	height: 150px;
+	width: 500px;
+	height: 60px;
 	overflow: auto; /* IE always renders vertical scrollbar without this */
 	vertical-align: top;
 }

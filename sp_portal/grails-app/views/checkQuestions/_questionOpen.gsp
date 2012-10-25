@@ -11,5 +11,5 @@
 		</g:if>	
     </g:each> 
 	
-    <g:textArea name="question.${question.id}" rows="5" cols="40" resize="none" value="${text}"/>
+    <g:textArea name="question.${question.id}" rows="2" cols="40" value="${text}"/>
 </div>
