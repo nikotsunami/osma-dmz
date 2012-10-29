@@ -16,7 +16,7 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<!-- <g:datePicker name="trainingDate" precision="day"  value="${trainingInstance?.trainingDate}"  /> -->
-	<calendar:datePicker name="trainingDate" value="${trainingInstance?.trainingDate}" /> 
+	<calendar:datePicker name="trainingDate" value="${trainingInstance?.trainingDate}" dateFormat="%d.%m.%Y" />
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: trainingInstance, field: 'timeStart', 'error')} required">
@@ -25,12 +25,12 @@
 		<span class="required-indicator">*</span>
 	</label>
 
-	<g:textField name="timeStartHour" value="${trainingInstance?.timeStart?.getHours()}"  style="width:30px"/> : 
+	<g:textField name="timeStartHour" value="${trainingInstance?.timeStart?.getHours()}"  style="width:30px" maxlength="2"/> : 
 	<g:if test="${trainingInstance?.timeStart?.getMinutes()!=null&&trainingInstance?.timeStart?.getMinutes()<10}">
-		<g:textField name="timeStartMin" value="${'0'+(String)trainingInstance?.timeStart?.getMinutes()}"  style="width:30px"/>
+		<g:textField name="timeStartMin" value="${'0'+(String)trainingInstance?.timeStart?.getMinutes()}" maxlength="2" style="width:30px"/>
 	</g:if>
 	<g:else>
-		<g:textField name="timeStartMin" value="${(String)trainingInstance?.timeStart?.getMinutes()}" style="width:30px"/>
+		<g:textField name="timeStartMin" value="${(String)trainingInstance?.timeStart?.getMinutes()}" maxlength="2" style="width:30px"/>
 	</g:else>  
 
 </div>
@@ -41,18 +41,18 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-	<g:textField name="timeEndHour" value="${trainingInstance?.timeEnd?.getHours()}"  style="width:30px"/> : 
+	<g:textField name="timeEndHour" value="${trainingInstance?.timeEnd?.getHours()}" maxlength="2" style="width:30px"/> : 
 	<g:if test="${trainingInstance?.timeEnd?.getMinutes()!=null&&trainingInstance?.timeEnd?.getMinutes()<10}">
-		<g:textField name="timeEndMin" value="${'0'+(String)trainingInstance?.timeEnd?.getMinutes()}"  style="width:30px"/>
+		<g:textField name="timeEndMin" value="${'0'+(String)trainingInstance?.timeEnd?.getMinutes()}" maxlength="2" style="width:30px"/>
 	</g:if>
 	<g:else>
-		<g:textField name="timeEndMin" value="${(String)trainingInstance?.timeEnd?.getMinutes()}" style="width:30px"/>
+		<g:textField name="timeEndMin" value="${(String)trainingInstance?.timeEnd?.getMinutes()}" maxlength="2" style="width:30px"/>
 	</g:else>  
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: trainingInstance, field: 'semester', 'error')} ">
     <label for="semester">
-        <g:message code="standardizedPatient.nationality.label" default="Semester" />
+        <g:message code="patientlnSemester.semester.label" default="Semester" />
 		<span class="required-indicator">*</span>
     </label>
 

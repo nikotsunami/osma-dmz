@@ -25,38 +25,37 @@
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'portal.css')}" type="text/css">
         <g:layoutHead/>
         <r:layoutResources />
-  
-     
     </head>
     <body>
-      <div id="grailsLogo" role="banner">
-        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
-        <g:if test="${session.user}">
-           <g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
-        </g:if>
+    	<div id="mainContainer">
+      		<div id="grailsLogo" role="banner">
+        		<img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
+        		<g:if test="${session.user}">
+           			<g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
+        		</g:if>
+        	</div>
+		
+
+    		<div class="stdpnt-menu">
+        		<ul>
+	          		<g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link>
+			  		<g:if test="${session.user.standardizedPatient!=null}">
+	          			<g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link>
+	          			<g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link>
+	          			<g:link controller="checkQuestions" action="index" ><li><g:message code="default.questions.message"/></li></g:link>
+			  			<g:link controller="selectAvailableDates" action="showSemester" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link> 
+					</g:if>
+	        	</ul>
+	    	</div>
+    	
+    		<div class="stdpnt-main-panel">
+	        	<g:layoutBody/>
+	        </div>
+	        
+	        <div class="footer" role="contentinfo"></div>
+	        <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+	        <g:javascript library="application"/>
+        	<r:layoutResources />
         </div>
-		
-
-    <div class="stdpnt-menu">
-        <ul>
-          <td><g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link></td>
-		  <g:if test="${session.user.standardizedPatient!=null}">
-          <td><g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link></td>
-          <td><g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link></td>
-          <td><g:link controller="checkQuestions" action="index" ><li><g:message code="default.questions.message"/></li></g:link></td>
-		  <td><g:link controller="selectAvailableDates" action="showSemester" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link></td> 
-			</g:if>
- 
-        </ul>
-
-		
-    </div>
-    <div class="stdpnt-main-panel">
-        <g:layoutBody/>
-    </div>
-        <div class="footer" role="contentinfo"></div>
-        <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-        <g:javascript library="application"/>
-        <r:layoutResources />
     </body>
 </html>

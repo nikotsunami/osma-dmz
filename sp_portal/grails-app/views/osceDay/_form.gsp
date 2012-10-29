@@ -14,9 +14,8 @@
 
 <div class="fieldcontain ${hasErrors(bean: osceDayInstance, field: 'osce', 'error')} ">
     <label for="osce">
-        <g:message code="standardizedPatient.nationality.label" default="Osce" />
+        <g:message code="osceDay.osce.label" default="Osce" />
 		<span class="required-indicator">*</span>
     </label>
     <g:select name="osce" from="${sp_portal.local.Osce.list()}" optionKey="id" value="${osceDayInstance?.osce?.id}" noSelection="['': '']"/>
 </div>
-

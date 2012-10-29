@@ -72,7 +72,7 @@ class StandardizedPatient {
         name nullable: true, maxSize: 40
         postalCode nullable: true
         preName nullable: true, maxSize: 40
-        socialInsuranceNo nullable: true, maxSize: 13
+        socialInsuranceNo nullable: true, maxSize: 16
 		status nullable:true
         street nullable: true, maxSize: 60
         telephone nullable: true, maxSize: 30

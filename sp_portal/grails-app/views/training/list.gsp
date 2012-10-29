@@ -42,15 +42,11 @@
 					
 						<td><g:link action="show" id="${trainingInstance.id}">${fieldValue(bean: trainingInstance, field: "name")}</g:link></td>
 					
-					    <td><g:formatDate format="yyyy-MM-dd" date="${trainingInstance.trainingDate}" /></td>
+					    <td><g:formatDate format="dd.MM.yyyy" date="${trainingInstance.trainingDate}" /></td>
 					
-					    <td><g:formatDate format="HH:mm:ss" date="${trainingInstance.timeStart}" /></td>
+					    <td><g:formatDate format="HH:mm" date="${trainingInstance.timeStart}" /></td>
 					
-						<td><g:formatDate format="HH:mm:ss" date="${trainingInstance.timeEnd}" /></td>
-					
-						
-					
-						
+						<td><g:formatDate format="HH:mm" date="${trainingInstance.timeEnd}" /></td>
 					
 					</tr>
 				</g:each>

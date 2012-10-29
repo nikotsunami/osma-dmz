@@ -80,7 +80,7 @@
 
     </label>
     
-	 <calendar:datePicker name="birthday" value="${standardizedPatientInstance?.birthday?.toDate()}" defaultValue=""/> 
+	 <calendar:datePicker name="birthday" dateFormat="%d.%m.%Y" value="${standardizedPatientInstance?.birthday?.toDate()}" defaultValue=""/> 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'gender', 'error')} ">
@@ -149,6 +149,6 @@
         <g:message code="standardizedPatient.socialInsuranceNo.label" default="Social Insurance No" />
 
     </label>
-    <g:textField name="socialInsuranceNo" maxlength="13" value="${standardizedPatientInstance?.socialInsuranceNo}"/>
+    <g:textField name="socialInsuranceNo" maxlength="16" value="${standardizedPatientInstance?.socialInsuranceNo}"/>
 </div>
 

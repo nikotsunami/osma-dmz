@@ -23,32 +23,30 @@
      
     </head>
     <body>
-      <div id="grailsLogo" role="banner">
-        <img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
-        <g:if test="${session.user}">
-           <g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
-        </g:if>
+    	<div id="mainContainer">
+	    	<div id="grailsLogo" role="banner">
+	        	<img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
+	        	<g:if test="${session.user}">
+	           		<g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
+	        	</g:if>
+	        </div>
+	    
+	    	<div class="stdpnt-menu">
+	        	<ul>
+		          	<g:link controller="user" action="show" ><li><g:message code="default.managerUser.link"/></li></g:link>
+		          	<g:link controller="osceDay" action="show"><li><g:message code="default.managerOsceDays.link"/></li></g:link>
+		          	<g:link controller="training" action="show"><li><g:message code="default.managerTrainingDay.link"/></li></g:link>        
+		          	<g:link controller="sendEmail" action="show" ><li><g:message code="default.sendEmail.link"/></li></g:link>
+		 	  		<g:link controller="patientlnSemester" action="show"><li><g:message code="default.patientlnSemester.link"/></li></g:link>
+	        	</ul>
+	    	</div>
+	    	<div class="stdpnt-main-panel">
+	        	<g:layoutBody/>
+		    </div>
+		        <div class="footer" role="contentinfo"></div>
+	    	    <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+	        	<g:javascript library="application"/>
+	        	<r:layoutResources />
         </div>
-    
-    <div class="stdpnt-menu">
-        <ul>
-
-          <td><g:link controller="user" action="show" ><li><g:message code="default.managerUser.link"/></li></g:link></td>
-          <td><g:link controller="osceDay" action="show"><li><g:message code="default.managerOsceDays.link"/></li></g:link></td>
-          <td><g:link controller="training" action="show"><li><g:message code="default.managerTrainingDay.link"/></li></g:link></td>        
-          <td><g:link controller="sendEmail" action="show" ><li><g:message code="default.sendEmail.link"/></li></g:link></td>
- 	  <td><g:link controller="patientlnSemester" action="show"><li><g:message code="default.patientlnSemester.link"/></li></g:link></td>
-		  
-   
-        
-        </ul>
-    </div>
-    <div class="stdpnt-main-panel">
-        <g:layoutBody/>
-    </div>
-        <div class="footer" role="contentinfo"></div>
-        <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-        <g:javascript library="application"/>
-        <r:layoutResources />
     </body>
 </html>

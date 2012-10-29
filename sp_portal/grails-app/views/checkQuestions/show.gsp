@@ -6,13 +6,14 @@
 <html>
 <head>
       <meta name="layout" content="stdpnt">
-<title>showPage</title>
+<title><g:message code="default.questions.message" /></title>
 </head>
 <body>
               <g:render template="questionTITLE" model="['question':title]"/> 
 	 <g:form>
+	<div class="content">
 			<fieldset class="buttons" style="algin:bottom">
-				<g:actionSubmit action="Save" value="${message(code: 'default.button.save')}" />
+				<g:actionSubmit class="save" action="Save" value="${message(code: 'default.button.save')}" />
 				
 				<g:if test="${params.int('index') != 0}">
 					<g:actionSubmit action="showFirst"  name="First" value="${message(code: 'default.button.first')}" />
@@ -22,7 +23,6 @@
 					<g:actionSubmit action="showEnd"  name="End" value="${message(code: 'default.button.end')}" />
 				
 			</fieldset>
-	<div style="max-height:600px; width:100%;OVERFLOW-X:hidden">
 			<fieldset class="form">
 				<g:each var="value" status="i" in="${questions}">
 						<g:if test="${value.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()}">
@@ -45,6 +45,18 @@
 						</br>
 				</g:each>
 		
+			</fieldset>
+			
+			<fieldset class="buttons" style="algin:bottom">
+				<g:actionSubmit class="save" action="Save" value="${message(code: 'default.button.save')}" />
+				
+				<g:if test="${params.int('index') != 0}">
+					<g:actionSubmit action="showFirst"  name="First" value="${message(code: 'default.button.first')}" />
+					<g:actionSubmit action="showPreviou"  name="Previous" value="${message(code: 'default.button.previous')}" />
+				</g:if>
+					<g:actionSubmit action="showNext" name="Previous" value="${message(code: 'default.button.next')}" />
+					<g:actionSubmit action="showEnd"  name="End" value="${message(code: 'default.button.end')}" />
+				
 			</fieldset>
 	</div>
 	</g:form>

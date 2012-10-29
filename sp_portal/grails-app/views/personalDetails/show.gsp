@@ -209,6 +209,8 @@
 
             </ol>
 
+        </div>
+
             <g:form>
                 <fieldset class="buttons">
                     <g:hiddenField name="id" value="${standardizedPatientInstance?.id}" />
@@ -216,7 +218,5 @@
 
                 </fieldset>
             </g:form>
-
-        </div>
     </body>
 </html>

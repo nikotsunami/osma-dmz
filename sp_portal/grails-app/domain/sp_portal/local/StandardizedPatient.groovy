@@ -71,7 +71,7 @@ class StandardizedPatient {
         name nullable: true, maxSize: 40
         postalCode nullable: true
         preName nullable: true, maxSize: 40
-        socialInsuranceNo nullable: true, maxSize: 13,matches: "[0-9.]{13,13}"
+        socialInsuranceNo nullable: true, maxSize: 16,matches: "[0-9]{3,3}\\.[0-9]{4,4}\\.[0-9]{4,4}\\.[0-9]{2,2}"
 		status nullable:true
         street nullable: true, maxSize: 60
         telephone nullable: true, maxSize: 30

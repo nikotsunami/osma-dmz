@@ -17,11 +17,10 @@ html {
 	background-image: linear-gradient(top, #aaa, #ddd);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#aaaaaa', EndColorStr = '#dddddd');
 	background-repeat: no-repeat;
-	height: 100%;
 	/* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
 	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html.no-cssgradients {
@@ -37,11 +36,13 @@ html * {
 }
 
 body {
-	background: #ffffff;
 	color: #000;
-	margin: 0 auto;
-	margin-top:10px;
+}
+
+#mainContainer {
+	background: #ffffff;
 	max-width: 1200px;
+	margin: 10px auto;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
 	-moz-box-shadow: 4px 4px 0.3em #888;
 	-webkit-box-shadow: 4px 4px 0.3em #888;
@@ -541,10 +542,10 @@ th:hover, tr:hover {
 	background-color: #efefef;
 	overflow: hidden;
 	padding: 0.3em;
-	   -moz-box-shadow: 0 0 3px 1px #aaaaaa;
-	-webkit-box-shadow: 0 0 3px 1px #aaaaaa;
-	        box-shadow: 0 0 3px 1px #aaaaaa;
-	margin: 0.1em 0 0 0;
+	-moz-box-shadow: 1px 2px 3px 1px #aaaaaa;
+	-webkit-box-shadow: 1px 2px 3px 1px #aaaaaa;
+	box-shadow: 1px 1px 1px 1px #aaaaaa;
+	margin: 10px 20px 10px;
 	border: none;
 }
 

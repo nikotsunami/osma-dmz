@@ -14,7 +14,7 @@ class Bankaccount {
     String city
     //String country
     String ownerName
-    Integer postalCode
+    String postalCode
 
     static hasMany = [standardizedPatients: StandardizedPatient]
 

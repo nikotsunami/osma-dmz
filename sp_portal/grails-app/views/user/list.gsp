@@ -5,7 +5,7 @@
     <head>
         <meta name="layout" content="userMain">
         <g:set var="entityName" value="${message(code: 'user.label', default: 'Benutzer')}" />
-        <title><g:message code="default.list.label" args="[entityName]" /></title>
+        <title><g:message code="default.managerUser.link" /></title>
     </head>
     <body style="height:90%">
         <a href="#list-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -17,9 +17,9 @@
             </ul>
         </div>
         <div id="list-user" class="content scaffold-list" role="main">
-            <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+            <h1><g:message code="default.managerUser.link" /></h1>
             <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
+            	<div class="message" role="status">${flash.message}</div>
             </g:if>
             <table>
                 <thead>
@@ -39,7 +39,7 @@
 					
                         <td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "userName")}</g:link></td>
 
-                        <td>${fieldValue(bean: userInstance, field: "isActive")}</td>
+                        <td><g:formatBoolean boolean="${userInstance?.isActive}" /></td>
 
                         
 

@@ -1,10 +1,14 @@
+
+.content {
+}
+
 .stdpnt-menu {
     background-color : #96BEFC;
     min-width: 240px;
-    height: 100%;
     float: left;
     padding-top: 30px;
     padding-bottom: 30px;
+    height: 100%;
 }
 
 .stdpnt-main-panel {
