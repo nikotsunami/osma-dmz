@@ -22,8 +22,7 @@
 			<td><strong><g:message code="patientlnSemester.semester.label" /></strong></td>
 			<td><g:form controller = "SelectAvailableDates" action="showSemester">
 				<g:select name="semester" from="${sp_portal.local.Semester.list()}" style="float: right" optionKey="id" optionValue="${{it.showSemester()}}" value="${session.semester}" noSelection="['': '']" 
-					onchange="this.form.submit()"
-										/>
+					onchange="this.form.submit()" />
 			</g:form></td>
 			</tr>
 			</table>

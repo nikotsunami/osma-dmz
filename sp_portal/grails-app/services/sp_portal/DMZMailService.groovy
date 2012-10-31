@@ -1,6 +1,8 @@
 package sp_portal
 
 import org.springframework.mail.MailMessage
+
+import grails.util.Environment;
 import grails.util.GrailsUtil;
 import java.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
@@ -14,50 +16,44 @@ class DMZMailService {
 			log.trace(">> In class DMZMailService Method sendMails entered eTo : " + eTo + " eFrom : " + eFrom + " eSubject : " + eSubject + " eBody : " + eBody)
 		}
 		Map mail =[to: eTo,from: eFrom,subject: eSubject,body: eBody]
-		
+		println(">> In class DMZMailService Method sendMails entered eTo : " + eTo + " eFrom : " + eFrom + " eSubject : " + eSubject + " eBody : " + eBody)
 		if(!hasSaveEmail(eTo,eFrom,eSubject,eBody)){
-			if (GrailsUtil.getEnvironment() != "production"){
+			String curEnv = Environment.getCurrent().toString()
+			if ("PRODUCTION".equals(curEnv)){
 				mailService.sendMail {     
-					  to mail.to
+//					  to mail.to
+					  to "michael.wgnr@gmail.com"
 					  from mail.from
 					  subject mail.subject     
 					  body mail.body 
 				}
 				
-				
 			} else {
-			
-				println("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
+				println("Environment is ${curEnv}\nSimulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
 			}
-			
 			saveEmail(mail.to,mail.body,mail.subject,mail.from)
-		}
-		
+		}		
     }
+	
 	void sendMailByChangeDays(String eTo,String eFrom,String eSubject,String eBody) {
 		if(log.isTraceEnabled()){
 			log.trace(">> In class DMZMailService Method sendMailByChangeDays entered eTo : "+eTo+" eFrom : "+eFrom+" eSubject : "+eSubject+" eBody : "+eBody)
 		}
 		Map mail =[to: eTo,from: eFrom,subject: eSubject,body: eBody]
-		
-	
-			if (GrailsUtil.getEnvironment() != "production"){
-				mailService.sendMail {     
-					  to mail.to
-					  from mail.from
-					  subject mail.subject     
-					  body mail.body 
-				}
-				
-				
-			} else {
-			
-				println("Simulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
-			}
-			
-			saveEmail(mail.to,mail.body,mail.subject,mail.from)
-		
-		
+		String curEnv = Environment.getCurrent().toString()
+		println(">> In class DMZMailService Method sendMailByChangeDays entered eTo : "+eTo+" eFrom : "+eFrom+" eSubject : "+eSubject+" eBody : "+eBody)
+		if ("PRODUCTION".equals(curEnv)){
+			mailService.sendMail {     
+//				  to mail.to
+					  to "michael.wgnr@gmail.com"
+				  from mail.from
+				  subject mail.subject     
+				  body mail.body 
+			}		
+		} else {
+			println("Environment is ${curEnv}\nSimulate sending email to <<${eTo}>> with subject: <<${eSubject}>> body: <<${eBody}>> ");
+		}
+		saveEmail(mail.to,mail.body,mail.subject,mail.from)
     }
 	
 	private Date getCurrentDate(){

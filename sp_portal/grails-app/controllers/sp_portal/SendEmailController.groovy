@@ -45,7 +45,7 @@ class SendEmailController extends MainController {
 					//to = "marvin@jserver"
 					subject= params.editedEmailSubject;
 					body = params.editedEmailText;
-					from = grailsApplication.config.grails.mail.username
+					from = grailsApplication.config.grails.mail.from;
 					if(patient.preName){
 						body = body.replaceAll("#preName",patient.preName);
 					}

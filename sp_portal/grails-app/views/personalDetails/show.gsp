@@ -165,7 +165,7 @@
 				<li class="fieldcontain">
                     <span id="maritalStatus-label" class="property-label"><g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" /></span>
 					
-				    <span class="property-value" aria-labelledby="maritalStatus-label">${value}
+				    <span class="property-value" aria-labelledby="maritalStatus-label">${message(code:'enum.value.' + value)}
 					<!--<g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/>--></span>
 
                 </li>
@@ -181,7 +181,7 @@
 				<li class="fieldcontain">
                     <span id="workPermission-label" class="property-label"><g:message code="standardizedPatient.workPermission.label" default="Work Permission" /></span>
 
-                        <span class="property-value" aria-labelledby="workPermission-label">${value}
+                        <span class="property-value" aria-labelledby="workPermission-label">${message(code: 'enum.value.' + value)}
 						<!--<g:fieldValue bean="${standardizedPatientInstance}" field="workPermission"/>--></span>
 
                 </li>
