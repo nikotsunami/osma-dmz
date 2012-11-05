@@ -35,7 +35,7 @@ class OsceDay {
 	
 	public String toString(){
 		
-		return osceDate?.format("yyyy-MM-dd");
+		return osce.name +"  "+osceDate?.format("yyyy-MM-dd");
 	}
 	
 	private static Logger log = Logger.getLogger(OsceDay.class);

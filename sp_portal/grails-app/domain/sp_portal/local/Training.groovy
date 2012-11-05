@@ -34,7 +34,7 @@ class Training {
     }
 
     public String toString(){
-        return trainingDate?.format("yyyy-MM-dd") + " " + timeStart?.format("hh:mm:ss");
+        return name + " " + timeStart?.format("yyyy-MM-dd hh:mm");
     }
 	
 	private static Logger log = Logger.getLogger(Training.class);

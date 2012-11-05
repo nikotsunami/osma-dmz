@@ -33,20 +33,20 @@
 				</g:if>
 				
 							
-				<g:if test="${trainingInstance?.trainingDate}">
+				<!--¡<g:if test="${trainingInstance?.trainingDate}">
 				<li class="fieldcontain">
 					<span id="trainingDate-label" class="property-label"><g:message code="training.trainingDate.label" default="Training Date" /></span>
 					
 						<span class="property-value" aria-labelledby="trainingDate-label"><g:formatDate format="yyyy-MM-dd" date="${trainingInstance?.trainingDate}" /></span>
 					
 				</li>
-				</g:if>
+				</g:if>-->
 			
 				<g:if test="${trainingInstance?.timeStart}">
 				<li class="fieldcontain">
 					<span id="timeStart-label" class="property-label"><g:message code="training.timeStart.label" default="Time Start" /></span>
 					
-						<span class="property-value" aria-labelledby="timeStart-label"><g:formatDate format="HH:mm:ss" date="${trainingInstance?.timeStart}" /></span>
+						<span class="property-value" aria-labelledby="timeStart-label"><g:formatDate format="yyyy-MM-dd HH:mm:ss" date="${trainingInstance?.timeStart}" /></span>
 					
 				</li>
 				</g:if>
@@ -55,14 +55,14 @@
 				<li class="fieldcontain">
 					<span id="timeEnd-label" class="property-label"><g:message code="training.timeEnd.label" default="Time End" /></span>
 					
-						<span class="property-value" aria-labelledby="timeEnd-label"><g:formatDate format="HH:mm:ss" date="${trainingInstance?.timeEnd}" /></span>
+						<span class="property-value" aria-labelledby="timeEnd-label"><g:formatDate format="yyyy-MM-dd HH:mm:ss" date="${trainingInstance?.timeEnd}" /></span>
 					
 				</li>
 				</g:if>
 				
 				<g:if test="${trainingInstance?.semester}">
                 <li class="fieldcontain">
-                    <span id="semester-label" class="property-label"><g:message code="standardizedPatient.nationality.label" default="Semester" /></span>
+                    <span id="semester-label" class="property-label"><g:message code="patientlnSemester.semester.label" default="Semester" /></span>
 
                         <span class="property-value" aria-labelledby="nationality-label">
 						${trainingInstance?.semester?.showSemester()}

@@ -26,7 +26,7 @@
 					
 						<g:sortableColumn property="name" title="${message(code: 'training.name.label', default: 'Name')}" />
 						
-						<g:sortableColumn property="trainingDate" title="${message(code: 'training.trainingDate.label', default: 'Training Date')}" />
+						<!--<g:sortableColumn property="trainingDate" title="${message(code: 'training.trainingDate.label', default: 'Training Date')}" />-->
 						
 						<g:sortableColumn property="timeStart" title="${message(code: 'training.timeStart.label', default: 'Time Start')}" />
 					
@@ -42,11 +42,11 @@
 					
 						<td><g:link action="show" id="${trainingInstance.id}">${fieldValue(bean: trainingInstance, field: "name")}</g:link></td>
 					
-					    <td><g:formatDate format="dd.MM.yyyy" date="${trainingInstance.trainingDate}" /></td>
+					   <!-- <td><g:formatDate format="dd.MM.yyyy" date="${trainingInstance.trainingDate}" /></td>-->
 					
-					    <td><g:formatDate format="HH:mm" date="${trainingInstance.timeStart}" /></td>
+					    <td><g:formatDate format="yyyy-MM-dd HH:mm" date="${trainingInstance.timeStart}" /></td>
 					
-						<td><g:formatDate format="HH:mm" date="${trainingInstance.timeEnd}" /></td>
+						<td><g:formatDate format="yyyy-MM-dd HH:mm" date="${trainingInstance.timeEnd}" /></td>
 					
 					</tr>
 				</g:each>

@@ -26,7 +26,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: patientlnSemesterInstance, field: 'semester', 'error')} ">
     <label for="semester">
-        <g:message code="standardizedPatient.nationality.label" default="Semester" />
+        <g:message code="patientlnSemester.semester.label" default="Semester" />
 		<span class="required-indicator">*</span>
     </label>
 

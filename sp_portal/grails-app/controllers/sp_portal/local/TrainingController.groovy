@@ -255,7 +255,7 @@ class TrainingController extends sp_portal.MainController {
 			sb.append(trainingInstance?.timeEnd);
 			log.debug( ">>In class TrainingController Method setStartTime(trainingInstance)->start this trainingInstance: " + sb.toString());
 		} 
-		Date trainingDate = trainingInstance.trainingDate
+		Date trainingDate = trainingInstance.timeStart
 		String startHourPrame = params.timeStartHour
 		String startMinPrame = params.timeStartMin
 		if(trainingDate !=null && startHourPrame != null && !startHourPrame.equals("") && startMinPrame != null && !startMinPrame.equals("")){
@@ -265,9 +265,11 @@ class TrainingController extends sp_portal.MainController {
 			Long timeStart = getTrainingDateWithNoHours(trainingDate)+startMin*60*1000+startHour*60*60*1000
 
 			trainingInstance.timeStart = new Date(timeStart)
+			trainingInstance.trainingDate = new Date(timeStart)
 			
 		}else{
 			trainingInstance.timeStart = null
+			trainingInstance.trainingDate = null
 			
 		}
 		if(log.isDebugEnabled()){
@@ -300,7 +302,7 @@ class TrainingController extends sp_portal.MainController {
 			sb.append(trainingInstance?.timeEnd);
 			log.debug( ">>In class TrainingController Method setEndTime(trainingInstance)->start this trainingInstance: " + sb.toString());
 		} 
-		Date trainingDate = trainingInstance.trainingDate
+		Date trainingDate = trainingInstance.timeEnd
 		String endHourPrame = params.timeEndHour
 		String endMinPrame = params.timeEndMin
 		if(trainingDate !=null &&  endHourPrame != null && !endHourPrame.equals("") && endMinPrame != null && !endMinPrame.equals("")){
@@ -381,6 +383,8 @@ class TrainingController extends sp_portal.MainController {
 	 **/
 	def timeStartVerification(params){
 		boolean isTimeStartRight = true
+
+		
 		def startHourStr = params.timeStartHour
 		def startMinStr = params.timeStartMin
 		//time start verification
