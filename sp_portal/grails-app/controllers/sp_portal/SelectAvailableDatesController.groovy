@@ -34,8 +34,10 @@ class SelectAvailableDatesController extends MainController{
 		
 		def semester;
 		
-		if(session.semester){
+		def int pOffset=0;
+		pOffset = (params.offset) ? params.offset.toInteger() : 0;
 		
+		if(session.semester){
 			semester = local.Semester.get(session.semester);
 		}
 			if(semester){
@@ -49,27 +51,31 @@ class SelectAvailableDatesController extends MainController{
 				if(params.sort.equals("trainingDate")||params.sort.equals("timeStart")||params.sort.equals("timeEnd")){
 				
 					trainingSort = params.sort;
-					trainingOrder = params.order;
-					
+					trainingOrder = params.order;	
+				}
+				
+				def c = sp_portal.local.Training.createCriteria();
+				 availableTrainingDays  = c.list{
+					eq("semester", semester)
+					firstResult(pOffset)
+					maxResults(params.max)
+					order(trainingSort,trainingOrder);
 					
 				}
+				
+				
 				
 				if(params.sort.equals("osceDate")){
 					osceDaySort = params.sort;
 					osceDayOrder = params.order;
 				}
 				
-				availableTrainingDays = local.Training.list(fetch: [semester:semester],max: params.max, offset: params.offset,sort: trainingSort, order: trainingOrder);
+		
 				
-			
-				def osceDaysOsce = local.Osce.findAllBySemester(semester);
-				
-				
-				if(osceDaysOsce){
-				
-					availableOsceDays = local.OsceDay.list(fetch: [osce:osceDaysOsce],max: params.max, offset: params.offset,sort: osceDaySort, order: osceDayOrder);
-					
+				availableOsceDays = local.OsceDay.findAll(max: params.max, offset: params.offset,sort: osceDaySort, order: osceDayOrder){
+						osce.semester == semester						
 				}
+					
 			}
 									
 			def currentUser = User.findById(session.user.id);
@@ -95,7 +101,6 @@ class SelectAvailableDatesController extends MainController{
 				}
 
 		}
-		
 		[semester: session.semester,availableTrainingDays:availableTrainingDays , availableOsceDays:availableOsceDays, acceptedTrainingDays:acceptedTrainingDays , acceptedOsceDays:acceptedOsceDays]		
 		
 	}
