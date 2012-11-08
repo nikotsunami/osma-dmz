@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.LocalDate
 
 
 class OsceSyncController extends MainController {
@@ -88,6 +89,128 @@ class OsceSyncController extends MainController {
 	}
 	
 
+			
+	private void savePatient(def newPatient,def patient){
+		//local.StandardizedPatient newPatient = new local.StandardizedPatient();
+		newPatient.origId = patient.id;
+		if(patient.gender!=null){
+			newPatient.gender=patient.gender;
+		}
+		if(patient.preName!=null){
+			newPatient.preName=patient.preName;
+		
+		}
+		if(patient.street!=null){
+			newPatient.street=patient.street;
+		
+		}
+		if(patient.city!=null){
+			newPatient.city=patient.city;
+		
+		}
+		if(patient.postalCode!=null){
+			newPatient.postalCode=patient.postalCode;
+		
+		}
+		if(patient.telephone!=null){
+			newPatient.telephone=patient.telephone;
+		
+		}
+		if(patient.telephone2!=null){
+			newPatient.telephone2=patient.telephone2;
+		
+		}
+		if(patient.mobile!=null){
+			newPatient.mobile=patient.mobile;
+		
+		}
+		if(patient.height!=null){
+			newPatient.height=patient.height;
+		
+		}
+		if(patient.weight!=null){
+			newPatient.weight=patient.weight;
+		
+		}
+		if(patient.immagePath!=null){
+			newPatient.immagePath=patient.immagePath;
+		
+		}
+		if(patient.videoPath!=null){
+			newPatient.videoPath=patient.videoPath;
+		
+		}
+		if(patient.birthday!= JSONObject.NULL){
+		println(">>>>>>>>>>>>>>>>..patient.birthday: "+patient.birthday);
+			Date birthday = convertToDate(patient.birthday);
+			if(birthday){
+				newPatient.birthday=new LocalDate(birthday.getTime());
+			}
+		
+		}
+		if(patient.email!=null){
+			newPatient.email=patient.email;
+		
+		}
+		if(patient.maritalStatus!=null){
+			newPatient.maritalStatus=patient.maritalStatus;
+		
+		}
+		if(patient.workPermission!=null){
+			newPatient.workPermission=patient.workPermission;
+		
+		}
+		if(patient.status!=null){
+			newPatient.status=patient.status;
+		
+		}
+		if(patient.socialInsuranceNo!=null){
+			newPatient.socialInsuranceNo=patient.socialInsuranceNo;
+		
+		}
+		
+		newPatient.save(flush:true);
+		createUser(newPatient);
+	}
+	
+	 private def createUser(standardizedPatient){
+		if(log.isTraceEnabled()){
+			log.trace(">> In class DataImportExportController Method createUser entered standardizedPatient : "+standardizedPatient + "  jsonData : "+jsonData)
+		}
+        def x =new User();
+		if( x.standardizedPatient==null){
+			x.userName= standardizedPatient.email;
+			x.passwordHash= MainController.encodePassword(""+standardizedPatient.socialInsuranceNo,x.userName);
+			x.userEmail=standardizedPatient.email;
+			x.standardizedPatient=standardizedPatient;
+			x.isActive=true;
+			def roles = [];
+			roles.add(Role.findByRoleName("USER_ROLE"));
+			x.roles = roles;
+			x.save(flush:true);
+				
+			}
+		
+
+    }
+
+	
+	private void savePatientInSemester(def newpatientInSemester, def semester,def patient,def accepted){
+		//local.PatientlnSemester newpatientInSemester = new local.PatientlnSemester();
+		if(semester!=null){
+			newpatientInSemester.semester=semester
+		}
+		if(patient!=null){
+			newpatientInSemester.standardizedPatient=patient
+		
+		}
+		if(accepted!=null){
+			newpatientInSemester.accepted=accepted
+		}
+	
+		newpatientInSemester.save(flush:true);
+	}
+
 
     /**
      *OscdDay synchronise database and Training and validate Patient is present
@@ -107,6 +230,20 @@ class OsceSyncController extends MainController {
 				locale = new Locale(language)
                 
             }
+			
+			// synchronize Patitent
+			for(int i = 0; i< data.patients.size();i++){
+				def patients = data.patients[i];
+				def patient = local.StandardizedPatient.findByOrigId(patients.id);
+				if(!patient){
+					patient = new local.StandardizedPatient();
+				}
+				savePatient(patient,patients);
+			}
+			
+		
+			
+			
 			//Synchronise Semester
 			log.info("Synchronise Semester");
 			for(int i = 0 ; i<data.semesters.size();i++){
@@ -300,6 +437,25 @@ class OsceSyncController extends MainController {
 				}
 				
 			}
+			//Synchronise PatientInSemester
+			for(int i = 0; i< data.patientInSemester.size();i++){
+				def patientInSemesters = data.patientInSemester[i];
+				//def pis = local.PatientInSemester.findAll("from PatientInSemester as p where p.semester=? and p.standardizedPatient=?",[patientInSemesters.semester,patientInSemesters.standardizedPatient]);
+				def semester = local.Semester.findByOrigId(patientInSemesters.semester);
+				def patient = local.StandardizedPatient.findByOrigId(patientInSemesters.standardizedPatient);
+				def pis;
+				if(semester != null && patient != null){
+				println(">>>>> semester: " + semester);
+				println(">>>>> patient: " + semester);
+					pis = local.PatientlnSemester.findBySemesterAndStandardizedPatient(semester,patient);
+				
+					if(!pis){
+						pis = new local.PatientlnSemester();
+					}
+					println(">>>>>>>> has find Pis");
+					savePatientInSemester(pis,semester,patient,patientInSemesters.accepted);	
+				}
+			} 
 			
             //Synchronise OsceDay
 			log.info("Synchronise OsceDay")
@@ -407,9 +563,9 @@ class OsceSyncController extends MainController {
                         importMessage(oneMsg,key)
                     }
                 }
-
-            }
-		}	
+			}
+        }
+	
 
 
 
@@ -618,6 +774,7 @@ class OsceSyncController extends MainController {
      *The date of the format string into "yyyy-MM-dd 'T' HH: MM: ss 'Z'" format
      */
     private Date convertToDate(String dateStr){
+		println("++++++++++++++++++++++++++++++++++++++++++");
 		if(log.isTraceEnabled()){
 			log.trace(">> In class OsceSyncController Method convertToDate entered dateStr : "+dateStr)
 		}
@@ -628,7 +785,9 @@ class OsceSyncController extends MainController {
             if(dateStr && !dateStr.equals("")){
                 date = sdf.parse(dateStr);
             }
+			
         } catch (ParseException e) {
+			println(">>>>>>>>>>>>>>>>>>>>>>>>>> THERER?: "+e.getMessage());
             e.printStackTrace();
         }
 		if(log.isTraceEnabled()){
