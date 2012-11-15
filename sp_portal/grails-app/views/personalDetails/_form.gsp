@@ -80,7 +80,7 @@
 
     </label>
     
-	 <calendar:datePicker name="birthday" dateFormat="%d.%m.%Y" value="${standardizedPatientInstance?.birthday?.toDate()}" defaultValue=""/> 
+	 <calendar:datePicker name="birthday" dateFormat="%d.%m.%Y" value="${standardizedPatientInstance?.birthday?.toDate()}" defaultValue="" years="1920,2999"/> 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'gender', 'error')} ">

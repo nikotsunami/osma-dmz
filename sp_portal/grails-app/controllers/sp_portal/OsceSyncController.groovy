@@ -178,7 +178,6 @@ class OsceSyncController extends MainController {
 			log.trace(">> In class DataImportExportController Method createUser entered standardizedPatient : "+standardizedPatient + "  jsonData : "+jsonData)
 		}
         def x =new User();
-		if( x.standardizedPatient==null){
 			x.userName= standardizedPatient.email;
 			x.passwordHash= MainController.encodePassword(""+standardizedPatient.socialInsuranceNo,x.userName);
 			x.userEmail=standardizedPatient.email;
@@ -187,10 +186,7 @@ class OsceSyncController extends MainController {
 			def roles = [];
 			roles.add(Role.findByRoleName("USER_ROLE"));
 			x.roles = roles;
-			x.save(flush:true);
-				
-			}
-		
+			x.save(flush:true);		
 
     }
 

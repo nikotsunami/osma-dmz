@@ -74,7 +74,6 @@ class DataImportExportService  {
 			log.trace(">> In class DataImportExportController Method createUser entered standardizedPatient : "+standardizedPatient + "  jsonData : "+jsonData)
 		}
         def x =new User();
-		if( x.standardizedPatient==null){
 			x.userName= jsonData.email;
 			x.passwordHash= MainController.encodePassword(""+jsonData.socialInsuranceNo,x.userName);
 			x.userEmail=jsonData.email;
@@ -98,7 +97,6 @@ class DataImportExportService  {
 				sb.append( "\n roles: ");
 				sb.append(x?.roles);
 				log.debug( "new user : " + sb.toString());
-			}
 		
 
     }
