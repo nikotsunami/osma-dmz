@@ -248,20 +248,17 @@ class CheckQuestionsController  extends MainController {
 			log.debug("find questionIdStrings : "+questionIdStrings)
 		}
         def questionIds = questionIdStrings.each({ key, value ->
-
-			
             def components = key.split("\\.");
-
 
             // If there are 2 parts to the string then it is a valid "question".id format
             if (components.size() == 2){
                 def questionId = components[1];
 
                 def checkInstance = local.AnamnesisCheck.get(Long.valueOf(questionId));
-				if(log.isTraceEnabled()){											
+				if(log.isTraceEnabled()){									
 					log.trace("find checkInstance : "+checkInstance)
 				}
-                valueStr = "";
+    //            valueStr = "";
                 setValueStr(checkInstance,questionId,value);
 				 
             if(patient.standardizedPatient.anamnesisForm!=null || checkInstance!=null){
@@ -362,7 +359,7 @@ class CheckQuestionsController  extends MainController {
     }
 
 
-    static String valueStr =" ";
+    static String valueStr;
 
     //  set the submit answer
     def setValueStr(checkInstance,questionId,value){
@@ -446,7 +443,7 @@ class CheckQuestionsController  extends MainController {
         }
 
         if(checkInstance.type == AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
-			if(log.isTraceEnabled()){
+			if(log.isTraceEnabled()){s
 				log.trace("checkInstance type is QUESTION_OPEN ")
 			}
             if(submittedValues!=null){
@@ -462,6 +459,11 @@ class CheckQuestionsController  extends MainController {
         }
 		if(log.isTraceEnabled()){
 			log.trace("<< In class CheckQuestionsController Method setValueStr(checkInstance,questionId,value) end valueStr : "+value)
+		}
+		
+				
+		if(valueStr.size() == 0){
+			valueStr = null;
 		}
 
         return checkInstance;

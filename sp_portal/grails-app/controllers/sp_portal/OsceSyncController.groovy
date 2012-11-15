@@ -90,8 +90,9 @@ class OsceSyncController extends MainController {
 	
 
 			
-	private void savePatient(def newPatient,def patient){
+	private void savePatient(def newPatient,def patient,def locale,key,oneMsg){
 		//local.StandardizedPatient newPatient = new local.StandardizedPatient();
+	
 		newPatient.origId = patient.id;
 		if(patient.gender!=null){
 			newPatient.gender=patient.gender;
@@ -141,7 +142,6 @@ class OsceSyncController extends MainController {
 		
 		}
 		if(patient.birthday!= JSONObject.NULL){
-		println(">>>>>>>>>>>>>>>>..patient.birthday: "+patient.birthday);
 			Date birthday = convertToDate(patient.birthday);
 			if(birthday){
 				newPatient.birthday=new LocalDate(birthday.getTime());
@@ -168,9 +168,23 @@ class OsceSyncController extends MainController {
 			newPatient.socialInsuranceNo=patient.socialInsuranceNo;
 		
 		}
+		try{
+			newPatient.save(flush:true);
+		}catch(Exception e){
+			log.trace("newPatient data Exception " +e.message());
+		}
+			boolean isCanSaveUser = true;
 		
-		newPatient.save(flush:true);
-		createUser(newPatient);
+		if (newPatient.hasErrors()) {	
+			isCanSaveUser = false;
+			key = message(code: 'default.error.standardizedPatient.message',args: [newPatient.preName.toString()],locale: locale)
+			importMessage(oneMsg,key)
+				
+		}	
+		
+		if(isCanSaveUser == true){
+			createUser(newPatient);
+		}
 	}
 	
 	 private def createUser(standardizedPatient){
@@ -234,7 +248,7 @@ class OsceSyncController extends MainController {
 				if(!patient){
 					patient = new local.StandardizedPatient();
 				}
-				savePatient(patient,patients);
+				savePatient(patient,patients,locale,key,oneMsg);
 			}
 			
 		
@@ -441,14 +455,11 @@ class OsceSyncController extends MainController {
 				def patient = local.StandardizedPatient.findByOrigId(patientInSemesters.standardizedPatient);
 				def pis;
 				if(semester != null && patient != null){
-				println(">>>>> semester: " + semester);
-				println(">>>>> patient: " + semester);
 					pis = local.PatientlnSemester.findBySemesterAndStandardizedPatient(semester,patient);
 				
 					if(!pis){
 						pis = new local.PatientlnSemester();
 					}
-					println(">>>>>>>> has find Pis");
 					savePatientInSemester(pis,semester,patient,patientInSemesters.accepted);	
 				}
 			} 
@@ -770,7 +781,6 @@ class OsceSyncController extends MainController {
      *The date of the format string into "yyyy-MM-dd 'T' HH: MM: ss 'Z'" format
      */
     private Date convertToDate(String dateStr){
-		println("++++++++++++++++++++++++++++++++++++++++++");
 		if(log.isTraceEnabled()){
 			log.trace(">> In class OsceSyncController Method convertToDate entered dateStr : "+dateStr)
 		}
@@ -783,7 +793,6 @@ class OsceSyncController extends MainController {
             }
 			
         } catch (ParseException e) {
-			println(">>>>>>>>>>>>>>>>>>>>>>>>>> THERER?: "+e.getMessage());
             e.printStackTrace();
         }
 		if(log.isTraceEnabled()){

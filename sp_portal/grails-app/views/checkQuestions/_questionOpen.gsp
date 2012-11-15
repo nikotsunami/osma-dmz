@@ -2,7 +2,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: question, field: 'value', 'error')} ">
 	<h3><%= question.text %></h3>
-	<g:set var="text" value=" " />
+	<g:set var="text" value="" />
 	<g:each var="check" status="i" in="${checkValue}">
 		<g:if test="${check.anamnesisChecksValue != null}">
 			<g:if test="${check.anamnesisCheck == question}">				
