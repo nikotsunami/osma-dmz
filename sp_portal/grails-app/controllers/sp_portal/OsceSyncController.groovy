@@ -179,7 +179,6 @@ class OsceSyncController extends MainController {
 			isCanSaveUser = false;
 			key = message(code: 'default.error.standardizedPatient.message',args: [newPatient.preName.toString()],locale: locale)
 			importMessage(oneMsg,key)
-				
 		}	
 		
 		if(isCanSaveUser == true){

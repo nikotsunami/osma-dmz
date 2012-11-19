@@ -21,8 +21,8 @@ class DMZMailService {
 			String curEnv = Environment.getCurrent().toString()
 			if ("PRODUCTION".equals(curEnv)){
 				mailService.sendMail {     
-//					  to mail.to
-					  to "michael.wgnr@gmail.com"
+					  to mail.to
+					  //to "michael.wgnr@gmail.com"
 					  from mail.from
 					  subject mail.subject     
 					  body mail.body 
@@ -44,8 +44,8 @@ class DMZMailService {
 		println(">> In class DMZMailService Method sendMailByChangeDays entered eTo : "+eTo+" eFrom : "+eFrom+" eSubject : "+eSubject+" eBody : "+eBody)
 		if ("PRODUCTION".equals(curEnv)){
 			mailService.sendMail {     
-//				  to mail.to
-					  to "michael.wgnr@gmail.com"
+				  to mail.to
+//				  to "michael.wgnr@gmail.com"
 				  from mail.from
 				  subject mail.subject     
 				  body mail.body 

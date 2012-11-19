@@ -33,18 +33,17 @@ import ch.unibas.medizin.osce.shared.MaritalStatus;
 import ch.unibas.medizin.osce.shared.PossibleFields;
 import ch.unibas.medizin.osce.shared.Sorting;
 import ch.unibas.medizin.osce.shared.StandardizedPatientSearchField;
+import ch.unibas.medizin.osce.shared.StandardizedPatientStatus;
 import ch.unibas.medizin.osce.shared.WorkPermission;
 
 
 
 class StandardizedPatient {
-
-    public StandardizedPatient(){
-    }
-
-    public Integer version;
-
-    @Enumerated
+	public StandardizedPatient() {
+		
+	}
+	
+	@Enumerated
     public Gender gender;
 
     @Size(max = 40)
@@ -59,7 +58,10 @@ class StandardizedPatient {
     @Size(max = 30)
     public String city;
 
-    public Integer postalCode;
+    @Size(max = 15)
+    public String postalCode;
+
+    /*public Integer postalCode;*/
 
     @Size(max = 30)
     public String telephone;
@@ -106,8 +108,10 @@ class StandardizedPatient {
     @Enumerated
     public WorkPermission workPermission;
 
-    @Size(max = 13)
-    @Pattern(regexp = "^[0-9]{13,13}$")
+    @Enumerated
+    public StandardizedPatientStatus status;
+
+    @Size(max = 20)
     public String socialInsuranceNo;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -115,5 +119,4 @@ class StandardizedPatient {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "standardizedpatient")
     public Set<LangSkill> langskills = new HashSet<LangSkill>();
-
 }

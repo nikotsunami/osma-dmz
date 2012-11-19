@@ -31,7 +31,7 @@
         <g:message code="standardizedPatient.postalCode.label" default="Postal Code" />
 
     </label>
-    <g:field type="number" name="postalCode" value="${standardizedPatientInstance.postalCode}"/>
+    <g:textField name="postalCode" maxlength="15" value="${standardizedPatientInstance.postalCode}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'city', 'error')} ">
@@ -150,6 +150,6 @@
         <g:message code="standardizedPatient.socialInsuranceNo.label" default="Social Insurance No" />
 
     </label>
-    <g:textField name="socialInsuranceNo" maxlength="16" value="${standardizedPatientInstance?.socialInsuranceNo}"/>
+    <g:textField name="socialInsuranceNo" maxlength="20" value="${standardizedPatientInstance?.socialInsuranceNo}"/>
 </div>
 

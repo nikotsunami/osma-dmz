@@ -65,18 +65,18 @@ class StandardizedPatient {
         email nullable: true, maxSize: 40, email:true
         gender nullable: true
         height nullable: true
-        immagePath nullable: true,maxSize:253
+        immagePath nullable: true,maxSize:255
         maritalStatus nullable: true
         mobile nullable: true, maxSize: 30
         name nullable: true, maxSize: 40
-        postalCode nullable: true
+        postalCode nullable: true, maxSize: 15
         preName nullable: true, maxSize: 40
-        socialInsuranceNo nullable: true, maxSize: 16,matches: "[0-9]{3,3}\\.[0-9]{4,4}\\.[0-9]{4,4}\\.[0-9]{2,2}"
+        socialInsuranceNo nullable: true, maxSize: 20
 		status nullable:true
         street nullable: true, maxSize: 60
         telephone nullable: true, maxSize: 30
         telephone2 nullable: true, maxSize: 30
-        videoPath nullable: true,maxSize:253
+        videoPath nullable: true,maxSize:255
         weight nullable: true
         workPermission nullable: true
         version nullable: true
