@@ -16,7 +16,7 @@ class DMZMailService {
 			log.trace(">> In class DMZMailService Method sendMails entered eTo : " + eTo + " eFrom : " + eFrom + " eSubject : " + eSubject + " eBody : " + eBody)
 		}
 		Map mail =[to: eTo,from: eFrom,subject: eSubject,body: eBody]
-		println(">> In class DMZMailService Method sendMails entered eTo : " + eTo + " eFrom : " + eFrom + " eSubject : " + eSubject + " eBody : " + eBody)
+		println(">> In class DMZMailService Method sendMails entered eTo : " + mail.to + " eFrom : " + mail.from + " eSubject : " + mail.subject+ " eBody : " + mail.body)
 		if(!hasSaveEmail(eTo,eFrom,eSubject,eBody)){
 			String curEnv = Environment.getCurrent().toString()
 			if ("PRODUCTION".equals(curEnv)){
@@ -41,7 +41,7 @@ class DMZMailService {
 		}
 		Map mail =[to: eTo,from: eFrom,subject: eSubject,body: eBody]
 		String curEnv = Environment.getCurrent().toString()
-		println(">> In class DMZMailService Method sendMailByChangeDays entered eTo : "+eTo+" eFrom : "+eFrom+" eSubject : "+eSubject+" eBody : "+eBody)
+		println(">> In class DMZMailService Method sendMails entered eTo : " + mail.to + " eFrom : " + mail.from + " eSubject : " + mail.subject+ " eBody : " + mail.body)
 		if ("PRODUCTION".equals(curEnv)){
 			mailService.sendMail {     
 				  to mail.to
