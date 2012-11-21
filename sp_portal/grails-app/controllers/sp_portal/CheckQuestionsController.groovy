@@ -68,7 +68,7 @@ class CheckQuestionsController  extends MainController {
 	
     def titles() {
 		if (titlesValues.size() == 0){
-			titlesValues = local.AnamnesisCheckTitle.findAll() 
+			titlesValues = local.AnamnesisCheckTitle.findAll([sort:"sortOrder"]) 
 		} 
 		if(log.isTraceEnabled()){
 			log.trace("<< In class CheckQuestionsController Method titles() return titlesValues : "+titlesValues)

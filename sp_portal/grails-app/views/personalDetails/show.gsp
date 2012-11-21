@@ -44,7 +44,7 @@
                 <li class="fieldcontain">
                     <span id="postalCode-label" class="property-label"><g:message code="standardizedPatient.postalCode.label" default="Postal Code" /></span>
 
-                        <span class="property-value" aria-labelledby="postalCode-label"><g:formatNumber number="${standardizedPatientInstance.postalCode}"/></span></span>
+                        <span class="property-value" aria-labelledby="postalCode-label"><g:fieldValue bean="${standardizedPatientInstance}" field="postalCode"/></span></span>
 
                 </li>
                 </g:if>
