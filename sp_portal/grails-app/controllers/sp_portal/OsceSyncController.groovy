@@ -161,7 +161,7 @@ class OsceSyncController extends MainController {
 		
 		}
 		if(patient.status!=null){
-			newPatient.status=patient.status;
+			newPatient.status=4;
 		
 		}
 		if(patient.socialInsuranceNo!=null){
@@ -578,11 +578,7 @@ class OsceSyncController extends MainController {
             //set json date and send to OSCE
 			log.info("set json date of DMZ and send to OSCE")
 			
-            def osceDayList = local.OsceDay.list();
-
-            def trainingList = local.Training.list();
-
-            def patientImSemesterList = local.PatientlnSemester.list();
+           
 
             def oneMsgJson = oneMsg as JSON;
 			if(log.isDebugEnabled()){
@@ -590,24 +586,65 @@ class OsceSyncController extends MainController {
 			}
 
 
-            String osceDayListJson = getOsceDayJson(osceDayList);
-
-            String trainingListJson =getTrainingJson(trainingList);
-
-            String patientImSemesterListJson = getPatientInSemesterJson(patientImSemesterList)
-
-            def jsonStr = "{\"message\" : "+oneMsgJson+",\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
+            
+            def jsonStr = "{\"message\" : "+oneMsgJson+"}"
 
             response.setCharacterEncoding("UTF-8");
 			if(log.isDebugEnabled()){
 				log.debug("render jsonStr : "+jsonStr)
 			}
-			
+			println("-------------_________error json "+jsonStr);
             render text:jsonStr ,contentType:"application/json",encoding:"UTF-8"
 		   
 
     }
+	
+	def getSyncJson(){
+			def osceDayList = local.OsceDay.list();
 
+            def trainingList = local.Training.list();
+
+            def patientImSemesterList = local.PatientlnSemester.list();
+			
+			String osceDayListJson = getOsceDayJson(osceDayList);
+
+            String trainingListJson =getTrainingJson(trainingList);
+
+            String patientImSemesterListJson = getPatientInSemesterJson(patientImSemesterList)
+			
+			def jsonStr = "{\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
+			for(local.OsceDay day:osceDayList){
+					day.delete();
+			}
+			
+			for(local.PatientlnSemester pl:patientImSemesterList){
+					pl.delete();
+			}
+			def osce=local.Osce.list();
+			
+			for(local.Osce o: osce){
+				o.delete();
+			
+			}
+
+			def sm =local.Semester.findAll();
+			println("############# sm " +sm);
+			for(local.Semester sme: sm){
+				sme.delete();
+			
+			}
+
+			response.setCharacterEncoding("UTF-8");
+			if(log.isDebugEnabled()){
+				log.debug("render jsonStr : "+jsonStr)
+			}
+			
+			println("-------------_________return json "+jsonStr);
+            render text:jsonStr ,contentType:"application/json",encoding:"UTF-8"
+
+	} 
+	
+	
     
 
     /**

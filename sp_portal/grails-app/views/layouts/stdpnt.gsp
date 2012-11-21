@@ -38,12 +38,18 @@
 
     		<div class="stdpnt-menu">
         		<ul>
+					
 	          		<g:link controller="myAccount" action="show" ><li><g:message code="default.myAccount.link"/></li></g:link>
 			  		<g:if test="${session.user.standardizedPatient!=null}">
+						<g:if test="${session.user.standardizedPatient.status==2}">
 	          			<g:link controller="personalDetails" action="show" ><li><g:message code="default.personalDetails.link"/></li></g:link>
 	          			<g:link controller="bankaccount" action="show" ><li><g:message code="default.banksDetails.link"/></li></g:link>
 	          			<g:link controller="checkQuestions" action="index" ><li><g:message code="default.questions.message"/></li></g:link>
-			  			<g:link controller="selectAvailableDates" action="showSemester" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link> 
+						</g:if>
+						<g:elseif test="${session.user.standardizedPatient.status==4}">
+						<g:link controller="selectAvailableDates" action="showSemester" ><li><g:message code="default.selectAvailableDates.message"/></li></g:link> 
+						</g:elseif>
+			  			
 					</g:if>
 	        	</ul>
 	    	</div>

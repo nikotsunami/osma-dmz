@@ -212,16 +212,18 @@ class DataImportExportService  {
             if(jsonObject.containsKey("status")){
                     if(standardizedPatientStatus){
                         jsonObject.remove("status");
-                      int status = -1;
-                    if (standardizedPatientStatus.toUpperCase().equals("INACTIVE")) {
-                                status = 0;
-                            } else if(standardizedPatientStatus.toUpperCase().equals("ACTIVE")){
-                                status = 1;
-                            } else if(standardizedPatientStatus.toUpperCase().equals("EXPORTED")){
-                                status = 2;
-                            } else if(standardizedPatientStatus.toUpperCase().equals("ANONYMIZED")){
-                                status = 3;
-                            } 
+                      int status = 2;
+     //               		if (standardizedPatientStatus.toUpperCase().equals("INACTIVE")) {
+     //                           status = 0;
+     //                       } else if(standardizedPatientStatus.toUpperCase().equals("ACTIVE")){
+     //                           status = 1;
+     //                       } else if(standardizedPatientStatus.toUpperCase().equals("EXPORTED")){
+     //                           status = 2;
+     //                       } else if(standardizedPatientStatus.toUpperCase().equals("ANONYMIZED")){
+     //                           status = 3;
+     //                       }else if(standardizedPatientStatus.toUpperCase().equals("EXPORTED_FOR_SCHEDULING")){
+					//			 status = 4;
+					//		}
 
                             if (status == -1){
                                 jsonObject.put("status",null);
