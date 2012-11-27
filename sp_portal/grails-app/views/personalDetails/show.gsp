@@ -165,7 +165,7 @@
 				<li class="fieldcontain">
                     <span id="maritalStatus-label" class="property-label"><g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" /></span>
 					
-				    <span class="property-value" aria-labelledby="maritalStatus-label">${message(code:'enum.value.' + value)}
+				    <span class="property-value" aria-labelledby="maritalStatus-label">${message(code:'enum.maritalStatus.value.' + value)}
 					<!--<g:fieldValue bean="${standardizedPatientInstance}" field="maritalStatus"/>--></span>
 
                 </li>

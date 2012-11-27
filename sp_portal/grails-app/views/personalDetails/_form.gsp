@@ -127,8 +127,8 @@
 <div class="fieldcontain ${hasErrors(bean: standardizedPatientInstance, field: 'maritalStatus', 'error')} ">
     <label for="maritalStatus">
         <g:message code="standardizedPatient.maritalStatus.label" default="Marital Status" />
-
     </label>
+    
     <g:select name="maritalStatus" from="${MaritalStatus?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}" valueMessagePrefix="enum.maritalStatus.value"  optionKey="value" />
 	<%--<g:select name="maritalStatus" from="${MaritalStatus?.values()}" value="${fieldValue(bean: standardizedPatientInstance, field: 'maritalStatus')}" noSelection="['': '']" optionKey="value"/>
 	--%><!--  <g:select name="maritalStatus" valueMessagePrefix="enum.value" from="${MaritalStatus?.values()}" keys="${MaritalStatus?.values()}" /> -->
