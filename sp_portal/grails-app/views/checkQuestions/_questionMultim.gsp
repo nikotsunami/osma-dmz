@@ -9,15 +9,16 @@
 				<g:if test="${check.anamnesisCheck == question}">
 				<g:if test="${check.anamnesisChecksValue != null}">
 					<g:each var="data" status="c" in="${check.anamnesisChecksValue.split("\\-")}">
-			        <g:if test="${i == c}">
-			      	 
+			        <g:if test="${i == c}">			      	 
 			      	  <g:set var="validValue" value="${data.equals("1") ? true: false}" />
 			  			</g:if>      
 			    </g:each>
 				</g:if>
+				
 		    </g:if>
     </g:each>
    <g:checkBox name="question.${question.id}" value="${value}" checked="${validValue}"/>&nbsp;&nbsp;<%= value %>&nbsp;&nbsp;
 </g:each>
+<g:hiddenField name="question.${question.id}" value="null" />
 </g:if>
 </div>

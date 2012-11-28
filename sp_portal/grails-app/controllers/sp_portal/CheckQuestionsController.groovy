@@ -240,16 +240,21 @@ class CheckQuestionsController  extends MainController {
 
     private void saveData(){
 		log.info("user save data ")
-        def patient = getCurrentPatient();		
+        def patient = getCurrentPatient();	
+
+		//println("saveData params ***************************  "+params);
         def questionIdStrings = params.findAll({ key, value ->
 													key.startsWith("question")
 													});
-		if(log.isDebugEnabled()){											
+		if(log.isDebugEnabled()){						
+					
 			log.debug("find questionIdStrings : "+questionIdStrings)
 		}
-        def questionIds = questionIdStrings.each({ key, value ->
+		
+		def sChecksValue = null;
+		questionIdStrings.each({ key, value ->
             def components = key.split("\\.");
-
+			
             // If there are 2 parts to the string then it is a valid "question".id format
             if (components.size() == 2){
                 def questionId = components[1];
@@ -258,113 +263,73 @@ class CheckQuestionsController  extends MainController {
 				if(log.isTraceEnabled()){									
 					log.trace("find checkInstance : "+checkInstance)
 				}
-    //            valueStr = "";
-                setValueStr(checkInstance,questionId,value);
-				 
-            if(patient.standardizedPatient.anamnesisForm!=null || checkInstance!=null){
+                sChecksValue = "";
+                sChecksValue = getChecksValue(checkInstance,questionId,value);
+				if(patient.standardizedPatient.anamnesisForm!=null || checkInstance!=null){
 
-                   def checkValue = local.AnamnesisChecksValue.findByAnamnesisFormAndAnamnesisCheck(patient.standardizedPatient.anamnesisForm,checkInstance);
+				   def checkValue = local.AnamnesisChecksValue.findByAnamnesisFormAndAnamnesisCheck(patient.standardizedPatient.anamnesisForm,checkInstance);
 				   if(log.isTraceEnabled()){
 						log.trace("find checkValue : "+checkValue)
 					}
-                   if(checkValue!=null){
-						checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
-						if(checkValue!=null){
-						  checkValue.anamnesisCheck = checkInstance;
-						}
-						checkValue.anamnesisChecksValue=valueStr;
-						
-						checkValue.comment = null;
-						
-						if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
-							if(valueStr.equals("0")){
-								checkValue.truth = false;
-							}else if(valueStr.equals("1")){
-								checkValue.truth = true;
-							}else{														
-								checkValue.truth = null;
-							}
-						}else{
+					
+					if (checkValue==null){
+						checkValue = new local.AnamnesisChecksValue();
+					}
+					
+					checkValue.anamnesisForm = patient.standardizedPatient.anamnesisForm;
+					if(checkValue!=null){
+					  checkValue.anamnesisCheck = checkInstance;
+					}
+					checkValue.anamnesisChecksValue=sChecksValue;
+					
+					checkValue.comment = null;
+					
+					if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
+						if(sChecksValue.equals("0")){
+							checkValue.truth = false;
+						}else if(sChecksValue.equals("1")){
+							checkValue.truth = true;
+						}else{														
 							checkValue.truth = null;
-						}						
-							
-						checkValue.save();
-						if(log.isDebugEnabled()){
-							StringBuffer sb = new StringBuffer();
-							sb.append( "\n checkValue.origId: ");
-							sb.append(checkValue?.origId);
-							sb.append( "\n checkValue.anamnesisChecksValue: ");
-							sb.append(checkValue?.anamnesisChecksValue);
-							sb.append( "\n checkValue.comment: ");
-							sb.append(checkValue?.comment);
-							sb.append( "\n checkValue.truth: ");
-							sb.append(checkValue?.truth);
-							sb.append( "\n checkValue.anamnesisForm: ");
-							sb.append(checkValue?.anamnesisForm);
-							sb.append( "\n checkValue.anamnesisCheck: ");
-							sb.append(checkValue?.anamnesisCheck);
-							log.debug( "find checkValue and update to : " + sb.toString());
-						} 
-                   }else{
-
-						local.AnamnesisChecksValue checkValueInstance = new local.AnamnesisChecksValue();
-						checkValueInstance.anamnesisForm = patient.standardizedPatient.anamnesisForm;
-						if(checkInstance!=null){
-						  checkValueInstance.anamnesisCheck = checkInstance;
 						}
-						checkValueInstance.anamnesisChecksValue=valueStr;
+					}else{
+						checkValue.truth = null;
+					}						
 						
-						checkValueInstance.comment = null;
-						
-						if(checkInstance.type == AnamnesisCheckTypes.QUESTION_YES_NO.getTypeId()){
-							if(valueStr.equals("0")){
-								checkValueInstance.truth = false;
-							}else if(valueStr.equals("1")){
-								checkValueInstance.truth = true;
-							}else{
-								
-								checkValueInstance.truth = null;
-							}
-						}else{
-							checkValueInstance.truth = null;
-						}
-						
-						if(!valueStr.equals("")){
-							checkValueInstance.save();
-						}
-						 
-						if(log.isDebugEnabled()){
-							StringBuffer sb = new StringBuffer();
-							sb.append( "\n checkValueInstance.origId: ");
-							sb.append(checkValueInstance?.origId);
-							sb.append( "\n checkValueInstance.anamnesisChecksValue: ");
-							sb.append(checkValueInstance?.anamnesisChecksValue);
-							sb.append( "\n checkValueInstance.comment: ");
-							sb.append(checkValueInstance?.comment);
-							sb.append( "\n checkValueInstance.truth: ");
-							sb.append(checkValueInstance?.truth);
-							sb.append( "\n checkValueInstance.anamnesisForm: ");
-							sb.append(checkValueInstance?.anamnesisForm);
-							sb.append( "\n checkValueInstance.anamnesisCheck: ");
-							sb.append(checkValueInstance?.anamnesisCheck);
-							log.debug( "not found checkValue and new checkValueInstance : " + sb.toString());
-						} 
-                    }
-                }
+					checkValue.save();
+					if(log.isDebugEnabled()){
+						StringBuffer sb = new StringBuffer();
+						sb.append( "\n checkValue.origId: ");
+						sb.append(checkValue?.origId);
+						sb.append( "\n checkValue.anamnesisChecksValue: ");
+						sb.append(checkValue?.anamnesisChecksValue);
+						sb.append( "\n checkValue.comment: ");
+						sb.append(checkValue?.comment);
+						sb.append( "\n checkValue.truth: ");
+						sb.append(checkValue?.truth);
+						sb.append( "\n checkValue.anamnesisForm: ");
+						sb.append(checkValue?.anamnesisForm);
+						sb.append( "\n checkValue.anamnesisCheck: ");
+						sb.append(checkValue?.anamnesisCheck);
+						log.debug( "find checkValue and update to : " + sb.toString());
+					} 
+					
+				}
+            }
+		
 
-           }
+	});
 
-        });
-
-    }
-
-
-    static String valueStr;
+}
 
     //  set the submit answer
-    def setValueStr(checkInstance,questionId,value){
+    def  getChecksValue(checkInstance,questionId,value){
+		
+		def sValue = "";
+		
+	
 		if(log.isTraceEnabled()){
-			log.trace(">> In class CheckQuestionsController Method setValueStr entered checkInstance : "+checkInstance+"  "+"questionId : "+questionId+"  "+"value : "+value)
+			log.trace(">> In class CheckQuestionsController Method getChecksValue entered checkInstance : "+checkInstance+"  "+"questionId : "+questionId+"  "+"value : "+value)
 		}
         boolean isTrue = false;
 		String [] possibleValues = []
@@ -379,9 +344,9 @@ class CheckQuestionsController  extends MainController {
 				log.trace("checkInstance type is QUESTION_YES_NO ")
 			}
             if(submittedValues.equals("true")){
-                valueStr = "1-";
+                sValue = "1-";
             }else{
-                valueStr = "0-";
+                sValue = "0-";
             }
         }
 
@@ -400,10 +365,10 @@ class CheckQuestionsController  extends MainController {
 				}
 
 				if(!found){
-					valueStr+="0-";
+					sValue+="0-";
 					isTrue = false;
 				} else {
-					valueStr+="1-";
+					sValue+="1-";
 				}
             }
         }
@@ -433,11 +398,13 @@ class CheckQuestionsController  extends MainController {
 
                 }
                 if(!found){
-                    valueStr+="0-";
+                    sValue+="0-";
                     isTrue = false;
                 } else {
-                    valueStr+="1-";
+                    sValue+="1-";
                 }
+				
+				
              }
 
         }
@@ -447,28 +414,27 @@ class CheckQuestionsController  extends MainController {
 				log.trace("checkInstance type is QUESTION_OPEN ")
 			}
             if(submittedValues!=null){
-                valueStr = submittedValues;
+                sValue = submittedValues;
             }
         }
 
         if(checkInstance.type != AnamnesisCheckTypes.QUESTION_OPEN.getTypeId()){
 
-            if(valueStr !=null && !valueStr.equals("")){
-                valueStr = valueStr.substring(0,valueStr.length()-1);
+            if(sValue !=null && !sValue.equals("")){
+                sValue = sValue.substring(0,sValue.length()-1);
             }
         }
 		if(log.isTraceEnabled()){
-			log.trace("<< In class CheckQuestionsController Method setValueStr(checkInstance,questionId,value) end valueStr : "+value)
+			log.trace("<< In class CheckQuestionsController Method getChecksValue(checkInstance,questionId,value) end sChecksValue : "+value)
 		}
 		
 				
-		if(valueStr.size() == 0){
-			valueStr = null;
-		}
+		//if(sValue.size() == 0){
+		//	sValue = null;
+		//}
 
-        return checkInstance;
+        return sValue;
     }
-
 
     private getCurrentPatient(){
         def patient = User.findById(session.user.id);		

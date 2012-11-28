@@ -626,6 +626,10 @@ class OsceSyncController extends MainController {
 				o.delete();
 			
 			}
+			for(local.Training train:trainingList){
+				train.delete();
+			
+			}
 
 			def sm =local.Semester.findAll();
 			println("############# sm " +sm);
@@ -633,6 +637,7 @@ class OsceSyncController extends MainController {
 				sme.delete();
 			
 			}
+			
 
 			response.setCharacterEncoding("UTF-8");
 			if(log.isDebugEnabled()){
