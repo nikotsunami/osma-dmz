@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="userMain">
-        <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
+        <g:set var="entityName" value="${message(code: 'user.label.user', default: 'User')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
     </head>
 	<body style="height:90%">

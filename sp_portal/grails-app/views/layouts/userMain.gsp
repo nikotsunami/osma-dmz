@@ -26,9 +26,12 @@
     	<div id="mainContainer">
 	    	<div id="grailsLogo" role="banner">
 	        	<img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/>
-	        	<g:if test="${session.user}">
-	           		<g:link class="right" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
-	        	</g:if>
+	        	<div class="right">
+					<a href="?lang=de">de</a> | <a href="?lang=en">en</a>
+		        	<g:if test="${session.user}">
+		           		<g:link style="margin-left: 50px" controller="authentication" action="logout" ><g:message code="default.logout.label"/></g:link>
+		        	</g:if>
+				</div>
 	        </div>
 	    
 	    	<div class="stdpnt-menu">

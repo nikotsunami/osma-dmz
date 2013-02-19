@@ -107,7 +107,7 @@ img {
 
 #grailsLogo a {
 	display: inline-block;
-	margin: 1em;
+	margin: 2px;
 }
 
 .content {
@@ -618,7 +618,7 @@ a.skip {
 	left: -9999px;
 }
 
-a.right {
+.right {
   float: right;	
 }
 
