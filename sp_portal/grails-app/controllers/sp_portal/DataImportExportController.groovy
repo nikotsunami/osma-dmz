@@ -98,9 +98,6 @@ class DataImportExportController extends MainController {
             if (patient){
 			def json = patient as JSON;
 			deleteAll(patient)
-				
-				
-						
 			
                  render json;
             } else {

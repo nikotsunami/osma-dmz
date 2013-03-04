@@ -18,8 +18,6 @@ class OsceSyncController extends MainController {
 	
 	private static final log = LogFactory.getLog(this)
 
-    
-
     def syncJson(){
 		log.info("user sync json")
         String jsonData = params.data;		
@@ -94,50 +92,50 @@ class OsceSyncController extends MainController {
 		//local.StandardizedPatient newPatient = new local.StandardizedPatient();
 	
 		newPatient.origId = patient.id;
-		if(patient.gender!=null){
+		if(patient.gender!=null && patient.gender != JSONObject.NULL){
 			newPatient.gender=patient.gender;
 		}
-		if(patient.preName!=null){
+		if(patient.preName!=null && patient.preName != JSONObject.NULL){
 			newPatient.preName=patient.preName;
 		
 		}
-		if(patient.street!=null){
+		if(patient.street!=null && patient.street != JSONObject.NULL){
 			newPatient.street=patient.street;
 		
 		}
-		if(patient.city!=null){
+		if(patient.city!=null && patient.city != JSONObject.NULL){
 			newPatient.city=patient.city;
 		
 		}
-		if(patient.postalCode!=null){
+		if(patient.postalCode!=null && patient.postalCode != JSONObject.NULL){
 			newPatient.postalCode=patient.postalCode;
 		
 		}
-		if(patient.telephone!=null){
+		if(patient.telephone!=null && patient.telephone != JSONObject.NULL){
 			newPatient.telephone=patient.telephone;
 		
 		}
-		if(patient.telephone2!=null){
+		if(patient.telephone2!=null && patient.telephone2 != JSONObject.NULL){
 			newPatient.telephone2=patient.telephone2;
 		
 		}
-		if(patient.mobile!=null){
+		if(patient.mobile!=null && patient.mobile != JSONObject.NULL){
 			newPatient.mobile=patient.mobile;
 		
 		}
-		if(patient.height!=null){
+		if(patient.height!=null && patient.height != JSONObject.NULL){
 			newPatient.height=patient.height;
 		
 		}
-		if(patient.weight!=null){
+		if(patient.weight!=null && patient.weight != JSONObject.NULL){
 			newPatient.weight=patient.weight;
 		
 		}
-		if(patient.immagePath!=null){
+		if(patient.immagePath!=null && patient.immagePath != JSONObject.NULL){
 			newPatient.immagePath=patient.immagePath;
 		
 		}
-		if(patient.videoPath!=null){
+		if(patient.videoPath!=null && patient.videoPath != JSONObject.NULL){
 			newPatient.videoPath=patient.videoPath;
 		
 		}
@@ -148,25 +146,24 @@ class OsceSyncController extends MainController {
 			}
 		
 		}
-		if(patient.email!=null){
+		if(patient.email!=null && patient.email != JSONObject.NULL){
 			newPatient.email=patient.email;
 		
 		}
-		if(patient.maritalStatus!=null){
+		if(patient.maritalStatus!=null && patient.maritalStatue != JSONObject.NULL){
 			newPatient.maritalStatus=patient.maritalStatus;
 		
 		}
-		if(patient.workPermission!=null){
+		if(patient.workPermission!=null && patient.workPermission != JSONObject.NULL){
 			newPatient.workPermission=patient.workPermission;
 		
 		}
-		if(patient.status!=null){
+		if(patient.status!=null && patient.status != JSONObject.NULL){
 			newPatient.status=4;
 		
 		}
-		if(patient.socialInsuranceNo!=null){
+		if(patient.socialInsuranceNo!=null && patient.scoialInsuranceNo != JSONObject.NULL){
 			newPatient.socialInsuranceNo=patient.socialInsuranceNo;
-		
 		}
 		try{
 			newPatient.save(flush:true);
