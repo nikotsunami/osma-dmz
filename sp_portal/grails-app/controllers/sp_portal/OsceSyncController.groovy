@@ -49,6 +49,7 @@ class OsceSyncController extends MainController {
 	private String preProcessData(String jsonStr){
 		jsonStr = jsonStr.replaceAll("\"semester\":\"HS\"", "\"semester\":0");
 		jsonStr = jsonStr.replaceAll("\"semester\":\"FS\"", "\"semester\":1");
+		jsonStr = jsonStr.replaceAll("\"semester\":\"FED\"", "\"semester\":2");
 		
 		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ1\"", "\"studyYear\":0");
 		jsonStr = jsonStr.replaceAll("\"studyYear\":\"SJ2\"", "\"studyYear\":1");
@@ -219,7 +220,9 @@ class OsceSyncController extends MainController {
 
 
     /**
-     *OscdDay synchronise database and Training and validate Patient is present
+     * Receive OSCEDay, Training, SP-Data via JSONObject from OSCE Manager.
+     * This method is called after the data remotely sent to SP Portal has
+     * been pre processed in a JSON object.
      */
     def sync(data){
 		if(log.isTraceEnabled()){
@@ -230,76 +233,54 @@ class OsceSyncController extends MainController {
 
         if(data){
             //get locale from osce
-            def locale = Locale.GERMANY;
+            def locale = Locale.GERMAN;
 			if(data.language != JSONObject.NULL && !data.language.equals("")){				
 				def language = data.language.toString()
 				locale = new Locale(language)
-                
             }
 			
 			// synchronize Patitent
 			for(int i = 0; i< data.patients.size();i++){
-				def patients = data.patients[i];
-				def patient = local.StandardizedPatient.findByOrigId(patients.id);
-				if(!patient){
-					patient = new local.StandardizedPatient();
+				def syncPatient = data.patients[i];
+				def localPatient = local.StandardizedPatient.findByOrigId(syncPatient.id);
+				if(!localPatient){
+					localPatient = new local.StandardizedPatient();
 				}
-				savePatient(patient,patients,locale,key,oneMsg);
+				savePatient(localPatient,syncPatient,locale,key,oneMsg);
 			}
-			
-		
-			
 			
 			//Synchronise Semester
 			log.info("Synchronise Semester");
 			for(int i = 0 ; i<data.semesters.size();i++){
-				def semesters = data.semesters[i];
-				def semester = local.Semester.findByOrigId(semesters.id);
-				if(!semester){
-					semester = new local.Semester();
-					if(semesters.id != JSONObject.NULL){
-						semester.origId= semesters.id;
+				def syncSemester = data.semesters[i];
+				def localSemester = local.Semester.findByOrigId(syncSemester.id);
+				if(!localSemester){
+					localSemester = new local.Semester();
+					if(syncSemester.id != JSONObject.NULL){
+						localSemester.origId= syncSemester.id;
 					}
 					
-					if(semesters.semester != JSONObject.NULL){
-						semester.semester= semesters.semester;
+					if(syncSemester.semester != JSONObject.NULL){
+						localSemester.semester= syncSemester.semester;
 					}
 					
-					if(semesters.calYear != JSONObject.NULL){
-						semester.calYear= semesters.calYear;
-					}
-					
-					//if(semesters.maximalYearEarnings != JSONObject.NULL){
-					//	semester.maximalYearEarnings= semesters.maximalYearEarnings;
-					//}
-					//
-					//if(semesters.pricestatist != JSONObject.NULL){
-					//	semester.pricestatist= semesters.pricestatist;
-					//}
-					//if(semesters.priceStandardizedPartient != JSONObject.NULL){
-					//	semester.priceStandardizedPartient= semesters.priceStandardizedPartient;
-					//}
-					//if(semesters.preparationRing != JSONObject.NULL){
-					//	semester.preparationRing= semesters.preparationRing;
-					//}					
-					semester.save(flush:true);
-					key = message(code: 'default.notFound.Semester.message', args: [semesters.id.toString()],locale: locale)
+					if(syncSemester.calYear != JSONObject.NULL){
+						localSemester.calYear= syncSemester.calYear;
+					}				
+					localSemester.save(flush:true);
+					key = message(code: 'default.notFound.Semester.message', args: [syncSemester.id.toString()],locale: locale)
 					importMessage(oneMsg,key)
 					
-				}else{
-					if(semesters.id != JSONObject.NULL){
-						semester.origId= semesters.id;
+				} else {
+					if(syncSemester.semester != JSONObject.NULL){
+						localSemester.semester= syncSemester.semester;
 					}
 					
-					if(semesters.semester != JSONObject.NULL){
-						semester.semester= semesters.semester;
+					if(syncSemester.calYear != JSONObject.NULL){
+						localSemester.calYear= syncSemester.calYear;
 					}
-					
-					if(semesters.calYear != JSONObject.NULL){
-						semester.calYear= semesters.calYear;
-					}
-					semester.save(flush:true);
-					key = message(code: 'default.found.Semester.message', args: [semesters.id.toString()],locale: locale)
+					localSemester.save(flush:true);
+					key = message(code: 'default.found.Semester.message', args: [syncSemester.id.toString()],locale: locale)
 					importMessage(oneMsg,key)
 				}
 				
@@ -321,68 +302,14 @@ class OsceSyncController extends MainController {
 					if(osces.studyYear != JSONObject.NULL){
 						osce.studyYear=osces.studyYear
 					}
-					//if(osces.maxNumberStudents != JSONObject.NULL){
-					//	osce.maxNumberStudents=osces.maxNumberStudents
-					//}
+
 					if(osces.name != JSONObject.NULL){
 						osce.name=osces.name
 					}
 					
-					//if(osces.shortBreak != JSONObject.NULL){
-					//	osce.shortBreak=osces.shortBreak
-					//}
-					//
-					//if(osces.LongBreak != JSONObject.NULL){
-					//	osce.longBreak=osces.LongBreak
-					//}
-					//
-					//if(osces.lunchBreak != JSONObject.NULL){
-					//	osce.lunchBreak=osces.lunchBreak
-					//}
-					//
-					//if(osces.middleBreak != JSONObject.NULL){
-					//	osce.middleBreak=osces.middleBreak
-					//}
-					//
-					//if(osces.numberPosts != JSONObject.NULL){
-					//	osce.numberPosts=osces.numberPosts
-					//}
-					//
-					//if(osces.numberCourses != JSONObject.NULL){
-					//	osce.numberCourses=osces.numberCourses
-					//}
-					//
-					//if(osces.postLength != JSONObject.NULL){
-					//	osce.postLength=osces.postLength
-					//}
-					//
-					//if(osces.isRepeOsce != JSONObject.NULL){
-					//	osce.isRepeOsce=osces.isRepeOsce
-					//}
-					//
 					if(osces.numberRooms != JSONObject.NULL){
 						osce.numberRooms=osces.numberRooms
 					}
-					//
-					//if(osces.isValid != JSONObject.NULL){
-					//	osce.isValid=osces.isValid
-					//}
-					//
-					//if(osces.osceStatus != JSONObject.NULL){
-					//	osce.osceStatus=osces.osceStatus
-					//}
-					//
-					//if(osces.security != JSONObject.NULL){
-					//	osce.security=osces.security
-					//}
-					//
-					//if(osces.osceSecurityTypes != JSONObject.NULL){
-					//	osce.osceSecurityTypes=osces.osceSecurityTypes
-					//}
-					//
-					//if(osces.patientAveragePerPost != JSONObject.NULL){
-					//	osce.patientAveragePerPost=osces.patientAveragePerPost
-					//}
 					
 					if(osces.semester != JSONObject.NULL){
 						local.Semester oscesSemester = local.Semester.findByOrigId(osces.semester);
@@ -398,10 +325,7 @@ class OsceSyncController extends MainController {
 							osce.copiedOsce=copiedOsce
 						}
 					}
-					
-					//if(osces.shortBreakSimpatChange != JSONObject.NULL){
-					//	osce.shortBreakSimpatChange=osces.shortBreakSimpatChange
-					//}
+
 					osce.save(flush:true);
 					key = message(code: 'default.notFound.Osce.message', args: [osces.id.toString()],locale: locale)
 					importMessage(oneMsg,key)
@@ -441,7 +365,6 @@ class OsceSyncController extends MainController {
 					key = message(code: 'default.found.Osce.message', args: [osces.id.toString()],locale: locale)
 					importMessage(oneMsg,key)
 				}
-				
 			}
 			//Synchronise PatientInSemester
 			for(int i = 0; i< data.patientInSemester.size();i++){
@@ -598,42 +521,36 @@ class OsceSyncController extends MainController {
 	
 	def getSyncJson(){
 			def osceDayList = local.OsceDay.list();
-
             def trainingList = local.Training.list();
-
             def patientImSemesterList = local.PatientlnSemester.list();
-			
 			String osceDayListJson = getOsceDayJson(osceDayList);
-
             String trainingListJson =getTrainingJson(trainingList);
-
             String patientImSemesterListJson = getPatientInSemesterJson(patientImSemesterList)
 			
 			def jsonStr = "{\"osceDay\" :"+osceDayListJson+",\"trainings\" : "+trainingListJson + ",\"patientInSemester\" : "+patientImSemesterListJson + "}"
-			for(local.OsceDay day:osceDayList){
-					day.delete();
-			}
+//			for(local.OsceDay day:osceDayList){
+//					day.delete();
+//			}
 			
-			for(local.PatientlnSemester pl:patientImSemesterList){
-					pl.delete();
-			}
+//			for(local.PatientlnSemester pl:patientImSemesterList){
+//					pl.delete();
+//			}
+			
 			def osce=local.Osce.list();
 			
-			for(local.Osce o: osce){
-				o.delete();
+//			for(local.Osce o: osce){
+//				o.delete();
+//			}
 			
-			}
-			for(local.Training train:trainingList){
-				train.delete();
-			
-			}
+//			for(local.Training train:trainingList){
+//				train.delete();
+//			}
 
 			def sm =local.Semester.findAll();
 			println("############# sm " +sm);
-			for(local.Semester sme: sm){
-				sme.delete();
-			
-			}
+//			for(local.Semester sme: sm){
+//				sme.delete();
+//			}
 			
 
 			response.setCharacterEncoding("UTF-8");
@@ -643,7 +560,6 @@ class OsceSyncController extends MainController {
 			
 			println("-------------_________return json "+jsonStr);
             render text:jsonStr ,contentType:"application/json",encoding:"UTF-8"
-
 	} 
 	
 	

@@ -34,6 +34,8 @@ class Semester {
 			retsemester = "HS";
 		}else if(this.semester == 1){
 			retsemester = "FS";
+		} else if (this.semester == 2) {
+			retsemester = "FED";
 		}
 		
 		return this.calYear +"   "+ retsemester;
