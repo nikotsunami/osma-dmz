@@ -22,7 +22,7 @@ class DMZMailService {
 			if ("PRODUCTION".equals(curEnv)){
 				mailService.sendMail {     
 					  to mail.to
-					  //to "michael.wgnr@gmail.com"
+					  //to "somewhere@example.com"
 					  from mail.from
 					  subject mail.subject     
 					  body mail.body 
